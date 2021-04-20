@@ -1,16 +1,18 @@
 grammar SimpLanPlus;
 
-// THIS IS THE PARSER INPUT
+/*------------------------------------------------------------------
+ * PARSER RULES
+ *------------------------------------------------------------------*/
 
 block	    : '{' declaration* statement* '}';
 
 statement   : assignment ';'
-	    | deletion ';'
-	    | print ';'
-	    | ret ';'
-	    | ite
-	    | call ';'
-	    | block;
+            | deletion ';'
+            | print ';'
+            | ret ';'
+            | ite
+            | call ';'
+            | block;
 
 
 declaration : decFun
@@ -22,7 +24,7 @@ decVar      : type ID ('=' exp)? ';' ;
 
 type        : 'int'
             | 'bool'
-	    | '^' type ;
+	        | '^' type ;
 
 arg         : type ID;
 
@@ -34,29 +36,30 @@ deletion    : 'delete' ID;
 
 print	    : 'print' exp;
 
-ret	    : 'return' (exp)?;
+ret	        : 'return' (exp)?;
 
 ite         : 'if' '(' exp ')' statement ('else' statement)?;
 
 call        : ID '(' (exp(',' exp)*)? ')';
 
-exp	    : '(' exp ')'				        #baseExp
-	    | '-' exp					        #negExp
-	    | '!' exp                                           #notExp
-	    | lhs						#derExp
-	    | 'new'						#newExp
-	    | left=exp op=('*' | '/')               right=exp   #binExp
-	    | left=exp op=('+' | '-')               right=exp   #binExp
-	    | left=exp op=('<' | '<=' | '>' | '>=') right=exp   #binExp
-	    | left=exp op=('=='| '!=')              right=exp   #binExp
-	    | left=exp op='&&'                      right=exp   #binExp
-	    | left=exp op='||'                      right=exp   #binExp
-	    | call                                              #callExp
-	    | BOOL                                              #boolExp
-	    | NUMBER					        #valExp;
+exp	        : '(' exp ')'				                        #baseExp
+            | '-' exp					                        #negExp
+            | '!' exp                                           #notExp
+            | lhs						                        #derExp
+            | 'new'						                        #newExp
+            | left=exp op=('*' | '/')               right=exp   #binExp
+            | left=exp op=('+' | '-')               right=exp   #binExp
+            | left=exp op=('<' | '<=' | '>' | '>=') right=exp   #binExp
+            | left=exp op=('=='| '!=')              right=exp   #binExp
+            | left=exp op='&&'                      right=exp   #binExp
+            | left=exp op='||'                      right=exp   #binExp
+            | call                                              #callExp
+            | BOOL                                              #boolExp
+            | NUMBER					                        #valExp;
 
-
-// THIS IS THE LEXER INPUT
+/*------------------------------------------------------------------
+ * LEXER RULES
+ *------------------------------------------------------------------*/
 
 //Booleans
 BOOL        : 'true'|'false';
