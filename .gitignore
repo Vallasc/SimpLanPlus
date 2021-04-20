@@ -26,4 +26,4 @@ hs_err_pid*
 .project
 .settings
 .idea
-.out
+/out/
