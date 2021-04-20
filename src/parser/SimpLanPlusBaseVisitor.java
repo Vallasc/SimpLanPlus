@@ -1,4 +1,5 @@
-// Generated from C:/Users/giaco/IdeaProjects/SimpLanPlus/src/simplan_compiler\SimpLanPlus.g4 by ANTLR 4.9.1
+// Generated from C:/Users/giaco/IdeaProjects/simp_lan_plus/src/main\SimpLanPlus.g4 by ANTLR 4.9.1
+package parser;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
