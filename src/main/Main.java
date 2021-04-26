@@ -1,11 +1,12 @@
 package main;
 
-import ast.SimpLanPlusVisitorImpl;
+import ast.*;
 import parser.*;
-import listeners.SyntaxErrorListener;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
+
+import listeners.SyntaxErrorListener;
 
 import java.io.FileInputStream;
 import java.util.logging.Logger;
@@ -29,7 +30,6 @@ public class Main
 		parser.removeErrorListener(ConsoleErrorListener.INSTANCE);
 		parserErrorsListener = new SyntaxErrorListener(LOGGER);
 		parser.addErrorListener(parserErrorsListener);
-
 		// Tell the parser to build the AST
 		//parser.setBuildParseTree(true);
 
