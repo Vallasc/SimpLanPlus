@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.util.logging.Logger;
 
 import com.unibo.ci.ast.*;
+import com.unibo.ci.ast.types.*;
 import com.unibo.ci.listeners.SyntaxErrorListener;
 import com.unibo.ci.parser.*;
 
@@ -45,5 +46,13 @@ public class Main
 		//fase 2: stampare errori semantici - fare a mano nodi dell'AST oppure scoprire come farlo in automatico
 		//fase 3: controllo dei tipi ???
 
+		Type a = new TypePointer(new TypePointer(new TypePointer(new TypeInt())));
+		Type b = new TypePointer(new TypePointer(new TypeInt()));
+		LOGGER.info(a.equals(b) + "");
+
+		
 	}
 }
+
+
+
