@@ -1,6 +1,6 @@
-package ast;
+package com.unibo.ci.ast;
 
-import parser.*;
+import com.unibo.ci.parser.*;
 
 public class SimpLanPlusVisitorImpl<T> extends SimpLanPlusBaseVisitor<T> {
     @Override public T visitBlock(SimpLanPlusParser.BlockContext ctx) { return visitChildren(ctx); }

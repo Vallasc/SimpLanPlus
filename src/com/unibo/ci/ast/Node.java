@@ -1,4 +1,4 @@
-package ast;
+package com.unibo.ci.ast;
 
 public interface Node {
     String toPrint(String indent);

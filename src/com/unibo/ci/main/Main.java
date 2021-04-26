@@ -1,15 +1,14 @@
-package main;
-
-import ast.*;
-import parser.*;
+package com.unibo.ci.main;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
-import listeners.SyntaxErrorListener;
-
 import java.io.FileInputStream;
 import java.util.logging.Logger;
+
+import com.unibo.ci.ast.*;
+import com.unibo.ci.listeners.SyntaxErrorListener;
+import com.unibo.ci.parser.*;
 
 public class Main
 {
