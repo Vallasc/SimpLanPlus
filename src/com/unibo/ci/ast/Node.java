@@ -1,5 +1,10 @@
 package com.unibo.ci.ast;
 
+import java.util.ArrayList;
+
+import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.util.Environment;
+
 public interface Node {
     String toPrint(String indent);
 
@@ -10,5 +15,5 @@ public interface Node {
 
     String codeGeneration();
 
-    //ArrayList<SemanticError> checkSemantics(Environment env);
+    ArrayList<SemanticError> checkSemantics(Environment env);
 }
