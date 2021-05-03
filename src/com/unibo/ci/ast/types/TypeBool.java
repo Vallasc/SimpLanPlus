@@ -2,7 +2,7 @@ package com.unibo.ci.ast.types;
 
 public class TypeBool implements Type{
     private static final String TYPE_NAME = "BOOL";
-    private static final int DIMENSION = 4;
+    private static final int DIMENSION = 1;
 
 
     @Override

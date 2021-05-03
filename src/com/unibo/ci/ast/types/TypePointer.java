@@ -35,7 +35,7 @@ public class TypePointer implements Type {
 
 
     // Puntatori tutti uguali
-    @Override
+    /*@Override
     public boolean equals(Object e) { 
 		if (e == null)
 			return false;
@@ -43,10 +43,11 @@ public class TypePointer implements Type {
             return true;
         }
         return false;
-	}
+	}*/
 
-    /*@Override
+    @Override
     public boolean equals(Object e) { 
+
 		if (e == null)
 			return false;
         if (e instanceof TypePointer){
@@ -54,5 +55,5 @@ public class TypePointer implements Type {
             return getPointedType().equals(casted.getPointedType());
         }
         return false;
-	}*/
+	}
 }

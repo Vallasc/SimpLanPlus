@@ -46,8 +46,11 @@ public class Main
 		//fase 2: stampare errori semantici - fare a mano nodi dell'AST oppure scoprire come farlo in automatico
 		//fase 3: controllo dei tipi ???
 
+		
+
 		Type a = new TypePointer(new TypePointer(new TypePointer(new TypeInt())));
 		Type b = new TypePointer(new TypePointer(new TypeInt()));
+		Type c = new TypePointer(new TypePointer(new TypeInt()));
 		LOGGER.info(a.equals(b) + "");
 
 		
