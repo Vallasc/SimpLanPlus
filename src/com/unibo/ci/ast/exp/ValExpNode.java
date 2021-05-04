@@ -4,9 +4,14 @@ import java.util.ArrayList;
 
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 
-public class ValExpNode implements Node{
+public class ValExpNode extends Node{
+
+    public ValExpNode(int r, int c) {
+        super(r, c);
+    }
 
     @Override
     public String toPrint(String indent) {
@@ -15,7 +20,7 @@ public class ValExpNode implements Node{
     }
 
     @Override
-    public Node typeCheck() {
+    public Type typeCheck() {
         // TODO Auto-generated method stub
         return null;
     }

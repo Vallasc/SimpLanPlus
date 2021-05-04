@@ -10,17 +10,18 @@ import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.exp.ValExpNode;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.ErrorStorage;
+import com.unibo.ci.ast.types.TypeBool;
 
-public class BinExpArithmetic extends BinExp {
+public class BinExpArithmetic extends BinExpNode{
 
-    public BinExpArithmetic(Exp right, Exp left) {
-        super(right, left);
+    public BinExpArithmetic(int row, int column, Exp right, Exp left) {
+        super(row, column, right, left);
     }
 
     @Override
-    public BoolExpNode typeCheck() {
-        if(! (left.typeCheck() instanceof ValExpNode &&
-                right.typeCheck() instanceof ValExpNode)) {
+    public TypeBool typeCheck() {
+        if(! (super.left.typeCheck() instanceof ValExpNode &&
+                super.right.typeCheck() instanceof ValExpNode)) {
             ErrorStorage.add(
                 new TypeError(0, 0, "uff")
             );
@@ -28,27 +29,6 @@ public class BinExpArithmetic extends BinExp {
         }
         return new TypeBool(); ///BoolExpNode();
     }
-
-    ==========================
-    @Override
-	public final Type inferType() {
-		leftType = this.leftSide.inferType();
-		Type rightSideT = this.rightSide.inferType();
-
-		if (!leftType.getType().equalsTo(rightSideT))
-			TypeErrorsStorage.addError(
-					new TypeError("In condition \"" + this.getOperationSymbol() + "\", left expression's type ("
-							+ leftType + ") does not equal to the right's type (" + rightSideT + ")", line, column));
-
-		if (EType.VOID.equalsTo(leftType))
-			TypeErrorsStorage.addError(new TypeError(
-					"Expressions must not be \"void\" type in operation \"" + this.getOperationSymbol() + "\"", line,
-					column));
-                // return null
-
-		return EType.BOOL.getType();
-	}
-    ==========================
 
     @Override
     public String codeGeneration() {

@@ -6,15 +6,16 @@ import com.unibo.ci.util.Environment;
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.exp.Exp;
+import com.unibo.ci.ast.types.Type;
 
-public class BinExpMisc extends BinExp {
+public class BinExpMisc extends BinExpNode {
 
-    public BinExpMisc(Exp right, Exp left) {
-        super(right, left);
+    public BinExpMisc(int row, int column, Exp right, Exp left) {
+        super(row, column, right, left);
     }
 
     @Override
-    public Node typeCheck() {
+    public Type typeCheck() {
         // TODO Auto-generated method stub
         return null;
     }

@@ -2,13 +2,19 @@ package com.unibo.ci.ast.exp;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.util.Environment;
 
-public class NegExpNode implements Node{
+public class NegExpNode extends Node{
     
-    private Node child;
+    private final Node child;
+
+    public NegExpNode(int row, int column, Node child) {
+        super(row, column);
+        this.child = child;
+    }
 
     @Override
     public String toPrint(String indent) {
@@ -17,7 +23,7 @@ public class NegExpNode implements Node{
     }
 
     @Override
-    public Node typeCheck() {
+    public Type typeCheck() {
         // TODO Auto-generated method stub
         return null;
     }

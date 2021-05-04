@@ -5,10 +5,16 @@ import java.util.ArrayList;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.ast.types.Type;
 
-public class BaseExpNode implements Exp{
+public class BaseExpNode extends Node{
 
-    private Exp child;
+    private final Exp child;
+
+    public BaseExpNode(int row, int column, Exp child) {
+        super(row, column);
+        this.child = child;
+    }
 
     @Override
     public String toPrint(String indent) {
@@ -17,7 +23,7 @@ public class BaseExpNode implements Exp{
     }
 
     @Override
-    public Node typeCheck() {
+    public Type typeCheck() {
         // TODO Auto-generated method stub
         return null;
     }

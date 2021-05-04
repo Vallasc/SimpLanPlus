@@ -5,14 +5,22 @@ import java.util.ArrayList;
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.STentry;
 import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 
-public class CallExpNode implements Node{
+public class CallExpNode extends Node{
+
+    private final Node child;
 
     private String id;
     private STentry entry; 
     private ArrayList<Node> parlist; 
     private int nestinglevel;
+
+    public CallExpNode(int row, int column, Node child) {
+        super(row, column);
+        this.child = child;
+    }
 
     @Override
     public String toPrint(String indent) {
@@ -21,7 +29,7 @@ public class CallExpNode implements Node{
     }
 
     @Override
-    public Node typeCheck() {
+    public Type typeCheck() {
         // TODO Auto-generated method stub
         return null;
     }

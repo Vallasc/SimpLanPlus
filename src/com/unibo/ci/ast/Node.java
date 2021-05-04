@@ -1,19 +1,28 @@
 package com.unibo.ci.ast;
 
 import java.util.ArrayList;
+import com.unibo.ci.ast.types.Type;
 
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.util.Environment;
 
-public interface Node {
-    String toPrint(String indent);
+public abstract class Node {
+    protected final int row;
+    protected final int column;
+
+    public Node (int row , int column){
+        this.row = row;
+        this.column = column;
+    }
+
+    public abstract String toPrint(String indent);
 
     //fa il type checking e ritorna:
     //  per una espressione, il suo tipo (oggetto BoolTypeNode o IntTypeNode)
     //  per una dichiarazione, "null"
-    Node typeCheck();
+    public abstract Type typeCheck();
 
-    String codeGeneration();
+    public abstract String codeGeneration();
 
-    ArrayList<SemanticError> checkSemantics(Environment env);
+    public abstract ArrayList<SemanticError> checkSemantics(Environment env);
 }
