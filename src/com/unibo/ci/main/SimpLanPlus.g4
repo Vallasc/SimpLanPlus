@@ -1,4 +1,4 @@
-grammar SimpLanPlus;
+ewgrammar SimpLanPlus;
 
 /*------------------------------------------------------------------
  * PARSER RULES

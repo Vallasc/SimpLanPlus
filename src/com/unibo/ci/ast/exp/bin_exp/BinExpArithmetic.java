@@ -10,7 +10,7 @@ import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.exp.ValExpNode;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.ErrorStorage;
-import com.unibo.ci.ast.types.TypeBool;
+import com.unibo.ci.ast.types.TypeInt;
 
 public class BinExpArithmetic extends BinExpNode{
 
@@ -19,15 +19,15 @@ public class BinExpArithmetic extends BinExpNode{
     }
 
     @Override
-    public TypeBool typeCheck() {
-        if(! (super.left.typeCheck() instanceof ValExpNode &&
-                super.right.typeCheck() instanceof ValExpNode)) {
+    public TypeInt typeCheck() { 
+        if(! (super.left.typeCheck() instanceof TypeInt &&
+                super.right.typeCheck() instanceof TypeInt)) {
             ErrorStorage.add(
-                new TypeError(0, 0, "uff")
+                new TypeError(super.row, super.column, "Expecting an integer value")
             );
             
         }
-        return new TypeBool(); ///BoolExpNode();
+        return new TypeInt(); ///BoolExpNode();
     }
 
     @Override

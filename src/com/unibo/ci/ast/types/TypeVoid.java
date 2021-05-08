@@ -1,18 +1,9 @@
 package com.unibo.ci.ast.types;
 
-public class TypeVoid implements Type{
-    private static final String TYPE_NAME = "VOID";
-    private static final int DIMENSION = 0;
+public class TypeVoid extends Type{
 
-
-    @Override
-    public int getDimension() {
-        return DIMENSION;
-    }
-
-    @Override
-    public String getTypeName() {
-        return TYPE_NAME;
+    public TypeVoid(){
+        super("VOID", 0);
     }
 
     @Override

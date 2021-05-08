@@ -1,18 +1,9 @@
 package com.unibo.ci.ast.types;
 
-public class TypeBool implements Type{
-    private static final String TYPE_NAME = "BOOL";
-    private static final int DIMENSION = 1;
-
-
-    @Override
-    public int getDimension() {
-        return DIMENSION;
-    }
-
-    @Override
-    public String getTypeName() {
-        return TYPE_NAME;
+public class TypeBool extends Type{
+    
+    public TypeBool(){
+        super("BOOL", 4);
     }
 
     @Override

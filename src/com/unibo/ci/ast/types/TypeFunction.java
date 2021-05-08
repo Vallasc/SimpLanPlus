@@ -1,19 +1,10 @@
 package com.unibo.ci.ast.types;
 
-public class TypeFunction implements Type{
-    private static final String TYPE_NAME = "FUNCTION";
-    private static final int DIMENSION = 0;
+public class TypeFunction extends Type{
 
-
-    @Override
-    public int getDimension() {
-        return DIMENSION;
-    }
-
-    @Override
-    public String getTypeName() {
-        return TYPE_NAME;
-    }
+    public TypeFunction(){
+        super("FUNCTION", 0);
+    }    
 
     @Override
     public boolean equals(Object e) {

@@ -1,36 +1,30 @@
 package com.unibo.ci.ast.types;
 
-public class TypePointer implements Type {
-    private static final String TYPE_NAME = "POINTER";
-    private static final int DIMENSION = 4;
+public class TypePointer extends Type {
 
     private final Type pointedType;
 
 
     public TypePointer(TypePointer pointedType) {
-        this.pointedType = pointedType;
+        super("POINTER", 4);
+        
+        this.pointedType = pointedType; 
     }
 
     public TypePointer(TypeInt pointedType) {
+        super("POINTER", 4);
+        
         this.pointedType = pointedType;
     }
 
     public TypePointer(TypeBool pointedType) {
+        super("POINTER", 4);
+
         this.pointedType = pointedType;
     }
 
     public Type getPointedType() {
         return pointedType;
-    }
-
-    @Override
-    public int getDimension() {
-        return DIMENSION;
-    }
-
-    @Override
-    public String getTypeName() {
-        return TYPE_NAME;
     }
 
 
