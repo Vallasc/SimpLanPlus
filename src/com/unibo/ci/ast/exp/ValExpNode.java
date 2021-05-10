@@ -9,8 +9,15 @@ import com.unibo.ci.util.Environment;
 
 public class ValExpNode extends Node{
 
-    public ValExpNode(int r, int c) {
+    private final int value;
+
+    public ValExpNode(int r, int c, int value) {
         super(r, c);
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
     }
 
     @Override
@@ -33,8 +40,7 @@ public class ValExpNode extends Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        // TODO Auto-generated method stub
-        return null;
+        return new ArrayList<SemanticError>();
     }
     
 }

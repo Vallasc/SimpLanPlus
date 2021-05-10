@@ -3,18 +3,24 @@ package com.unibo.ci.ast.exp;
 import java.util.ArrayList;
 
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.util.Environment;
 
 public class BoolExpNode extends Node{
 
-    private final Node child;
+    private final boolean value;
 
-    public BoolExpNode(int row, int column, Node child) {
+    public BoolExpNode(int row, int column, boolean value) {
         super(row, column);
-        this.child = child;
+        this.value = value;
     }
+
+    public boolean getValue() {
+        return value;
+    }
+
     @Override
     public String toPrint(String indent) {
         // TODO Auto-generated method stub
@@ -23,8 +29,7 @@ public class BoolExpNode extends Node{
 
     @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
-        return null;
+        return new TypeBool();
     }
 
     @Override
@@ -35,8 +40,7 @@ public class BoolExpNode extends Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        // TODO Auto-generated method stub
-        return null;
+        return new ArrayList<SemanticError>();
     }
     
 }

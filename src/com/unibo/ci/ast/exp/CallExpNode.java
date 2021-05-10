@@ -3,23 +3,22 @@ package com.unibo.ci.ast.exp;
 import java.util.ArrayList;
 
 import com.unibo.ci.ast.Node;
-import com.unibo.ci.ast.STentry;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.STentry;
 
 public class CallExpNode extends Node{
 
-    private final Node child;
-
-    private String id;
+    private final String id;
+    // Entry function definition
     private STentry entry; 
-    private ArrayList<Node> parlist; 
-    private int nestinglevel;
+    private final ArrayList<Node> parlist;
 
-    public CallExpNode(int row, int column, Node child) {
+    public CallExpNode(int row, int column, String id, ArrayList<Node> parlist) {
         super(row, column);
-        this.child = child;
+        this.id = id;
+        this.parlist = parlist;
     }
 
     @Override
@@ -30,7 +29,9 @@ public class CallExpNode extends Node{
 
     @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
+        // TODO 
+        /// Controllo che entry.getType sia una funzione
+        // Controllo numero e tipi dei parametri dato entry
         return null;
     }
 
@@ -42,7 +43,11 @@ public class CallExpNode extends Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        // TODO Auto-generated method stub
+        ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
+        if( env.lookup(id) == null ){
+            errors.add(new SemanticError(super.column, super.row, 
+            "Function " + id + " not declared."));
+        }
         return null;
     }
     

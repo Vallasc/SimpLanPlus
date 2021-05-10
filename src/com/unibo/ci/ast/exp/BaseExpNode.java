@@ -24,8 +24,7 @@ public class BaseExpNode extends Node{
 
     @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
-        return null;
+        return child.typeCheck();
     }
 
     @Override
@@ -36,8 +35,7 @@ public class BaseExpNode extends Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        // TODO Auto-generated method stub
-        return null;
+        return child.checkSemantics(env);
     }
     
 }

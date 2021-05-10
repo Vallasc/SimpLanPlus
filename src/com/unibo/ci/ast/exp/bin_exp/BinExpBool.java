@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.ast.errors.SemanticError;
-import com.unibo.ci.ast.exp.BoolExpNode;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.util.ErrorStorage;
@@ -19,8 +18,8 @@ public class BinExpBool extends BinExpNode {
 
     @Override
     public TypeBool typeCheck() {
-        if(! (super.left.typeCheck() instanceof BoolExpNode &&
-                super.right.typeCheck() instanceof BoolExpNode)) {
+        if(! (super.left.typeCheck() instanceof TypeBool &&
+                super.right.typeCheck() instanceof TypeBool)) {
             ErrorStorage.add(
                 new TypeError(super.row, super.column, "Expecting an boolean value")
             );
@@ -38,6 +37,15 @@ public class BinExpBool extends BinExpNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
+        ArrayList<SemanticError> leftErrors = super.left.checkSemantics(env);
+        ArrayList<SemanticError> rightErrors = super.right.checkSemantics(env);
+        leftErrors.addAll(rightErrors);
+        return leftErrors;
+    }
+
+
+    @Override
+    public String toPrint(String indent) {
         // TODO Auto-generated method stub
         return null;
     }

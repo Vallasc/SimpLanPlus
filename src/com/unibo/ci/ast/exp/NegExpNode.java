@@ -36,8 +36,7 @@ public class NegExpNode extends Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        // TODO Auto-generated method stub
-        return null;
+        return child.checkSemantics(env);
     }
     
 }

@@ -9,8 +9,6 @@ import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.ErrorStorage;
-import com.unibo.ci.ast.exp.BoolExpNode;
-import com.unibo.ci.ast.exp.ValExpNode;
 import com.unibo.ci.ast.errors.TypeError;
 
 public class BinExpMisc extends BinExpNode {
@@ -45,6 +43,14 @@ public class BinExpMisc extends BinExpNode {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
+        ArrayList<SemanticError> leftErrors = super.left.checkSemantics(env);
+        ArrayList<SemanticError> rightErrors = super.right.checkSemantics(env);
+        leftErrors.addAll(rightErrors);
+        return leftErrors;
+    }
+
+    @Override
+    public String toPrint(String indent) {
         // TODO Auto-generated method stub
         return null;
     }
