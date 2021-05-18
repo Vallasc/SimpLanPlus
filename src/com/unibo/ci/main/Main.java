@@ -10,6 +10,7 @@ import com.unibo.ci.ast.*;
 import com.unibo.ci.ast.types.*;
 import com.unibo.ci.listeners.SyntaxErrorListener;
 import com.unibo.ci.parser.*;
+import com.unibo.ci.util.Environment;
 
 public class Main
 {
@@ -41,7 +42,8 @@ public class Main
 		System.out.println(tree.toStringTree(parser)); // print LISP-style tree
 		SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
 		Node ast = visitor.visit(tree); // Generazione AST
-		//ast.checkSemantics(env)
+		Environment env = new Environment();
+		ast.checkSemantics(env);
 		
 		//fase 1: stampare errori lessicali - scoprire come si può fare con antlr in automatico
 		//fase 2: stampare errori semantici - fare a mano nodi dell'AST oppure scoprire come farlo in automatico
