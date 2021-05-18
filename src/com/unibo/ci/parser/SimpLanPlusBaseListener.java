@@ -1,4 +1,3 @@
-// Generated from C:/Users/giaco/IdeaProjects/simp_lan_plus/src/main\SimpLanPlus.g4 by ANTLR 4.9.1
 package com.unibo.ci.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
