@@ -3,7 +3,7 @@ package com.unibo.ci.ast.types;
 public class TypeVoid extends Type{
 
     public TypeVoid(){
-        super("VOID", 0);
+        super(-1, -1, "VOID", 0);
     }
 
     @Override

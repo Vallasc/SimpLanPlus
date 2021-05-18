@@ -3,7 +3,11 @@ package com.unibo.ci.ast.types;
 public class TypeInt extends Type {
 
     public TypeInt(){
-        super("INT", 4);
+        super(-1, -1, "INT", 4);
+    }
+
+    public TypeInt(int row, int column){
+        super(row, column, "INT", 4);
     }
     
     @Override

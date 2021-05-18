@@ -4,40 +4,19 @@ public class TypePointer extends Type {
 
     private final Type pointedType;
 
-
-    public TypePointer(TypePointer pointedType) {
-        super("POINTER", 4);
-        
+    public TypePointer(Type pointedType) {
+        super(-1, -1, "POINTER", 4);
         this.pointedType = pointedType; 
     }
 
-    public TypePointer(TypeInt pointedType) {
-        super("POINTER", 4);
-        
-        this.pointedType = pointedType;
-    }
-
-    public TypePointer(TypeBool pointedType) {
-        super("POINTER", 4);
-
-        this.pointedType = pointedType;
+    public TypePointer(int row, int column, Type pointedType) {
+        super(row, column, "POINTER", 4);
+        this.pointedType = pointedType; 
     }
 
     public Type getPointedType() {
         return pointedType;
     }
-
-
-    // Puntatori tutti uguali
-    /*@Override
-    public boolean equals(Object e) { 
-		if (e == null)
-			return false;
-        if (e instanceof TypePointer){
-            return true;
-        }
-        return false;
-	}*/
 
     @Override
     public boolean equals(Object e) { 
