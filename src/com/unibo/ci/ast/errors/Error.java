@@ -6,7 +6,7 @@ public abstract class Error {
 
     public final String desc;
 
-    public Error(int col, int row, String desc) {
+    public Error(int row, int col, String desc) {
         this.col = col;
         this.row = row;
         this.desc = desc;
