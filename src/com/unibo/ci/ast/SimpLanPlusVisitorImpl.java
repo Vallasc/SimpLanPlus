@@ -6,6 +6,7 @@ import com.unibo.ci.ast.dec.Arg;
 import com.unibo.ci.ast.dec.DecFun;
 import com.unibo.ci.ast.dec.DecVar;
 import com.unibo.ci.ast.exp.Exp;
+import com.unibo.ci.ast.stmt.BlockBaseStmt;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.types.TypeInt;
@@ -17,7 +18,11 @@ import com.unibo.ci.parser.SimpLanPlusParser.ArgContext;
 public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
     @Override 
-    public Node visitBlock(SimpLanPlusParser.BlockContext ctx) { return visitChildren(ctx); }
+    public Node visitBlock(SimpLanPlusParser.BlockContext ctx) { 
+    	BlockBaseStmt bbn = new BlockBaseStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine()) ;
+    	return  bbn;
+    	
+    }
 
     @Override 
     public Node visitStatement(SimpLanPlusParser.StatementContext ctx) { return visitChildren(ctx); }
@@ -39,10 +44,11 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
     @Override 
     public DecVar visitDecVar(SimpLanPlusParser.DecVarContext ctx) {
-        return new DecVar(ctx.start.getLine(), ctx.start.getCharPositionInLine(), 
+        DecVar test = new DecVar(ctx.start.getLine(), ctx.start.getCharPositionInLine(), 
                             ctx.ID().getText(),
                             (Type) visitChildren(ctx.type()),
                             (Exp) visitChildren(ctx.exp()));
+        return test;
     }
 
     @Override 

@@ -1,4 +1,4 @@
 {
-    int hss;
+    int hss = true;
     return hss == 3;
 }

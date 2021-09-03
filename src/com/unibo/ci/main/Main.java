@@ -43,18 +43,27 @@ public class Main
 		SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
 		Node ast = visitor.visit(tree); // Generazione AST
 		Environment env = new Environment();
-		ast.checkSemantics(env);
+		
+		ast.checkSemantics(env).forEach(semnErr -> {
+			System.out.println("Errore semantico trovato a " + semnErr.row + ", " + semnErr.col + ": " + semnErr.desc);
+		});
+		
+		System.out.println("Programma terminato");
+		
+		
 		
 		//fase 1: stampare errori lessicali - scoprire come si può fare con antlr in automatico
 		//fase 2: stampare errori semantici - fare a mano nodi dell'AST oppure scoprire come farlo in automatico
 		//fase 3: controllo dei tipi ???
 
+		//TODO se usiamo una variabile non inizializzata, cosa permessa dalla grammatica, il programma crasha
+		//vedi prova.slp
 		
 
-		Type a = new TypePointer(new TypePointer(new TypePointer(new TypeInt())));
+		/*Type a = new TypePointer(new TypePointer(new TypePointer(new TypeInt())));
 		Type b = new TypePointer(new TypePointer(new TypeInt()));
 		Type c = new TypePointer(new TypePointer(new TypeInt()));
-		LOGGER.info(a.equals(b) + "");
+		LOGGER.info(a.equals(b) + "");*/
 
 		
 	}
