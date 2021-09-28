@@ -2,11 +2,12 @@ package com.unibo.ci.ast;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.block.Block;
+import com.unibo.ci.ast.block.BlockBase;
 import com.unibo.ci.ast.dec.Arg;
 import com.unibo.ci.ast.dec.DecFun;
 import com.unibo.ci.ast.dec.DecVar;
 import com.unibo.ci.ast.exp.Exp;
-import com.unibo.ci.ast.stmt.BlockBaseStmt;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.types.TypeInt;
@@ -19,7 +20,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
     @Override 
     public Node visitBlock(SimpLanPlusParser.BlockContext ctx) { 
-    	BlockBaseStmt bbn = new BlockBaseStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine()) ;
+    	BlockBase bbn = new BlockBase(ctx.start.getLine(), ctx.start.getCharPositionInLine()) ;
     	return  bbn;
     	
     }

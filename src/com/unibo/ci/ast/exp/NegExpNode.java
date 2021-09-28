@@ -7,6 +7,9 @@ import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.util.Environment;
 
+/**
+ * Neg Expression
+ */
 public class NegExpNode extends Node{
     
     private final Node child;

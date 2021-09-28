@@ -3,8 +3,8 @@ package com.unibo.ci.ast.dec;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.unibo.ci.ast.Block;
 import com.unibo.ci.ast.Node;
+import com.unibo.ci.ast.block.Block;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
