@@ -4,19 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.unibo.ci.ast.dec.Arg;
-import com.unibo.ci.ast.dec.Dec;
-import com.unibo.ci.ast.dec.DecFun;
-import com.unibo.ci.ast.dec.DecVar;
-import com.unibo.ci.ast.exp.Exp;
-import com.unibo.ci.ast.exp.ValExp;
-import com.unibo.ci.ast.stmt.block.BlockBase;
-import com.unibo.ci.ast.stmt.Statement;
-import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.ast.types.TypeBool;
-import com.unibo.ci.ast.types.TypeInt;
-import com.unibo.ci.ast.types.TypePointer;
-import com.unibo.ci.ast.types.TypeVoid;
+import com.unibo.ci.ast.dec.*;
+import com.unibo.ci.ast.exp.*;
+import com.unibo.ci.ast.stmt.*;
+import com.unibo.ci.ast.stmt.block.*;
+import com.unibo.ci.ast.types.*;
 import com.unibo.ci.parser.*;
 
 public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
@@ -113,7 +105,9 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     }
 
     @Override 
-    public Exp visitNegExp(SimpLanPlusParser.NegExpContext ctx) { return (Exp) visitChildren(ctx); }
+    public Exp visitNegExp(SimpLanPlusParser.NegExpContext ctx) { 
+        return (Exp) visitChildren(ctx); 
+    }
 
     @Override 
     public Exp visitBoolExp(SimpLanPlusParser.BoolExpContext ctx) { return (Exp) visitChildren(ctx); }
@@ -122,5 +116,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     public Exp visitCallExp(SimpLanPlusParser.CallExpContext ctx) { return (Exp) visitChildren(ctx); }
 
     @Override 
-    public Exp visitNotExp(SimpLanPlusParser.NotExpContext ctx) { return (Exp) visitChildren(ctx); }
+    public Exp visitNotExp(SimpLanPlusParser.NotExpContext ctx) { 
+        return new NotExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (Exp) visit(ctx.exp()));
+    }
 }
