@@ -9,17 +9,19 @@ import com.unibo.ci.util.Environment;
 
 public class NotExp extends Exp {
 
-    private final Node child;
+    private final Exp child;
 
-    public NotExp(int row, int column, Node child) {
+    public NotExp(int row, int column, Exp child) {
         super(row, column);
         this.child = child;
     }
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Exp: Not(\n" + 
+                child.toPrint(indent + "\t") +
+                indent + ")\n";
+
     }
 
     @Override

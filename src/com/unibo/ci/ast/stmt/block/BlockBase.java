@@ -22,13 +22,14 @@ public class BlockBase extends Block{
 
 	@Override
 	public String toPrint(String indent) {
-		StringBuilder out = new StringBuilder(indent + "Block\n");
+		StringBuilder out = new StringBuilder(indent + "Block {\n");
 		declarations.forEach( dec ->{
 			out.append(dec.toPrint(indent + "\t"));
 		});
 		statements.forEach(stmt -> {
 			out.append(stmt.toPrint(indent + "\t"));
 		});
+		out.append(indent + "}\n");
 		return out.toString();
 	}
 

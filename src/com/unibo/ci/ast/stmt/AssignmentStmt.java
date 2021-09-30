@@ -6,7 +6,6 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.ErrorStorage;
 
@@ -17,7 +16,6 @@ public class AssignmentStmt extends Statement {
 	
 	public AssignmentStmt(int row, int column, Exp exp1, Exp exp2) {
 		super(row, column);
-		// TODO Auto-generated constructor stub
 		this.exp1 = exp1;
 		this.exp2 = exp2;
 	}

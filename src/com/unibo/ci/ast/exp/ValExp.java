@@ -21,7 +21,7 @@ public class ValExp extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Val exp: " + String.valueOf(value) + "\n";
+        return indent + "Exp: Val(" + String.valueOf(value) + ")\n";
     }
 
     @Override
