@@ -9,7 +9,7 @@ import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.ErrorStorage;
 import com.unibo.ci.ast.types.TypeInt;
 
-public class BinExpArithmetic extends BinExpNode{
+public class BinExpArithmetic extends BinExp {
 
     public BinExpArithmetic(int row, int column, Exp right, Exp left) {
         super(row, column, right, left);

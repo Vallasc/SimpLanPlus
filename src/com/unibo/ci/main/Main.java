@@ -19,7 +19,7 @@ public class Main
 
 	public static void main( String[] args) throws Exception
 	{
-		String fileName = "prova.slp";
+		String fileName = "test/type_test.slp";
 
 		FileInputStream is = new FileInputStream(fileName);
 		ANTLRInputStream input = new ANTLRInputStream(is);
@@ -39,14 +39,20 @@ public class Main
 		if(parserErrorsListener.errorsDetected())
 			System.exit(-1);
 
-		System.out.println(tree.toStringTree(parser)); // print LISP-style tree
+		LOGGER.info(tree.toStringTree(parser)); // print LISP-style tre
+
 		SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
 		Node ast = visitor.visit(tree); // Generazione AST
+
+		System.out.println(ast.toPrint(""));
+
 		Environment env = new Environment();
 		
-		ast.checkSemantics(env).forEach(semnErr -> {
+		/*ast.checkSemantics(env).forEach(semnErr -> {
 			System.out.println("Errore semantico trovato a " + semnErr.row + ", " + semnErr.col + ": " + semnErr.desc);
-		});
+		});*/
+
+		ast.typeCheck();
 		
 		System.out.println("Programma terminato");
 		

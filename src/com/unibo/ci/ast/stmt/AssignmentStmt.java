@@ -33,14 +33,24 @@ public class AssignmentStmt extends Statement {
 		
 		Type type1 = exp1.typeCheck();
 		Type type2 = exp2.typeCheck();
+
+		System.out.println(type1.toPrint(""));
+		System.out.println(type2.toPrint(""));
 		
-		if (type1 == type2 ) {			
-			return type1;
-		} 
+		//if (type1 == type2 ) {			
+		//	return type1;
+		//} 
 		
-		//TODO continua da qua
-		
-		if (type1.getClass().equals(TypePointer.class)) {
+		//TODO continua da qua   
+		// TODO è corretta?   
+		// ^int b : puntatore a intero
+		// ^^int a : puntatore a puntatore a intero
+		// b == a ; no
+		// b == a^ ; si
+
+		// a = b ;
+		// TP(TP(TI)) = TP(TI)
+		/*if (type1.getClass().equals(TypePointer.class)) {
 			type1 = ((TypePointer)type1).getPointedType() ;
 			while(type1.getClass().equals(TypePointer.class)) {
 				type1 = ((TypePointer)type1).getPointedType() ;
@@ -52,10 +62,9 @@ public class AssignmentStmt extends Statement {
 			if (type1 == type2) {
 				return type1;
 			}
-		}
-		
-		ErrorStorage.add(new TypeError(super.row, super.column, "cannot assign " + type2.getTypeName() + " to " + type1.getTypeName()));
-			
+		}*/
+		if(!type1.equals(type2))
+			ErrorStorage.add(new TypeError(super.row, super.column, "cannot assign " + type2.getTypeName() + " to " + type1.getTypeName()));
 		return null;
 	}
 	

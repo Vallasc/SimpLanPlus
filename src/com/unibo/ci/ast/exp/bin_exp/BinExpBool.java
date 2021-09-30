@@ -9,7 +9,7 @@ import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.util.ErrorStorage;
 import com.unibo.ci.ast.errors.TypeError;
 
-public class BinExpBool extends BinExpNode {
+public class BinExpBool extends BinExp {
 
     public BinExpBool(int row, int column, Exp right, Exp left) {
         super(row, column, right, left);

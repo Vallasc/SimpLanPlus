@@ -7,10 +7,11 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 
-public class DerExpNode extends Node{
+public class NotExp extends Exp {
+
     private final Node child;
 
-    public DerExpNode(int row, int column, Node child) {
+    public NotExp(int row, int column, Node child) {
         super(row, column);
         this.child = child;
     }
@@ -35,8 +36,7 @@ public class DerExpNode extends Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        // TODO Auto-generated method stub
-        return null;
+        return child.checkSemantics(env);
     }
     
 }

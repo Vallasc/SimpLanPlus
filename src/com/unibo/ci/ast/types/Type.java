@@ -32,14 +32,12 @@ public abstract class Type extends Node{
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Type: " + TYPE_NAME + "\n";
     }
 
     @Override
     public Type typeCheck() {
-        // Ritorna null perché non serve per i tipi
-        return null;
+        return this;
     }
 
     @Override

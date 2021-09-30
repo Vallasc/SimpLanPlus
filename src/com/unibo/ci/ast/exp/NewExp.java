@@ -7,17 +7,10 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 
-public class ValExpNode extends Node{
+public class NewExp extends Exp {
 
-    private final int value;
-
-    public ValExpNode(int r, int c, int value) {
-        super(r, c);
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
+    public NewExp(int row, int column) {
+        super(row, column);
     }
 
     @Override

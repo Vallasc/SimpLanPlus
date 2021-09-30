@@ -2,19 +2,16 @@ package com.unibo.ci.ast.exp;
 
 import java.util.ArrayList;
 
-import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.util.Environment;
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
-import com.unibo.ci.util.Environment;
+import com.unibo.ci.ast.types.Type;
 
-/**
- * Neg Expression
- */
-public class NegExpNode extends Node{
-    
-    private final Node child;
+public class BaseExp extends Exp {
 
-    public NegExpNode(int row, int column, Node child) {
+    private final Exp child;
+
+    public BaseExp(int row, int column, Exp child) {
         super(row, column);
         this.child = child;
     }
@@ -27,8 +24,7 @@ public class NegExpNode extends Node{
 
     @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
-        return null;
+        return child.typeCheck();
     }
 
     @Override

@@ -4,19 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.unibo.ci.ast.Node;
-import com.unibo.ci.ast.block.Block;
 import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.ast.stmt.block.Block;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 
-public class DecFun extends Node {
-    private final Type type;
+public class DecFun extends Dec {
     private final List<Arg> args;
     private final Block block;
 
-    public DecFun(int row, int column, Type type, List<Arg> args, Block block) {
-        super(row, column);
-        this.type = type;
+    public DecFun(int row, int column, Type type, String id, List<Arg> args, Block block) {
+        super(row, column, type, id);
         this.args = args;
         this.block = block;
     }

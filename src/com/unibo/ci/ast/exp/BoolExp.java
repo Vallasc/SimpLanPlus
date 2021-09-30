@@ -2,15 +2,23 @@ package com.unibo.ci.ast.exp;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
-import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 
-public class NewExpNode extends Node{
+public class BoolExp extends Exp {
 
-    public NewExpNode(int row, int column) {
+    private final boolean value;
+
+    public BoolExp(int row, int column, boolean value) {
         super(row, column);
+        this.value = value;
+    }
+
+    public boolean getValue() {
+        return value;
     }
 
     @Override
@@ -21,8 +29,7 @@ public class NewExpNode extends Node{
 
     @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
-        return null;
+        return new TypeBool();
     }
 
     @Override

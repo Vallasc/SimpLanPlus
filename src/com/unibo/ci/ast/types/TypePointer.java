@@ -19,6 +19,12 @@ public class TypePointer extends Type {
     }
 
     @Override
+    public String toPrint(String indent) {
+        return indent + "Type: " + TYPE_NAME +  " of \n" + 
+                pointedType.toPrint(indent + "\t");
+    }
+
+    @Override
     public boolean equals(Object e) { 
 
 		if (e == null)

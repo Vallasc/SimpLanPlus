@@ -1,36 +1,31 @@
 package com.unibo.ci.ast.dec;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.Environment.DuplicateSTEntryException;
 
-public class DecVar extends Node {
-    private final String id;
-    private final Type type;
+public class DecVar extends Dec {
     private final Exp exp;
 
-    public DecVar(int row, int column, String id, Type type, Exp exp) {
-        super(row, column);
-        this.id = id;
-        this.type = type;
+    public DecVar(int row, int column, Type type, String id, Exp exp) {
+        super(row, column, type, id);
         this.exp = exp;
     }
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Var declaration: \n" + 
+                indent + "\tId: " + this.id + "\n" +
+                type.toPrint(indent + "\t") + 
+                (exp != null ? exp.toPrint(indent) : "");
     }
 
     @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
         return null;
     }
 

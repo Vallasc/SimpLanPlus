@@ -1,4 +1,4 @@
-package com.unibo.ci.ast.block;
+package com.unibo.ci.ast.stmt.block;
 
 import com.unibo.ci.ast.Node;
 

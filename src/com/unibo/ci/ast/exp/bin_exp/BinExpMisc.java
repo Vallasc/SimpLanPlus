@@ -11,7 +11,7 @@ import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.ErrorStorage;
 import com.unibo.ci.ast.errors.TypeError;
 
-public class BinExpMisc extends BinExpNode {
+public class BinExpMisc extends BinExp {
 
     public BinExpMisc(int row, int column, Exp right, Exp left) {
         super(row, column, right, left);

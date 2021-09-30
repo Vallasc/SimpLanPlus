@@ -8,14 +8,14 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.STentry;
 
-public class CallExpNode extends Node{
+public class CallExp extends Node{
 
     private final String id;
     // Entry function definition
     private STentry entry; 
-    private final ArrayList<Node> parlist;
+    private final ArrayList<Node> parlist; //TODO camibiare node in exp?
 
-    public CallExpNode(int row, int column, String id, ArrayList<Node> parlist) {
+    public CallExp(int row, int column, String id, ArrayList<Node> parlist) {
         super(row, column);
         this.id = id;
         this.parlist = parlist;

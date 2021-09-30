@@ -2,29 +2,32 @@ package com.unibo.ci.ast.exp;
 
 import java.util.ArrayList;
 
-import com.unibo.ci.util.Environment;
-import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.util.Environment;
 
-public class BaseExpNode extends Node{
+public class ValExp extends Exp {
 
-    private final Exp child;
+    private final int value;
 
-    public BaseExpNode(int row, int column, Exp child) {
-        super(row, column);
-        this.child = child;
+    public ValExp(int r, int c, int value) {
+        super(r, c);
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
     }
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Val exp: " + String.valueOf(value) + "\n";
     }
 
     @Override
     public Type typeCheck() {
-        return child.typeCheck();
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class BaseExpNode extends Node{
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return child.checkSemantics(env);
+        return new ArrayList<SemanticError>();
     }
     
 }
