@@ -3,7 +3,6 @@ package com.unibo.ci.ast.exp;
 import java.util.ArrayList;
 
 import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.util.Environment;
 
@@ -21,8 +20,8 @@ public class NegExp extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Exp: Neg\n" + 
+                child.toPrint(indent + "\t");
     }
 
     @Override

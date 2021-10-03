@@ -18,11 +18,10 @@ public class DecVar extends Dec {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Declaration: Var {\n" + 
+        return indent + "Declaration: Var\n" + 
                 indent + "\tId: " + this.id + "\n" +
                 type.toPrint(indent + "\t") + 
-                (exp != null ? exp.toPrint(indent + "\t") : "") +
-                indent + "}\n";
+                (exp != null ? exp.toPrint(indent + "\t") : "");
     }
 
     @Override

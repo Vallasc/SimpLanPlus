@@ -18,8 +18,8 @@ public class BaseExp extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Exp: Base\n" + 
+                child.toPrint(indent + "\t");
     }
 
     @Override

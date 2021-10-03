@@ -8,15 +8,16 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 
 public class NewExp extends Exp {
+    final Type type;
 
-    public NewExp(int row, int column) {
+    public NewExp(int row, int column, Type type) {
         super(row, column);
+        this.type = type;
     }
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Exp: New\n" + type.toPrint(indent + "\t");
     }
 
     @Override

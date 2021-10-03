@@ -18,10 +18,8 @@ public class NotExp extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Exp: Not(\n" + 
-                child.toPrint(indent + "\t") +
-                indent + ")\n";
-
+        return indent + "Exp: Not\n" + 
+                child.toPrint(indent + "\t");
     }
 
     @Override

@@ -17,8 +17,8 @@ public class DerExp extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Exp: Der\n" + 
+                child.toPrint(indent + "\t");
     }
 
     @Override

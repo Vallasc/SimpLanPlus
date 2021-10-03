@@ -1,21 +1,23 @@
-package com.unibo.ci.ast.exp;
+package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.STentry;
 
-public class CallExp extends Node{
+public class CallStmt extends Exp {
 
     private final String id;
     // Entry function definition
     private STentry entry; 
-    private final ArrayList<Node> parlist; //TODO camibiare node in exp?
+    private final List<Exp> parlist;
 
-    public CallExp(int row, int column, String id, ArrayList<Node> parlist) {
+    public CallStmt(int row, int column, String id, List<Exp> parlist) {
         super(row, column);
         this.id = id;
         this.parlist = parlist;
@@ -23,8 +25,13 @@ public class CallExp extends Node{
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        StringBuilder sb = new StringBuilder(indent + "\t" + "Params\n");
+        parlist.forEach(par -> {
+            sb.append(par.toPrint(indent + "\t"));
+        });
+        return indent + "Call:\n" + 
+                indent + "\tId: " + this.id + "\n" +
+                sb.toString();
     }
 
     @Override

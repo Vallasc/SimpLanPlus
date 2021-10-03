@@ -23,8 +23,7 @@ public class BoolExp extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Exp: Bool(" + String.valueOf(value) + ")\n";
     }
 
     @Override
