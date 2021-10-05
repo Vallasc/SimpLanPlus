@@ -9,22 +9,18 @@ import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.ErrorStorage;
 import com.unibo.ci.ast.types.TypeInt;
 
-public class BinExpArithmetic extends BinExp {
+public class GreaterThanExp extends BinExp {
 
-    public BinExpArithmetic(int row, int column, Exp right, Exp left) {
+    public GreaterThanExp(int row, int column, Exp right, Exp left) {
         super(row, column, right, left);
     }
 
     @Override
-    public TypeInt typeCheck() { 
-        if(! (super.left.typeCheck() instanceof TypeInt &&
-                super.right.typeCheck() instanceof TypeInt)) {
-            ErrorStorage.add(
-                new TypeError(super.row, super.column, "Expecting an integer value")
-            );
-            
+    public TypeInt typeCheck() {
+        if (!(super.left.typeCheck() instanceof TypeInt && super.right.typeCheck() instanceof TypeInt)) {
+            ErrorStorage.add(new TypeError(super.row, super.column, "Expecting an integer value"));
         }
-        return new TypeInt(); ///BoolExpNode();
+        return new TypeInt();
     }
 
     @Override
@@ -43,8 +39,7 @@ public class BinExpArithmetic extends BinExp {
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Exp: GreaterThan\n" + super.left.toPrint(indent + "\t") + super.right.toPrint(indent + "\t");
     }
-    
+
 }

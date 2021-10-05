@@ -3,7 +3,6 @@ package com.unibo.ci.ast.exp;
 import java.util.ArrayList;
 
 import com.unibo.ci.util.Environment;
-import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 
@@ -18,8 +17,7 @@ public class BaseExp extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Exp: Base\n" + 
-                child.toPrint(indent + "\t");
+        return indent + "Exp: Base\n" + child.toPrint(indent + "\t");
     }
 
     @Override
@@ -37,5 +35,5 @@ public class BaseExp extends Exp {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         return child.checkSemantics(env);
     }
-    
+
 }

@@ -8,7 +8,7 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.Environment.DuplicateSTEntryException;
 
-public class DecVar extends Dec {
+public class DecVar extends Dec { // TODO GIACOMO
     private final Exp exp;
 
     public DecVar(int row, int column, Type type, String id, Exp exp) {
@@ -18,10 +18,8 @@ public class DecVar extends Dec {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Declaration: Var\n" + 
-                indent + "\tId: " + this.id + "\n" +
-                type.toPrint(indent + "\t") + 
-                (exp != null ? exp.toPrint(indent + "\t") : "");
+        return indent + "Declaration: Var\n" + indent + "\tId: " + this.id + "\n" + type.toPrint(indent + "\t")
+                + (exp != null ? exp.toPrint(indent + "\t") : "");
     }
 
     @Override
@@ -40,9 +38,9 @@ public class DecVar extends Dec {
         ArrayList<SemanticError> semanticErrors = new ArrayList<SemanticError>();
         try {
             env.addDeclaration(id, type);
-            
+
         } catch (DuplicateSTEntryException e) {
-            //Aggiungere anche la riga e la colonna nel messaggio di errore
+            // Aggiungere anche la riga e la colonna nel messaggio di errore
             SemanticError error = new SemanticError(row, column, "Already declared [" + id + "]");
             semanticErrors.add(error);
             return semanticErrors;
