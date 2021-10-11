@@ -12,6 +12,10 @@ public class TypeErrorsStorage {
     }
 
     public static void printAll(){
-        errorList.forEach(e -> System.out.print("Error in [ " + e.row + e.col + " ]" + e.desc));
+        errorList.forEach(e -> System.out.print("Type error in [ " + e.row + e.col + " ]" + e.desc));
+    }
+
+    public static LinkedList<Error> getErrorList(){ 
+        return errorList; 
     }
 }
