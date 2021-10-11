@@ -8,11 +8,13 @@ public class STentry {
     private Type type;
     private String id;
     private int offset;
+    private boolean deleted;
 
     public STentry(int nestLevel, int offset, Type type) {
         this.nestLevel = nestLevel;
         this.offset = offset;
         this.type = type;
+        this.setDeleted(false);
     }
 
     public void addType(Type type) {
@@ -37,4 +39,21 @@ public class STentry {
      * type.toPrint(indent + "  ") + indent + "STentry: offset " +
      * Integer.toString(offset) + "\n"; }
      */
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
 }
