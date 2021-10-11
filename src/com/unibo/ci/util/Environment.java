@@ -24,12 +24,12 @@ public class Environment {
 	}
 
 	// If there is no clash of names, adds id ⟼ t to st
-	public void addDeclaration(String id, Type t) throws DuplicateSTEntryException {
+	public void addDeclaration(String id, Type type) throws DuplicateSTEntryException {
 		STentry value = symTable.getLast().get(id);
 		// There is already an entry
 		if (value != null)
 			throw new DuplicateSTEntryException();
-		symTable.getLast().put(id, new STentry(nestingLevel, offset++, t));
+		symTable.getLast().put(id, new STentry(id, type, nestingLevel, offset++));
 	}
 
 	// Looks for the type of id in symbol table, if there is any
@@ -40,7 +40,13 @@ public class Environment {
 				return entry.getType();
 			}
 		}
+		return null;
+	}
 
+	public STentry lookupSTentry(String id) {
+		for (int i = symTable.size(); i-- > 0;) {
+			return symTable.get(i).get(id);
+		}
 		return null;
 	}
 
@@ -48,6 +54,19 @@ public class Environment {
 		return symTable;
 	}
 
+	public String toPrint(String indent) {
+		StringBuilder sb = new StringBuilder(indent + "Symbol table:\n");
+		sb.append(indent + "---------------------------\n");
+		symTable.forEach(scope -> {
+			scope.forEach( (id, entry) -> {
+				sb.append(entry.toPrint(indent));
+			});
+			sb.append("---------------------------\n");
+		});
+		return sb.toString();
+	}
+
+	/*
 	public void setSymTable(LinkedList<HashMap<String, STentry>> symTable) {
 		this.symTable = symTable;
 	}
@@ -66,7 +85,7 @@ public class Environment {
 
 	public void setOffset(int offset) {
 		this.offset = offset;
-	}
+	}*/
 
 	public class DuplicateSTEntryException extends Exception {
 	}
