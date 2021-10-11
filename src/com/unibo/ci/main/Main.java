@@ -11,6 +11,7 @@ import com.unibo.ci.ast.types.*;
 import com.unibo.ci.listeners.SyntaxErrorListener;
 import com.unibo.ci.parser.*;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.TypeErrorsStorage;
 
 public class Main
 {
@@ -44,15 +45,17 @@ public class Main
 		SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
 		Node ast = visitor.visit(tree); // Generazione AST
 
-		System.out.println(ast.toPrint(""));
+		System.out.println("AST three: \n" + ast.toPrint("\t"));
 
 		Environment env = new Environment();
 		
-		/*ast.checkSemantics(env).forEach(semnErr -> {
-			System.out.println("Errore semantico trovato a " + semnErr.row + ", " + semnErr.col + ": " + semnErr.desc);
-		});*/
-
+		ast.checkSemantics(env).forEach(semnErr -> {
+			System.out.println("Semantic error " + semnErr.row + ", " + semnErr.col + ": " + semnErr.desc);
+		});
 		ast.typeCheck();
+		TypeErrorsStorage.getErrorList().forEach(typeErr -> {
+			System.out.println("Type error " + typeErr.row + ", " + typeErr.col + ": " + typeErr.desc);
+		});
 		
 		System.out.println("Programma terminato");
 		

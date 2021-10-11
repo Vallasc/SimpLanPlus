@@ -11,6 +11,9 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
 
+/**
+ * Example: { }
+ */
 public class BlockBase extends Block {
 	final List<Dec> declarations;
 	final List<Statement> statements;
@@ -26,32 +29,27 @@ public class BlockBase extends Block {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
 		env.newScope();
-		errors.addAll(checkSemanticsSameScope(env));
-
+		declarations.forEach(dec -> {
+			errors.addAll(dec.checkSemantics(env));
+		});
+		statements.forEach(stmt -> {
+			errors.addAll(stmt.checkSemantics(env));
+		});
+		System.out.println(env.toPrint(""));
 		env.exitScope();
 
 		return errors;
 	}
 
-	public ArrayList<SemanticError> checkSemanticsSameScope(Environment env) {
-		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-
-		for (Statement stm : this.statements) {
-			errors.addAll(stm.checkSemantics(env));
-		}
-		return errors;
-	}
-
 	@Override
 	public String toPrint(String indent) {
-		StringBuilder out = new StringBuilder(indent + "Block {\n");
+		StringBuilder out = new StringBuilder(indent + "Block\n");
 		declarations.forEach(dec -> {
 			out.append(dec.toPrint(indent + "\t"));
 		});
 		statements.forEach(stmt -> {
 			out.append(stmt.toPrint(indent + "\t"));
 		});
-		out.append(indent + "}\n");
 		return out.toString();
 	}
 
