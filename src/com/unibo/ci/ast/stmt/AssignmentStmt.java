@@ -6,18 +6,23 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.ErrorStorage;
+import com.unibo.ci.util.STentry;
 
 public class AssignmentStmt extends Statement {
 
-	private Exp exp1; 
-	private Exp exp2;
-	
-	public AssignmentStmt(int row, int column, Exp exp1, Exp exp2) {
+	private Environment env;
+
+	private String id;
+
+	private Exp exp;
+
+	public AssignmentStmt(int row, int column, String id, Exp exp) {
 		super(row, column);
-		this.exp1 = exp1;
-		this.exp2 = exp2;
+		this.id = id;
+		this.exp = exp;
 	}
 
 	@Override
@@ -28,19 +33,19 @@ public class AssignmentStmt extends Statement {
 
 	@Override
 	public Type typeCheck() {
-		
-		Type type1 = exp1.typeCheck();
-		Type type2 = exp2.typeCheck();
 
-		System.out.println(type1.toPrint(""));
-		System.out.println(type2.toPrint(""));
-		
-		//if (type1 == type2 ) {			
-		//	return type1;
-		//} 
-		
-		//TODO continua da qua   
-		// TODO è corretta?   
+		// Type type1 = env.lookup(id);
+		// Type type2 = exp.typeCheck();
+
+		// System.out.println(type1.toPrint(""));
+		// System.out.println(type2.toPrint(""));
+
+		// if (type1 == type2 ) {
+		// return type1;
+		// }
+
+		// TODO continua da qua
+		// TODO è corretta?
 		// ^int b : puntatore a intero
 		// ^^int a : puntatore a puntatore a intero
 		// b == a ; no
@@ -48,24 +53,24 @@ public class AssignmentStmt extends Statement {
 
 		// a = b ;
 		// TP(TP(TI)) = TP(TI)
-		/*if (type1.getClass().equals(TypePointer.class)) {
-			type1 = ((TypePointer)type1).getPointedType() ;
-			while(type1.getClass().equals(TypePointer.class)) {
-				type1 = ((TypePointer)type1).getPointedType() ;
-				if (type1.getClass().equals(TypePointer.class)) {
-					type2 = ((TypePointer)type2).getPointedType() ;
-				}
-			}
-			
-			if (type1 == type2) {
-				return type1;
-			}
-		}*/
-		if(!type1.equals(type2))
-			ErrorStorage.add(new TypeError(super.row, super.column, "cannot assign " + type2.getTypeName() + " to " + type1.getTypeName()));
-		return null;
+		/*
+		 * if (type1.getClass().equals(TypePointer.class)) { type1 =
+		 * ((TypePointer)type1).getPointedType() ;
+		 * while(type1.getClass().equals(TypePointer.class)) { type1 =
+		 * ((TypePointer)type1).getPointedType() ; if
+		 * (type1.getClass().equals(TypePointer.class)) { type2 =
+		 * ((TypePointer)type2).getPointedType() ; } }
+		 * 
+		 * if (type1 == type2) { return type1; } }
+		 */
+		// if (!type1.equals(type2))
+		// ErrorStorage.add(new TypeError(super.row, super.column,
+		// "cannot assign " + type2.getTypeName() + " to " + type1.getTypeName()));
+		// else
+		// return exp.typeCheck();
+		return new TypeInt();
 	}
-	
+
 	@Override
 	public String codeGeneration() {
 		// TODO Auto-generated method stub
@@ -74,8 +79,9 @@ public class AssignmentStmt extends Statement {
 
 	@Override
 	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
+
+		return errors;
 	}
 
 }

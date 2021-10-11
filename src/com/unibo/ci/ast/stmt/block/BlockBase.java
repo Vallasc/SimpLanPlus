@@ -1,6 +1,7 @@
 package com.unibo.ci.ast.stmt.block;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.unibo.ci.ast.stmt.Statement;
@@ -10,7 +11,7 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
 
-public class BlockBase extends Block{
+public class BlockBase extends Block {
 	final List<Dec> declarations;
 	final List<Statement> statements;
 
@@ -21,9 +22,30 @@ public class BlockBase extends Block{
 	}
 
 	@Override
+	public ArrayList<SemanticError> checkSemantics(Environment env) {
+		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
+
+		env.newScope();
+		errors.addAll(checkSemanticsSameScope(env));
+
+		env.exitScope();
+
+		return errors;
+	}
+
+	public ArrayList<SemanticError> checkSemanticsSameScope(Environment env) {
+		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
+
+		for (Statement stm : this.statements) {
+			errors.addAll(stm.checkSemantics(env));
+		}
+		return errors;
+	}
+
+	@Override
 	public String toPrint(String indent) {
 		StringBuilder out = new StringBuilder(indent + "Block {\n");
-		declarations.forEach( dec ->{
+		declarations.forEach(dec -> {
 			out.append(dec.toPrint(indent + "\t"));
 		});
 		statements.forEach(stmt -> {
@@ -35,7 +57,7 @@ public class BlockBase extends Block{
 
 	@Override
 	public Type typeCheck() {
-		declarations.forEach( dec ->{
+		declarations.forEach(dec -> {
 			dec.typeCheck();
 		});
 		statements.forEach(stmt -> {
@@ -48,12 +70,6 @@ public class BlockBase extends Block{
 	public String codeGeneration() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		// TODO Auto-generated method stub
-		return new ArrayList<SemanticError>();
 	}
 
 }
