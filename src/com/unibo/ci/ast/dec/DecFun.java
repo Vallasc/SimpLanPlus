@@ -8,27 +8,38 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.stmt.block.Block;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.Environment.DuplicateSTEntryException;
 
 public class DecFun extends Dec {
-    private final List<Arg> args;
+    private final String id; 
+	private final List<Arg> args;
     private final Block block;
 
     public DecFun(int row, int column, Type type, String id, List<Arg> args, Block block) {
         super(row, column, type, id);
+        this.id = id;
         this.args = args;
         this.block = block;
     }
-
+    
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        return indent + "Declaration: Function\n" + indent + "\tId: " + this.id + "\n" + type.toPrint(indent + "\t")
+                + (id != null && block != null ? id + " " + printArgs(indent + "\t") : "");
+    }
+
+    private String printArgs(String indent) {
+    	String args = "Args: ";
+    	this.args.forEach((arg) -> {
+    		args.concat(arg.toString());
+    		args.concat(" ");
+    	}); 
+    	return args;
     }
 
     @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
-        return null;
+        return null; 
     }
 
     @Override
@@ -39,7 +50,18 @@ public class DecFun extends Dec {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        // TODO Auto-generated method stub
+    	
+    	ArrayList<SemanticError> semanticErrors = new ArrayList<SemanticError>();
+        try {
+            env.addDeclaration(id, type);
+            
+            //Nota: type dovrebbe essere T_1, ..., T_n -> T
+
+        } catch (DuplicateSTEntryException e) {
+            SemanticError error = new SemanticError(row, column, "Already declared [" + id + "]");
+            semanticErrors.add(error);
+            return semanticErrors;
+        }
         return null;
     }
 }

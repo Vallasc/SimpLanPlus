@@ -38,7 +38,7 @@ public class DecVar extends Dec { // TODO GIACOMO
         ArrayList<SemanticError> semanticErrors = new ArrayList<SemanticError>();
         try {
             env.addDeclaration(id, type);
-
+            env.newScope();
         } catch (DuplicateSTEntryException e) {
             // Aggiungere anche la riga e la colonna nel messaggio di errore
             SemanticError error = new SemanticError(row, column, "Already declared [" + id + "]");

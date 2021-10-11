@@ -4,3 +4,5 @@
 /SimpLanPlusLexer.tokens
 /SimpLanPlusListener.java
 /SimpLanPlusParser.java
+/SimpLanPlus.interp
+/SimpLanPlusLexer.interp
