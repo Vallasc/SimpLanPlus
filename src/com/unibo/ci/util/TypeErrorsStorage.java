@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import com.unibo.ci.ast.errors.Error;
 
-public class ErrorStorage {
+public class TypeErrorsStorage {
     private final static LinkedList<Error> errorList = new LinkedList<>();
 
     public static void add(Error error){
