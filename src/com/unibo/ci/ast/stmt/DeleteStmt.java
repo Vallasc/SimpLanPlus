@@ -33,7 +33,7 @@ public class DeleteStmt extends Statement {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Stmt: Remove " + id + (indent + "\t");
+        return indent + "Stmt: Remove \"" + id + "\"\n";
     }
 
     @Override
@@ -51,7 +51,7 @@ public class DeleteStmt extends Statement {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
-        STentry candidate = existElement(env, id);
+        /*STentry candidate = existElement(env, id);
 
         if (candidate != null && !(candidate.isDeleted())) {
             candidate.setDeleted(true);
@@ -59,10 +59,17 @@ public class DeleteStmt extends Statement {
         if ((candidate == null)) {
             errors.add(new SemanticError(super.column, super.row,
                     "Cannot delete variable " + id + ", cause it is not declared."));
+            return errors;
         }
 
         if (candidate.isDeleted()) {
             errors.add(new SemanticError(super.column, super.row, "Variable " + id + " already deleted."));
+        }*/
+
+        STentry entry = env.lookupSTentry(id);
+        if (entry == null) {
+            errors.add(new SemanticError(super.column, super.row,
+                    "Cannot delete variable " + id + ", cause it is not declared."));
         }
 
         return errors;
