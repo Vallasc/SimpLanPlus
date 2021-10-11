@@ -8,7 +8,7 @@ import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.util.Environment;
-import com.unibo.ci.util.ErrorStorage;
+import com.unibo.ci.util.TypeErrorsStorage;
 
 public class IteStmt extends Statement {
 
@@ -40,7 +40,7 @@ public class IteStmt extends Statement {
     public Type typeCheck() {
 
         if (!(exp.typeCheck() instanceof TypeBool)) {
-            ErrorStorage.add(new TypeError(super.row, super.column, "Condition must be bool type"));
+            TypeErrorsStorage.add(new TypeError(super.row, super.column, "Condition must be bool type"));
 
         }
         if (elseStmt == null) {

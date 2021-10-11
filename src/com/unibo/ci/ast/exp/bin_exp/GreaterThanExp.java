@@ -6,7 +6,7 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.util.Environment;
-import com.unibo.ci.util.ErrorStorage;
+import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.ast.types.TypeInt;
 
 public class GreaterThanExp extends BinExp {
@@ -18,7 +18,7 @@ public class GreaterThanExp extends BinExp {
     @Override
     public TypeInt typeCheck() {
         if (!(super.left.typeCheck() instanceof TypeInt && super.right.typeCheck() instanceof TypeInt)) {
-            ErrorStorage.add(new TypeError(super.row, super.column, "Expecting an integer value"));
+            TypeErrorsStorage.add(new TypeError(super.row, super.column, "Expecting an integer value"));
         }
         return new TypeInt();
     }

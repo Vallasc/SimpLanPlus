@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
 

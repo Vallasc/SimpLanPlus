@@ -2,7 +2,7 @@ package com.unibo.ci.ast.exp.bin_exp;
 
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
-import com.unibo.ci.util.ErrorStorage;
+import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.ast.types.TypeInt;
 
 public class GreaterThanEqExp extends BinExp {
@@ -14,7 +14,7 @@ public class GreaterThanEqExp extends BinExp {
     @Override
     public TypeInt typeCheck() {
         if (!(super.left.typeCheck() instanceof TypeInt && super.right.typeCheck() instanceof TypeInt)) {
-            ErrorStorage.add(new TypeError(super.row, super.column, "Expecting an integer value"));
+            TypeErrorsStorage.add(new TypeError(super.row, super.column, "Expecting an integer value"));
         }
         return new TypeInt();
     }
