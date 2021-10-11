@@ -6,17 +6,19 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.STentry;
 import com.unibo.ci.util.TypeErrorsStorage;
 
+/**
+ * Example: x = 3;
+ */
 public class AssignmentStmt extends Statement {
 
-	private Environment env;
+	private final String id;
+	private final Exp exp;
 
-	private String id;
-
-	private Exp exp;
+	private STentry stEntry;
 
 	public AssignmentStmt(int row, int column, String id, Exp exp) {
 		super(row, column);
@@ -24,69 +26,44 @@ public class AssignmentStmt extends Statement {
 		this.exp = exp;
 	}
 
+    @Override
+    public String toPrint(String indent) {
+        return indent + "Assignment:\n" + 
+                indent + "\tId: \"" + this.id + "\"\n" +
+				this.exp.toPrint(indent + "\t");
+    }
+
 	@Override
-	public String toPrint(String indent) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<SemanticError> checkSemantics(Environment env) {
+		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
+		stEntry = env.lookupSTentry(id);
+
+		if (stEntry == null)
+			errors.add(new SemanticError(row, column, "var " + id + " does not exist"));
+
+		errors.addAll(exp.checkSemantics(env));
+		return errors;
 	}
 
 	@Override
 	public Type typeCheck() {
-
-		// Type type1 = env.lookup(id);
-		// Type type2 = exp.typeCheck();
-
-		// System.out.println(type1.toPrint(""));
-		// System.out.println(type2.toPrint(""));
-
-		// if (type1 == type2 ) {
-		// return type1;
-		// }
-
-		// TODO continua da qua
-		// TODO è corretta?
-		// ^int b : puntatore a intero
-		// ^^int a : puntatore a puntatore a intero
-		// b == a ; no
-		// b == a^ ; si
-
-		// a = b ;
-		// TP(TP(TI)) = TP(TI)
-		/*
-		 * if (type1.getClass().equals(TypePointer.class)) { type1 =
-		 * ((TypePointer)type1).getPointedType() ;
-		 * while(type1.getClass().equals(TypePointer.class)) { type1 =
-		 * ((TypePointer)type1).getPointedType() ; if
-		 * (type1.getClass().equals(TypePointer.class)) { type2 =
-		 * ((TypePointer)type2).getPointedType() ; } }
-		 * 
-		 * if (type1 == type2) { return type1; } }
-		 */
-		// if (!type1.equals(type2))
-		// ErrorStorage.add(new TypeError(super.row, super.column,
-		// "cannot assign " + type2.getTypeName() + " to " + type1.getTypeName()));
-		// else
-		// return exp.typeCheck();
-		return new TypeInt();
-
-		/*Perché no?
-		if(!type1.equals(type2))
-			TypeErrorsStorage.add(new TypeError(super.row, super.column, "cannot assign " + type2.getTypeName() + " to " + type1.getTypeName()));
-		return null;
-		*/
+		if(stEntry == null)
+			return null;
+		Type typeId = stEntry.getType();
+		Type typeExp = exp.typeCheck();
+		if(!typeId.equals(typeExp)){
+			System.err.println(typeId.toPrint(""));
+			System.err.println(typeExp.toPrint(""));
+			TypeErrorsStorage.add(new TypeError(super.row, super.column, "cannot assign [" + typeExp.getTypeName() + "] to [" + typeId.getTypeName() + "]"));
+			return null;
+		}
+		return typeId;
 	}
 
 	@Override
 	public String codeGeneration() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
-		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-
-		return errors;
 	}
 
 }
