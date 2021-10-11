@@ -21,6 +21,11 @@ public class BaseExp extends Exp {
     }
 
     @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        return child.checkSemantics(env);
+    }
+    
+    @Override
     public Type typeCheck() {
         return child.typeCheck();
     }
@@ -29,11 +34,6 @@ public class BaseExp extends Exp {
     public String codeGeneration() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return child.checkSemantics(env);
     }
 
 }

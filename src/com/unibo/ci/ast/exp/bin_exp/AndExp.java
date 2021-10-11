@@ -14,7 +14,7 @@ public class AndExp extends BinExp {
     @Override
     public TypeBool typeCheck() {
         if (!(super.left.typeCheck() instanceof TypeBool && super.right.typeCheck() instanceof TypeBool)) {
-            TypeErrorsStorage.add(new TypeError(super.row, super.column, "Expecting an integer value"));
+            TypeErrorsStorage.add(new TypeError(super.row, super.column, "expecting an integer value"));
         }
         return new TypeBool();
     }

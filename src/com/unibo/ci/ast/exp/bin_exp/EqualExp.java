@@ -16,7 +16,7 @@ public class EqualExp extends BinExp {
     public TypeBool typeCheck() {
         if ((super.left.typeCheck() instanceof TypeBool && super.right.typeCheck() instanceof TypeInt)
                 || (super.left.typeCheck() instanceof TypeInt && super.right.typeCheck() instanceof TypeBool)) {
-                    TypeErrorsStorage.add(new TypeError(super.row, super.column, "Type mismatch"));
+                    TypeErrorsStorage.add(new TypeError(super.row, super.column, "type mismatch"));
         }
         return new TypeBool();
     }

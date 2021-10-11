@@ -2,9 +2,11 @@ package com.unibo.ci.ast.exp;
 
 import java.util.ArrayList;
 
-import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.*;
 import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.TypeErrorsStorage;
 
 /**
  * Neg Expression
@@ -25,20 +27,24 @@ public class NegExp extends Exp {
     }
 
     @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        return child.checkSemantics(env);
+    }
+
+    @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
-        return null;
+        Type childType = child.typeCheck();
+        if(!(childType instanceof TypeBool)){
+            TypeErrorsStorage.add(
+                new TypeError(super.row, super.column, "expecting type  [" + (new TypeBool()).getTypeName() + "], found [" + childType.getTypeName() + "]"));
+        }
+        return child.typeCheck();
     }
 
     @Override
     public String codeGeneration() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return child.checkSemantics(env);
     }
     
 }

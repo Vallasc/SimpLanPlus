@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
-import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.errors.TypeError;
+import com.unibo.ci.ast.types.*;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.TypeErrorsStorage;
 
 public class NewExp extends Exp {
     final Type type;
@@ -21,20 +23,25 @@ public class NewExp extends Exp {
     }
 
     @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        return new ArrayList<SemanticError>();
+    }
+
+    @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
-        return null;
+        if (!(type instanceof TypeInt || type instanceof TypeBool)) {
+            TypeErrorsStorage.add(
+                new TypeError(super.row, super.column, "expecting type [" + (new TypeBool()).getTypeName() + "] or [" + (new TypeInt()).getTypeName() + "], found [" + 
+                    type.getTypeName() + "]"));
+            return null;
+        }
+        return type;
     }
 
     @Override
     public String codeGeneration() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return new ArrayList<SemanticError>();
     }
     
 }

@@ -21,23 +21,22 @@ public class DecVar extends Dec {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Declaration: Var\n" + indent + "\tId: " + this.id + "\n" + type.toPrint(indent + "\t")
+        return indent + "Declaration: Var\n" + indent + "\tId: \"" + this.id + "\"\n" + type.toPrint(indent + "\t")
                 + (exp != null ? exp.toPrint(indent + "\t") : "");
     }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        ArrayList<SemanticError> semanticErrors = new ArrayList<SemanticError>();
+        ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         try {
             env.addDeclaration(id, type);
         } catch (DuplicateSTEntryException e) {
             // Aggiungere anche la riga e la colonna nel messaggio di errore
             SemanticError error = new SemanticError(row, column, "Already declared [" + id + "]");
-            semanticErrors.add(error);
-            return semanticErrors;
+            errors.add(error);
+            return errors;
         }
-
-        return null;
+        return errors;
     }
 
     @Override
@@ -45,12 +44,14 @@ public class DecVar extends Dec {
 		if (type instanceof TypeVoid)
 			TypeErrorsStorage.add(new TypeError(row, column, "Variable type cannot be void"));
 
-		Type expType = exp.typeCheck();
-		if (!type.equals(expType))
-				TypeErrorsStorage.add(
-						new TypeError(this.exp.getRow(), this.exp.getColumn(), 
-                                "Expression type (" + expType + ") is not equal to variable type (" + type + ")"));
-		return type;
+        if( exp != null ) {
+            Type expType = exp.typeCheck();
+            if (!type.equals(expType))
+                    TypeErrorsStorage.add(
+                            new TypeError(this.exp.getRow(), this.exp.getColumn(), 
+                                    "Expression type (" + expType + ") is not equal to variable type (" + type + ")"));
+        }
+        return type;
     }
     
     @Override

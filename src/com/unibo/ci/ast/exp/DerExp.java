@@ -2,7 +2,6 @@ package com.unibo.ci.ast.exp;
 
 import java.util.ArrayList;
 
-import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
@@ -22,19 +21,24 @@ public class DerExp extends Exp {
     }
 
     @Override
-    public Type typeCheck() {
-        // TODO Auto-generated method stub
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
+		/*stEntry = env.lookupSTentry(id);
+		if (stEntry == null)
+			errors.add(new SemanticError(row, column, "var " + id + " does not exist"));*/
+		return errors;
+    }
+
+    @Override
+    public Type typeCheck() { 
+        /*if(stEntry == null)
+            return null;
+        return stEntry.getType();*/
         return null;
     }
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
         // TODO Auto-generated method stub
         return null;
     }
