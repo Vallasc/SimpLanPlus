@@ -41,9 +41,9 @@ conto che io ho bisogno di qualche giorno per correggerlo e fare l'orale.
 
 CODICI DA VERIFICARE:
 
-^^int x ; ^int y = new ; y^ = 1 ; x = new ; x^ = y ; print x^^ ;
+^^int x ; ^int y = new int ; y^ = 1 ; x = new int ; x^ = y ; print x^^ ;
 =====
- ^int x = new ; x^ = 1 ; delete x ; y = x^ ;   // questo codice e` sbagliato!
+ ^int x = new int ; x^ = 1 ; delete x ; y = x^ ;   // questo codice e` sbagliato!
 =====
 void f(^int x, ^int y){ delete x; delete y; } 
     //  cosa accade in {^int x = new ; f(x,x) ;} 
