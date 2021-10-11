@@ -5,36 +5,37 @@ import java.util.ArrayList;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.STentry;
 
-public class DerExp extends Exp {
-    private final Exp child;
+public class VarExp extends Exp {
+    private final String id;
+    private STentry stEntry;
 
-    public DerExp(int row, int column, Exp child) {
+    public VarExp(int row, int column, String id) {
         super(row, column);
-        this.child = child;
+        this.id = id;
     }
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Exp: Der\n" + 
-                child.toPrint(indent + "\t");
+        return indent + "Exp: Var\n" + 
+                indent + "\t Id: " + id + "\n";
     }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-		/*stEntry = env.lookupSTentry(id);
+		stEntry = env.lookupSTentry(id);
 		if (stEntry == null)
-			errors.add(new SemanticError(row, column, "var " + id + " does not exist"));*/
+			errors.add(new SemanticError(row, column, "var " + id + " does not exist"));
 		return errors;
     }
 
     @Override
     public Type typeCheck() { 
-        /*if(stEntry == null)
+        if(stEntry == null)
             return null;
-        return stEntry.getType();*/
-        return null;
+        return stEntry.getType();
     }
 
     @Override
@@ -42,5 +43,4 @@ public class DerExp extends Exp {
         // TODO Auto-generated method stub
         return null;
     }
-    
 }

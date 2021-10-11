@@ -17,7 +17,7 @@ public abstract class Node {
 
     public abstract String toPrint(String indent);
 
-    //fa il type checking e ritorna:
+    // Fa il type checking e ritorna:
     //  per una espressione, il suo tipo (oggetto BoolTypeNode o IntTypeNode)
     //  per una dichiarazione, "null"
     public abstract Type typeCheck();
@@ -25,4 +25,12 @@ public abstract class Node {
     public abstract String codeGeneration();
 
     public abstract ArrayList<SemanticError> checkSemantics(Environment env);
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
 }

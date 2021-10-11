@@ -11,7 +11,7 @@ public class TypeInt extends Type {
     }
     
     @Override
-    public boolean equals(Object e) {
+    public boolean equals(Type e) {
 		if (e == null)
 			return false;
 		return (e instanceof TypeInt);

@@ -60,18 +60,21 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitAssignment(SimpLanPlusParser.AssignmentContext ctx) {
-        return visitChildren(ctx);
+    public Statement visitAssignment(SimpLanPlusParser.AssignmentContext ctx) {
+        Exp exp = (Exp) visit(ctx.exp());
+        return new AssignmentStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.lhs().getText(), exp);
     }
 
     @Override
-    public Node visitLhs(SimpLanPlusParser.LhsContext ctx) {
-        return visitChildren(ctx);
+    public Exp visitLhs(SimpLanPlusParser.LhsContext ctx) {
+        return ctx.lhs() != null ?
+            new DerExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (Exp) visit(ctx.lhs()) ) : 
+            new VarExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.ID().getText());
     }
 
     @Override
-    public Node visitDeletion(SimpLanPlusParser.DeletionContext ctx) {
-        return visitChildren(ctx);
+    public Statement visitDeletion(SimpLanPlusParser.DeletionContext ctx) {
+        return new DeleteStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.ID().getText());
     }
 
     @Override
@@ -86,7 +89,10 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitIte(SimpLanPlusParser.IteContext ctx) {
-        return visitChildren(ctx);
+        Exp exp = (Exp) visit(ctx.exp());
+        return new IteStmt(exp, visitStatement(ctx.statement(0)),
+                ctx.statement(1) == null ? null : visitStatement(ctx.statement(1)), ctx.start.getLine(),
+                ctx.start.getCharPositionInLine());
     }
 
     @Override
@@ -136,8 +142,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Exp visitDerExp(SimpLanPlusParser.DerExpContext ctx) {
-        return new DerExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(),
-                ctx.lhs() != null ? (Exp) visit(ctx.lhs()) : null);
+        return (Exp) visitLhs(ctx.lhs());
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.unibo.ci.ast.exp;
 import java.util.ArrayList;
 
 import com.unibo.ci.ast.errors.SemanticError;
-import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.*;
 import com.unibo.ci.util.Environment;
 
 public class ValExp extends Exp {
@@ -25,20 +25,19 @@ public class ValExp extends Exp {
     }
 
     @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        return new ArrayList<SemanticError>();
+    }
+    
+    @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
-        return null;
+        return new TypeInt();
     }
 
     @Override
     public String codeGeneration() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return new ArrayList<SemanticError>();
     }
     
 }

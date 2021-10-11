@@ -25,7 +25,7 @@ public class TypePointer extends Type {
     }
 
     @Override
-    public boolean equals(Object e) { 
+    public boolean equals(Type e) { 
 
 		if (e == null)
 			return false;

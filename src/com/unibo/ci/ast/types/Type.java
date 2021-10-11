@@ -26,7 +26,7 @@ public abstract class Type extends Node{
         return TYPE_NAME;
     }
 
-    public  abstract boolean equals(Object e);
+    public abstract boolean equals(Type e);
 
     // Metodi Node
 

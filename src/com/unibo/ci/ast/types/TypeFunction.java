@@ -14,15 +14,15 @@ public class TypeFunction extends Type{
 		this.returnType = returnType;
 		this.arguments = arguments;
 	}
-
-	@Override
-	public boolean equals(Object e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	public List<Arg> getArguments(){
 		return this.arguments;
+	}
+
+	@Override
+	public boolean equals(Type e) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	
