@@ -7,7 +7,7 @@ import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
-import com.unibo.ci.util.ErrorStorage;
+import com.unibo.ci.util.TypeErrorsStorage;
 
 public class AssignmentStmt extends Statement {
 
@@ -62,7 +62,7 @@ public class AssignmentStmt extends Statement {
 			}
 		}*/
 		if(!type1.equals(type2))
-			ErrorStorage.add(new TypeError(super.row, super.column, "cannot assign " + type2.getTypeName() + " to " + type1.getTypeName()));
+			TypeErrorsStorage.add(new TypeError(super.row, super.column, "cannot assign " + type2.getTypeName() + " to " + type1.getTypeName()));
 		return null;
 	}
 	
