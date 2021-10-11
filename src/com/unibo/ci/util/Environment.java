@@ -4,13 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.ast.types.TypeInt;
 
 public class Environment {
-	
-	//THESE VARIABLES SHOULDN'T BE PUBLIC
-	//THIS CAN BE DONE MUCH MUCH MUCH MUCH MUCH MUCH MUHC 
-	// MUCH MUCH MUCH MUCH MUCH MUCH MUCH MUCH MUCH MCUHCUHCU N d BETTER
 	
 	private LinkedList<HashMap<String,STentry>>  symTable = new LinkedList<HashMap<String,STentry>>();
 	private int nestingLevel = -1;
