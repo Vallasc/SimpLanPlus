@@ -55,7 +55,7 @@ public class CallStmt extends Exp {
             errors.add(new SemanticError(super.column, super.row, 
             "Function " + id + " not declared."));
         }
-        return null;
+        return errors;
     }
     
 }
