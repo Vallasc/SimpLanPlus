@@ -41,7 +41,7 @@ conto che io ho bisogno di qualche giorno per correggerlo e fare l'orale.
 
 CODICI DA VERIFICARE:
 
-^^int x ; ^int y = new int ; y^ = 1 ; x = new int ; x^ = y ; print x^^ ;
+^^int x ; ^int y = new ; y^ = 1 ; x = new int ; x^ = y ; print x^^ ;
 =====
  ^int x = new int ; x^ = 1 ; delete x ; y = x^ ;   // questo codice e` sbagliato!
 =====
@@ -133,3 +133,20 @@ dice anche la riga e la colonna dove è presente la dichiarazione precedente
 
 NOTA: == e != sono polimorfi, mentre >=, <, etc. si usano solo per interi
 
+
+^int x = new int;
+^^int y = new ^int;
+y^ = new int;
+
+
+NON CONCESSO
+{
+  return;
+}
+-------------------------
+{ // le funzioni possono ritonare solo interi e bool e void 
+  ^int funzione(){
+    ...
+  }
+}
+--------------------------
