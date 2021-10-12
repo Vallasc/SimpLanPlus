@@ -1,8 +1,6 @@
 package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
@@ -12,23 +10,23 @@ import com.unibo.ci.util.STentry;
 public class DeleteStmt extends Statement {
 
     private String id;
+    private STentry stEntry;
 
     public DeleteStmt(int row, int column, String id) {
         super(row, column);
         this.id = id;
     }
 
-    public STentry existElement(Environment env, String id) {
+    @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
-        Iterator<HashMap<String, STentry>> it = env.getSymTable().descendingIterator();
-
-        while (it.hasNext()) {
-            if (it.next().containsKey(id) && !(it.next().get(id).isDeleted())) {
-
-                return it.next().get(id);
-            }
+        stEntry = env.lookupSTentry(id);
+        if (stEntry == null) {
+            errors.add(new SemanticError(super.column, super.row,
+                    "Cannot delete variable " + id + ", cause it is not declared."));
         }
-        return null;
+        return errors;
     }
 
     @Override
@@ -36,9 +34,13 @@ public class DeleteStmt extends Statement {
         return indent + "Stmt: Remove \"" + id + "\"\n";
     }
 
+    // devo controllare che sia di tipo puntatore
     @Override
     public Type typeCheck() {
-        return null;
+        if (stEntry == null) {
+            return null;
+        }
+        return stEntry.getType();
     }
 
     @Override
@@ -47,31 +49,4 @@ public class DeleteStmt extends Statement {
         return null;
     }
 
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-
-        /*STentry candidate = existElement(env, id);
-
-        if (candidate != null && !(candidate.isDeleted())) {
-            candidate.setDeleted(true);
-        }
-        if ((candidate == null)) {
-            errors.add(new SemanticError(super.column, super.row,
-                    "Cannot delete variable " + id + ", cause it is not declared."));
-            return errors;
-        }
-
-        if (candidate.isDeleted()) {
-            errors.add(new SemanticError(super.column, super.row, "Variable " + id + " already deleted."));
-        }*/
-
-        STentry entry = env.lookupSTentry(id);
-        if (entry == null) {
-            errors.add(new SemanticError(super.column, super.row,
-                    "Cannot delete variable " + id + ", cause it is not declared."));
-        }
-
-        return errors;
-    }
 }
