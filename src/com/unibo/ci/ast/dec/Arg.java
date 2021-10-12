@@ -23,6 +23,10 @@ public class Arg extends Node {
         return null;
     }
 
+    public String getId() {
+        return this.id;
+    }
+
     @Override
     public Type typeCheck() {
         // TODO Auto-generated method stub
