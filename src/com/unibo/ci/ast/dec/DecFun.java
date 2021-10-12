@@ -39,6 +39,7 @@ public class DecFun extends Dec {
 
     @Override
     public Type typeCheck() {
+    	block.typeCheck();
         return null; 
     }
 
@@ -60,8 +61,14 @@ public class DecFun extends Dec {
         } catch (DuplicateSTEntryException e) {
             SemanticError error = new SemanticError(row, column, "Already declared [" + id + "]");
             semanticErrors.add(error);
-            return semanticErrors;
+            //return semanticErrors;
         }
+        Environment funEnv = new Environment();
+        args.forEach((arg) -> {
+        	funEnv.addDeclaration(arg.id, arg.typeCheck());
+        });
+        
+        semanticErrors.addAll(block.checkSemantics(env));
         return null;
     }
 }
