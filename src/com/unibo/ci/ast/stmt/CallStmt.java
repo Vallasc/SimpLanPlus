@@ -43,7 +43,7 @@ public class CallStmt extends Exp {
     	//qua ad esempio controllo che se dichiaro int pippo = 5, 
     	//non provi a fare pippo(x)
     	if (entry.getType().getClass() == TypeFunction.class) {
-    		return entry.getType();
+    		return ((TypeFunction)entry.getType()).getReturnType();
     	}
         
         return null;

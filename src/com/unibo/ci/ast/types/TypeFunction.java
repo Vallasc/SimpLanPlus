@@ -18,6 +18,10 @@ public class TypeFunction extends Type{
 	public List<Arg> getArguments(){
 		return this.arguments;
 	}
+	
+	public Type getReturnType() {
+		return this.returnType;
+	}
 
 	@Override
 	public boolean equals(Type e) {
