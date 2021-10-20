@@ -1,0 +1,11 @@
+{
+    int i = 0;
+    void prova(){
+
+    }
+    prova();
+    if( i == 0){
+        
+    }
+    return prova() == prova();
+}

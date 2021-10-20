@@ -96,7 +96,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     }
 
     @Override
-    public Exp visitCall(SimpLanPlusParser.CallContext ctx) {
+    public Statement visitCall(SimpLanPlusParser.CallContext ctx) {
         List<Exp> exps = ctx.exp().stream().map(p -> (Exp) visit(p)).collect(Collectors.toList());
         return new CallStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.ID().getText(), exps);
     }

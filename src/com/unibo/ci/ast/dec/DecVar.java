@@ -47,12 +47,16 @@ public class DecVar extends Dec {
 
         if( exp != null ) {
             Type expType = exp.typeCheck();
-            if (!type.equals(expType))
-                    TypeErrorsStorage.add(
-                            new TypeError(this.exp.getRow(), this.exp.getColumn(), 
+            if(expType == null)
+                return null;
+            if (!type.equals(expType)){
+                TypeErrorsStorage.add( new TypeError(this.exp.getRow(), this.exp.getColumn(), 
                                     "Expression type (" + expType + ") is not equal to variable type (" + type + ")"));
+                return null;
+            }
+            return new TypeVoid();
         }
-        return type;
+        return null;
     }
     
     @Override

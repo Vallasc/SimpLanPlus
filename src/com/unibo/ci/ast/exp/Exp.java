@@ -1,11 +1,11 @@
 package com.unibo.ci.ast.exp;
 
-import com.unibo.ci.ast.Node;
+import com.unibo.ci.ast.stmt.Statement;
 
 /**
  * Classe che descrive una espressione generica
  */
-public abstract class Exp extends Node {
+public abstract class Exp extends Statement {
     public Exp(int row, int column) {
         super(row, column);
     }

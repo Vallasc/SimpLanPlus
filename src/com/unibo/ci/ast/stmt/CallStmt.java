@@ -1,10 +1,8 @@
 package com.unibo.ci.ast.stmt;
 
-import java.lang.invoke.MethodHandles.Lookup;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.dec.Arg;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.exp.Exp;

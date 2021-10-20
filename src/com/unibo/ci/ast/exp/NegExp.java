@@ -37,6 +37,7 @@ public class NegExp extends Exp {
         if(!(childType instanceof TypeBool)){
             TypeErrorsStorage.add(
                 new TypeError(super.row, super.column, "expecting type  [" + (new TypeBool()).getTypeName() + "], found [" + childType.getTypeName() + "]"));
+            return null;
         }
         return child.typeCheck();
     }

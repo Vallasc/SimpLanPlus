@@ -15,6 +15,7 @@ public class DivExp extends BinExp {
     public TypeInt typeCheck() {
         if (!(super.left.typeCheck() instanceof TypeInt && super.right.typeCheck() instanceof TypeInt)) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column, "expecting an integer value"));
+            return null;
         }
         return new TypeInt();
     }
