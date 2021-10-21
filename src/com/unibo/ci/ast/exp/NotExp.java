@@ -36,7 +36,7 @@ public class NotExp extends Exp {
             TypeErrorsStorage.add(
                 new TypeError(super.row, super.column, "expecting type [" + (new TypeBool()).getTypeName() + "] found [" + childType.getTypeName() + "]"));
         }
-        return child.typeCheck();
+        return childType;
     }
 
     @Override

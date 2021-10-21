@@ -39,7 +39,7 @@ public class NegExp extends Exp {
                 new TypeError(super.row, super.column, "expecting type  [" + (new TypeBool()).getTypeName() + "], found [" + childType.getTypeName() + "]"));
             return null;
         }
-        return child.typeCheck();
+        return childType;
     }
 
     @Override

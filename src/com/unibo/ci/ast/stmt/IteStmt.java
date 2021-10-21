@@ -38,19 +38,18 @@ public class IteStmt extends Statement {
 
     @Override
     public Type typeCheck() {
-        if(exp == null) return null;
         Type expType = exp.typeCheck();
-        Type thenType = exp.typeCheck();
-        Type elseType = exp.typeCheck();
+        Type thenType = thenStmt.typeCheck();
+
+        if(expType == null || thenType == null)
+            return null;
 
         if (!(expType instanceof TypeBool)) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column, "Condition must be " + (new TypeBool()).getTypeName()));
             return null;
         }
-        if(thenType == null)
-            return null;
 
-        if (elseStmt != null && !thenType.equals(elseType)) {
+        if (elseStmt != null && !thenType.equals(elseStmt.typeCheck())) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column, "Type braches mismatch"));
             return null;
         }

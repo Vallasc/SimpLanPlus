@@ -1,11 +1,7 @@
 {
     int i = 0;
-    void prova(){
-
-    }
-    prova();
-    if( i == 0){
+    if( i == true){
         
     }
-    return prova() == prova();
+    return i == 0;
 }

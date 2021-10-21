@@ -36,6 +36,11 @@ public abstract class Type extends Node{
     }
 
     @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        return new ArrayList<SemanticError>();
+    }
+    
+    @Override
     public Type typeCheck() {
         return this;
     }
@@ -46,9 +51,4 @@ public abstract class Type extends Node{
         return null;
     }
 
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

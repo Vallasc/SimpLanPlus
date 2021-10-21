@@ -1,7 +1,7 @@
 package com.unibo.ci.ast.stmt.block;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 
 import com.unibo.ci.ast.stmt.Statement;
@@ -29,6 +29,7 @@ public class BlockBase extends Block {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
 		env.newScope();
+		
 		declarations.forEach(dec -> {
 			errors.addAll(dec.checkSemantics(env));
 		});

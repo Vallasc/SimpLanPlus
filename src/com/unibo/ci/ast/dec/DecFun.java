@@ -85,6 +85,6 @@ public class DecFun extends Dec {
 
         semanticErrors.addAll(block.checkSemantics(env));
         env.exitScope();
-        return null;
+        return semanticErrors;
     }
 }

@@ -4,6 +4,7 @@ import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.ast.types.TypeInt;
+import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
 
 public class NotEqualExp extends BinExp {
@@ -14,10 +15,12 @@ public class NotEqualExp extends BinExp {
 
     @Override
     public TypeBool typeCheck() {
-        if ((super.left.typeCheck() instanceof TypeBool && super.right.typeCheck() instanceof TypeInt)
-                || (super.left.typeCheck() instanceof TypeInt && super.right.typeCheck() instanceof TypeBool)) {
-                    TypeErrorsStorage.add(new TypeError(super.row, super.column, "Type mismatch"));
-                return null;
+        Type leftType = super.left.typeCheck();
+        Type rightType = super.right.typeCheck();
+        if ((leftType instanceof TypeBool && rightType instanceof TypeInt)
+                || (leftType instanceof TypeInt && rightType instanceof TypeBool)) {
+            TypeErrorsStorage.add(new TypeError(super.row, super.column, "Type mismatch"));
+            return null;
         }
         return new TypeBool();
     }

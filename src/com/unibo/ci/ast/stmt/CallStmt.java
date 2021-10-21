@@ -94,7 +94,7 @@ public class CallStmt extends Exp {
     	}
     	
     	
-        return errors.isEmpty() ? null : errors;
+        return errors;
 
     }
     
