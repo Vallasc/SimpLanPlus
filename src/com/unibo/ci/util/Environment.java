@@ -59,7 +59,7 @@ public class Environment {
 		return null;
 	}
 
-	public STentry lookupFunction() {
+	/*public STentry lookupFunction() {
 		for (int i = symTable.size(); i-- > 0;) {
 			ListIterator<STentry> iterator = new ArrayList<STentry>(symTable.get(i).values())
 					.listIterator(symTable.get(i).size());
@@ -70,7 +70,7 @@ public class Environment {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	public LinkedList<LinkedHashMap<String, STentry>> getSymTable() {
 		return symTable;

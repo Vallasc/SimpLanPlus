@@ -29,13 +29,13 @@ public class NewExp extends Exp {
 
     @Override
     public Type typeCheck() {
-        if (!(type instanceof TypeInt || type instanceof TypeBool)) {
+        if (!(type instanceof TypeInt || type instanceof TypeBool || type instanceof TypePointer)) {
             TypeErrorsStorage.add(
                 new TypeError(super.row, super.column, "expecting type [" + (new TypeBool()).getTypeName() + "] or [" + (new TypeInt()).getTypeName() + "], found [" + 
                     type.getTypeName() + "]"));
             return null;
         }
-        return type;
+        return new TypePointer(type);
     }
 
     @Override

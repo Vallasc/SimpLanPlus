@@ -19,8 +19,10 @@ public class Arg extends Node {
 
     @Override
     public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
+        String args = indent + "Arg: \n" + 
+                        indent + "\t Id: " + id + "\n" + 
+                        type.toPrint(indent + "\t");
+        return args;
     }
 
     public String getId() {
@@ -28,9 +30,13 @@ public class Arg extends Node {
     }
 
     @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        return new ArrayList<SemanticError>();
+    }
+    
+    @Override
     public Type typeCheck() {
-        // TODO Auto-generated method stub
-        return null;
+        return type.typeCheck();
     }
 
     @Override
@@ -39,8 +45,4 @@ public class Arg extends Node {
         return null;
     }
 
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return new ArrayList<SemanticError>();
-    }
 }

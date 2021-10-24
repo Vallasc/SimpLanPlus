@@ -16,7 +16,6 @@ public class SubExp extends BinExp {
         if (!(super.left.typeCheck() instanceof TypeInt && super.right.typeCheck() instanceof TypeInt)) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column, "Expecting an integer value"));
             return null;
-
         }
         return new TypeInt();
     }

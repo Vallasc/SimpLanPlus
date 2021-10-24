@@ -1,15 +1,19 @@
 package com.unibo.ci.ast.stmt.block;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import com.unibo.ci.ast.stmt.CallStmt;
 import com.unibo.ci.ast.stmt.Statement;
 import com.unibo.ci.ast.dec.Dec;
 import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypeBool;
+import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.TypeErrorsStorage;
 
 /**
  * Example: { }
@@ -36,7 +40,7 @@ public class BlockBase extends Block {
 		statements.forEach(stmt -> {
 			errors.addAll(stmt.checkSemantics(env));
 		});
-		System.out.println(env.toPrint(""));
+		//System.out.println(env.toPrint(""));
 		env.exitScope();
 
 		return errors;
@@ -59,10 +63,34 @@ public class BlockBase extends Block {
 		declarations.forEach(dec -> {
 			dec.typeCheck();
 		});
+
+		ArrayList<Type> stmtReturn = new ArrayList<Type>();
 		statements.forEach(stmt -> {
-			stmt.typeCheck();
+			Type type = stmt.typeCheck();
+			if(!(stmt instanceof CallStmt)){
+				stmtReturn.add(type);
+			}
 		});
-		return new TypeVoid();
+
+		Type returnType = stmtReturn.stream()
+				.reduce(new TypeVoid(), (accumulator, element) -> {
+					if (accumulator == null) {
+						return null;
+					}
+					if(element instanceof TypeVoid){
+						return accumulator;
+					}
+					if((element instanceof TypeInt || element instanceof TypeBool) 
+						&& (accumulator instanceof TypeVoid || accumulator.equals(element))){
+						return element;
+					}
+					return null;
+				});
+
+		if(returnType == null){
+			TypeErrorsStorage.add(new TypeError(row, column, "return type mismatch in block element"));
+		}
+		return returnType;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class DeleteStmt extends Statement {
         stEntry = env.lookupSTentry(id);
         if (stEntry == null) {
             errors.add(new SemanticError(super.column, super.row,
-                    "Cannot delete variable " + id + ", cause it is not declared."));
+                    "cannot delete variable " + id + ", cause it is not declared."));
         }
         return errors;
     }
@@ -37,9 +37,6 @@ public class DeleteStmt extends Statement {
     // devo controllare che sia di tipo puntatore
     @Override
     public Type typeCheck() {
-        if (stEntry == null) {
-            return null;
-        }
         return stEntry.getType();
     }
 

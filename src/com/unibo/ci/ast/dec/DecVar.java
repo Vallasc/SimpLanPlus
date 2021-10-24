@@ -21,8 +21,11 @@ public class DecVar extends Dec {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Declaration: Var\n" + indent + "\tId: \"" + this.id + "\"\n" + type.toPrint(indent + "\t")
-                + (exp != null ? exp.toPrint(indent + "\t") : "");
+        
+        return indent + "Declaration: Var\n" + 
+                indent + "\tId: \"" + this.id + "\"\n" + 
+                type.toPrint(indent + "\t") +
+                (exp == null ? "" : exp.toPrint(indent + "\t"));
     }
 
     @Override
@@ -33,9 +36,7 @@ public class DecVar extends Dec {
 
         } catch (DuplicateSTEntryException e) {
             // Aggiungere anche la riga e la colonna nel messaggio di errore
-            SemanticError error = new SemanticError(row, column, "Already declared [" + id + "]");
-            errors.add(error);
-            return errors;
+            errors.add(new SemanticError(row, column, "Already declared [" + id + "]"));
         }
         return errors;
     }
@@ -45,18 +46,20 @@ public class DecVar extends Dec {
 		if (type instanceof TypeVoid)
 			TypeErrorsStorage.add(new TypeError(row, column, "Variable type cannot be void"));
 
-        if( exp != null ) {
-            Type expType = exp.typeCheck();
-            if(expType == null)
-                return null;
-            if (!type.equals(expType)){
-                TypeErrorsStorage.add( new TypeError(this.exp.getRow(), this.exp.getColumn(), 
-                                    "Expression type (" + expType + ") is not equal to variable type (" + type + ")"));
-                return null;
-            }
+        if( exp == null)
             return new TypeVoid();
+
+
+        Type expType = exp.typeCheck();
+        if(expType == null)
+            return null;
+
+        if (!type.equals(expType)){
+            TypeErrorsStorage.add( new TypeError(this.exp.getRow(), this.exp.getColumn(), 
+                                "Expression type (" + expType + ") is not equal to variable type (" + type + ")"));
+            return null;
         }
-        return null;
+        return new TypeVoid();
     }
     
     @Override

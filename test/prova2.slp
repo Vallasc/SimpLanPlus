@@ -1,7 +1,17 @@
 {
-    int i = 0;
-    if( i == true){
-        
+    ^int x;
+    //^^int p;
+    ^^int p = new ^int;
+    p = new ^int;
+    p^= x;
+    p^^ = 3;
+    return;
+    return 3;
+
+    if(p^^ == 3){
+        return true;
+    } else {
     }
-    return i == 0;
 }
+
+

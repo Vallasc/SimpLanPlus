@@ -31,14 +31,6 @@ public class GreaterThanExp extends BinExp {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        ArrayList<SemanticError> leftErrors = super.left.checkSemantics(env);
-        ArrayList<SemanticError> rightErrors = super.right.checkSemantics(env);
-        leftErrors.addAll(rightErrors);
-        return leftErrors;
-    }
-
-    @Override
     public String toPrint(String indent) {
         return indent + "Exp: GreaterThan\n" + super.left.toPrint(indent + "\t") + super.right.toPrint(indent + "\t");
     }

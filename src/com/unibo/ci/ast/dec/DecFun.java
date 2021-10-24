@@ -26,35 +26,18 @@ public class DecFun extends Dec {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Declaration: Function\n" + indent + "\tId: " + this.id + "\n" + type.toPrint(indent + "\t")
-                + (id != null && block != null ? id + " " + printArgs(indent + "\t") : "");
+        return indent + "Declaration: Function\n" + 
+                indent + "\tId: \"" + this.id + "\"\n" + 
+                type.toPrint(indent + "\t") +
+                printArgs(indent + "\t");
     }
 
     private String printArgs(String indent) {
-        String args = "Args: ";
+        StringBuilder sb = new StringBuilder("Args: ");
         this.args.forEach((arg) -> {
-            args.concat(arg.toString());
-            args.concat(" ");
+            sb.append(arg.toPrint(indent + "\t"));
         });
-        return args;
-    }
-
-    @Override
-    public Type typeCheck() {
-
-        for (Arg arg : args) {
-            if (arg.typeCheck() == null)
-                return null;
-        }
-
-        return block.typeCheck() == null ? null : new TypeFunction(row, column, id, 0, type, args);
-
-    }
-
-    @Override
-    public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        return sb.toString();
     }
 
     @Override
@@ -62,6 +45,7 @@ public class DecFun extends Dec {
 
         ArrayList<SemanticError> semanticErrors = new ArrayList<SemanticError>();
         try {
+            // Aggiungi tipo funzione
             env.addDeclaration(id, type);
 
             // Nota: type dovrebbe essere T_1, ..., T_n -> T
@@ -86,5 +70,22 @@ public class DecFun extends Dec {
         semanticErrors.addAll(block.checkSemantics(env));
         env.exitScope();
         return semanticErrors;
+    }
+    
+    @Override
+    public Type typeCheck() {
+        for (Arg arg : args) {
+            if (arg.typeCheck() == null)
+                return null;
+        }
+
+        return block.typeCheck() == null ? null : new TypeFunction(row, column, id, args.size(), type, args); 
+        //TODO quanta memoria occupa la decfun? solo il numero deli argomenti? (args.size())
+    }
+
+    @Override
+    public String codeGeneration() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

@@ -28,7 +28,9 @@ public class LessThanExp extends BinExp {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Exp: LessThan\n" + super.left.toPrint(indent + "\t") + super.right.toPrint(indent + "\t");
+        return indent + "Exp: LessThan\n" + 
+                super.left.toPrint(indent + "\t") + 
+                super.right.toPrint(indent + "\t");
     }
 
 }
