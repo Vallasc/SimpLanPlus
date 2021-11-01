@@ -2,7 +2,7 @@ package com.unibo.ci.ast;
 
 import java.util.ArrayList;
 import com.unibo.ci.ast.types.Type;
-
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.util.Environment;
 
@@ -25,6 +25,8 @@ public abstract class Node {
     public abstract String codeGeneration();
 
     public abstract ArrayList<SemanticError> checkSemantics(Environment env);
+    
+    public abstract ArrayList<EffectError> AnalyzeEffect(Environment env);
 
     public int getRow() {
         return row;

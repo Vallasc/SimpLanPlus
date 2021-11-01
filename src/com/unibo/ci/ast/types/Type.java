@@ -3,6 +3,7 @@ package com.unibo.ci.ast.types;
 import java.util.ArrayList;
 
 import com.unibo.ci.ast.Node;
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.util.Environment;
 
@@ -50,5 +51,12 @@ public abstract class Type extends Node{
         // TODO Auto-generated method stub
         return null;
     }
+    
+    @Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

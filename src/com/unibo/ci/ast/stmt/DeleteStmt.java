@@ -2,6 +2,7 @@ package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
@@ -45,5 +46,11 @@ public class DeleteStmt extends Statement {
         // TODO Auto-generated method stub
         return null;
     }
+
+	@Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

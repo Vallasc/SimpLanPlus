@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.unibo.ci.ast.Node;
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.stmt.block.Block;
 import com.unibo.ci.ast.types.Type;
@@ -88,4 +89,6 @@ public class DecFun extends Dec {
         // TODO Auto-generated method stub
         return null;
     }
+
+
 }

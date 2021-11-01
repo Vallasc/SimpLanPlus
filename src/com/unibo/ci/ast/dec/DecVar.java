@@ -2,6 +2,7 @@ package com.unibo.ci.ast.dec;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
@@ -67,4 +68,6 @@ public class DecVar extends Dec {
         // TODO Auto-generated method stub
         return null;
     }
+
+
 }

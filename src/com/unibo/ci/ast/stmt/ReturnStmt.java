@@ -2,6 +2,7 @@ package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
@@ -59,5 +60,11 @@ public class ReturnStmt extends Statement {
         // TODO Auto-generated method stub
         return null;
     }
+
+	@Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

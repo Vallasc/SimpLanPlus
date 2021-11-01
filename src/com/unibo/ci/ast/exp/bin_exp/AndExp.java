@@ -1,7 +1,11 @@
 package com.unibo.ci.ast.exp.bin_exp;
 
+import java.util.ArrayList;
+
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
+import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.ast.types.TypeBool;
 

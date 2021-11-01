@@ -6,6 +6,7 @@ import java.util.List;
 import com.unibo.ci.ast.stmt.CallStmt;
 import com.unibo.ci.ast.stmt.Statement;
 import com.unibo.ci.ast.dec.Dec;
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.Type;
@@ -67,7 +68,8 @@ public class BlockBase extends Block {
 		ArrayList<Type> stmtReturn = new ArrayList<Type>();
 		statements.forEach(stmt -> {
 			Type type = stmt.typeCheck();
-			if(!(stmt instanceof CallStmt)){
+			if(!(stmt instanceof CallStmt)){ 
+				/*DUBBIO DI SHIMO: perché controlliamo tutti gli statement tranne le call? Non ci interessano solo gli statement 'return'?*/
 				stmtReturn.add(type);
 			}
 		});
@@ -82,6 +84,9 @@ public class BlockBase extends Block {
 					}
 					if((element instanceof TypeInt || element instanceof TypeBool) 
 						&& (accumulator instanceof TypeVoid || accumulator.equals(element))){
+						/*DUBBIO DI SHIMO: se abbiamo un blocco con tante 'return' semplici (quindi solo valori 'void') 
+						 * l'accumulatore dovrebbe essere void, ma se all'ultimo becchiamo una 'return 3' la reduce() non restituisce 'int'?
+						 * E questo non è un errore? (perchè un blocco restituisce sia void che int) */
 						return element;
 					}
 					return null;
@@ -95,6 +100,12 @@ public class BlockBase extends Block {
 
 	@Override
 	public String codeGeneration() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.unibo.ci.ast.dec.Arg;
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
@@ -97,5 +98,11 @@ public class CallStmt extends Exp {
         return errors;
 
     }
+
+	@Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }
