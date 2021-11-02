@@ -3,6 +3,7 @@ package com.unibo.ci.ast.exp;
 import java.util.ArrayList;
 
 import com.unibo.ci.ast.Node;
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.*;
@@ -29,13 +30,13 @@ public class NewExp extends Exp {
 
     @Override
     public Type typeCheck() {
-        if (!(type instanceof TypeInt || type instanceof TypeBool)) {
+        if (!(type instanceof TypeInt || type instanceof TypeBool || type instanceof TypePointer)) {
             TypeErrorsStorage.add(
                 new TypeError(super.row, super.column, "expecting type [" + (new TypeBool()).getTypeName() + "] or [" + (new TypeInt()).getTypeName() + "], found [" + 
                     type.getTypeName() + "]"));
             return null;
         }
-        return type;
+        return new TypePointer(type);
     }
 
     @Override
@@ -43,5 +44,11 @@ public class NewExp extends Exp {
         // TODO Auto-generated method stub
         return null;
     }
+
+	@Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }

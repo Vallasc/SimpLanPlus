@@ -2,14 +2,18 @@ package com.unibo.ci.ast.exp;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.TypeErrorsStorage;
 
-public class DerExp extends Exp {
-    private final Exp child;
+public class DerExp extends LhsExp {
+    private final LhsExp child;
 
-    public DerExp(int row, int column, Exp child) {
+    public DerExp(int row, int column, LhsExp child) {
         super(row, column);
         this.child = child;
     }
@@ -20,21 +24,24 @@ public class DerExp extends Exp {
                 child.toPrint(indent + "\t");
     }
 
+    
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-		/*stEntry = env.lookupSTentry(id);
-		if (stEntry == null)
-			errors.add(new SemanticError(row, column, "var " + id + " does not exist"));*/
-		return errors;
+		return child.checkSemantics(env);
     }
 
     @Override
     public Type typeCheck() { 
-        /*if(stEntry == null)
+        Type returnType = child.typeCheck();
+        if(returnType == null){
             return null;
-        return stEntry.getType();*/
-        return null;
+        }
+        
+        if( !(returnType instanceof TypePointer)){
+            TypeErrorsStorage.add(new TypeError(row, column, "Dereferencing error"));
+            return null;
+        }
+        return ((TypePointer) returnType).getPointedType();
     }
 
     @Override
@@ -42,5 +49,16 @@ public class DerExp extends Exp {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
+    @Override
+    public String getVarId() {
+        return child.getVarId();
+    }
+
+	@Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

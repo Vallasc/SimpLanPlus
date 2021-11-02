@@ -2,18 +2,20 @@ package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
+import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.TypeErrorsStorage;
 
 public class IteStmt extends Statement {
 
-    Exp exp;
-    Statement thenStmt, elseStmt;
+    private final Exp exp;
+    private final Statement thenStmt, elseStmt;
 
     public IteStmt(Exp exp, Statement thenStmt, Statement elseStmt, int row, int column) {
         super(row, column);
@@ -25,31 +27,52 @@ public class IteStmt extends Statement {
 
     @Override
     public String toPrint(String indent) {
+        return indent + "\tIf:\n" + exp.toPrint(indent + "\t") + "\n" +
+                indent + "\tThen:\n" + thenStmt.toPrint(indent + "\t") + "\n" +
+                (elseStmt != null ? indent + "\tElse:\n" + elseStmt.toPrint(indent) : "");
+    }
 
-        if (elseStmt == null) {
-            return indent + "Stmt: If " + exp.toPrint(indent) + " - then " + thenStmt.toPrint(indent) + " \n"
-                    + (indent + "\t");
+    @Override
+    public ArrayList<SemanticError> checkSemantics(Environment env) {
+        ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
-        } else {
-            return indent + "Stmt: If " + exp.toPrint(indent) + " then " + thenStmt.toPrint(indent) + " \n"
-                    + (indent + "\t") + " else " + elseStmt + " \n" + (indent + "\t");
+        errors.addAll(exp.checkSemantics(env));
+        errors.addAll(thenStmt.checkSemantics(env));
+
+        if (elseStmt != null) {
+            errors.addAll(elseStmt.checkSemantics(env));
         }
+        return errors;
     }
 
     @Override
     public Type typeCheck() {
-
-        if (!(exp.typeCheck() instanceof TypeBool)) {
-            TypeErrorsStorage.add(new TypeError(super.row, super.column, "Condition must be bool type"));
-
-        }
-        if (elseStmt == null) {
-            return thenStmt.typeCheck();
+        Type expType = exp.typeCheck();
+        if (!(expType instanceof TypeBool)) {
+            TypeErrorsStorage.add(new TypeError(super.row, super.column, "if condition must be of" + (new TypeBool()).getTypeName()));
+            return null;
         }
 
-        if (elseStmt != null && thenStmt.typeCheck().equals(elseStmt.typeCheck())) {
-            return elseStmt.typeCheck();
-        }
+        Type thenType = thenStmt.typeCheck();
+        if(thenStmt instanceof CallStmt)
+            thenType = new TypeVoid();
+
+        if(elseStmt != null)
+            return thenType;
+        
+        Type elseType = elseStmt.typeCheck();  
+        if(elseStmt instanceof CallStmt)
+            elseType = new TypeVoid();
+
+        if(elseType.equals(thenType))
+            return thenType;
+        
+        if(thenType instanceof TypeVoid)
+            return elseType;
+        if(elseType instanceof TypeVoid)
+            return thenType;
+
+        TypeErrorsStorage.add(new TypeError(super.row, super.column, "Type braches mismatch"));
         return null;
     }
 
@@ -59,18 +82,10 @@ public class IteStmt extends Statement {
         return null;
     }
 
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-
-        errors.addAll(exp.checkSemantics(env));
-
-        errors.addAll(thenStmt.checkSemantics(env));
-
-        if (elseStmt != null) {
-            errors.addAll(elseStmt.checkSemantics(env));
-        }
-        return errors;
-    }
+	@Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

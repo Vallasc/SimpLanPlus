@@ -3,6 +3,7 @@ package com.unibo.ci.ast.exp;
 import java.util.ArrayList;
 
 import com.unibo.ci.ast.Node;
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.*;
@@ -36,7 +37,7 @@ public class NotExp extends Exp {
             TypeErrorsStorage.add(
                 new TypeError(super.row, super.column, "expecting type [" + (new TypeBool()).getTypeName() + "] found [" + childType.getTypeName() + "]"));
         }
-        return child.typeCheck();
+        return childType;
     }
 
     @Override
@@ -44,5 +45,11 @@ public class NotExp extends Exp {
         // TODO Auto-generated method stub
         return null;
     }
+
+	@Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }

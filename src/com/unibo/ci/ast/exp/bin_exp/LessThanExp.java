@@ -15,6 +15,7 @@ public class LessThanExp extends BinExp {
     public TypeInt typeCheck() {
         if (!(super.left.typeCheck() instanceof TypeInt && super.right.typeCheck() instanceof TypeInt)) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column, "Expecting an integer value"));
+            return null;
         }
         return new TypeInt();
     }
@@ -27,7 +28,9 @@ public class LessThanExp extends BinExp {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Exp: LessThan\n" + super.left.toPrint(indent + "\t") + super.right.toPrint(indent + "\t");
+        return indent + "Exp: LessThan\n" + 
+                super.left.toPrint(indent + "\t") + 
+                super.right.toPrint(indent + "\t");
     }
 
 }

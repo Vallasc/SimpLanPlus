@@ -2,6 +2,7 @@ package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.Type;
@@ -27,7 +28,7 @@ public class DeleteStmt extends Statement {
         stEntry = env.lookupSTentry(id);
         if (stEntry == null) {
             errors.add(new SemanticError(super.column, super.row,
-                    "Cannot delete variable " + id + ", cause it is not declared."));
+                    "cannot delete variable " + id + ", cause it is not declared."));
         }
         return errors;
     }
@@ -53,6 +54,12 @@ public class DeleteStmt extends Statement {
 
     @Override
     public String codeGeneration() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public ArrayList<EffectError> AnalyzeEffect(Environment env) {
         // TODO Auto-generated method stub
         return null;
     }

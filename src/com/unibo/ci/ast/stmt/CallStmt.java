@@ -1,11 +1,10 @@
 package com.unibo.ci.ast.stmt;
 
-import java.lang.invoke.MethodHandles.Lookup;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.dec.Arg;
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
@@ -42,7 +41,7 @@ public class CallStmt extends Exp {
         /// Controllo che entry.getType sia una funzione
     	//qua ad esempio controllo che se dichiaro int pippo = 5, 
     	//non provi a fare pippo(x)
-    	if (entry.getType().getClass() == TypeFunction.class) {
+    	if (entry.getType() instanceof TypeFunction) {
     		return ((TypeFunction)entry.getType()).getReturnType();
     	}
         
@@ -96,8 +95,14 @@ public class CallStmt extends Exp {
     	}
     	
     	
-        return errors.isEmpty() ? null : errors;
+        return errors;
 
     }
+
+	@Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }

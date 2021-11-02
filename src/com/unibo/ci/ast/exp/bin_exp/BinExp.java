@@ -2,6 +2,7 @@ package com.unibo.ci.ast.exp.bin_exp;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.util.Environment;
@@ -23,4 +24,10 @@ public abstract class BinExp extends Exp {
         leftErrors.addAll(rightErrors);
         return leftErrors;
     }
+    
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+ 
 }

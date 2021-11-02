@@ -2,12 +2,13 @@ package com.unibo.ci.ast.exp;
 
 import java.util.ArrayList;
 
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.STentry;
 
-public class VarExp extends Exp {
+public class VarExp extends LhsExp {
     private final String id;
     private STentry stEntry;
 
@@ -32,7 +33,7 @@ public class VarExp extends Exp {
     }
 
     @Override
-    public Type typeCheck() { 
+    public Type typeCheck() {
         if(stEntry == null)
             return null;
         return stEntry.getType();
@@ -43,4 +44,15 @@ public class VarExp extends Exp {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public String getVarId() {
+        return id;
+    }
+
+	@Override
+	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

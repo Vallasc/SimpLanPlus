@@ -15,6 +15,7 @@ public class OrExp extends BinExp {
     public TypeBool typeCheck() {
         if (!(super.left.typeCheck() instanceof TypeBool && super.right.typeCheck() instanceof TypeBool)) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column, "Expecting a boolean value"));
+            return null;
         }
         return new TypeBool();
     }

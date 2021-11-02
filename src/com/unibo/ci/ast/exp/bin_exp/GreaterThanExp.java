@@ -19,6 +19,7 @@ public class GreaterThanExp extends BinExp {
     public TypeInt typeCheck() {
         if (!(super.left.typeCheck() instanceof TypeInt && super.right.typeCheck() instanceof TypeInt)) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column, "Expecting an integer value"));
+            return null;
         }
         return new TypeInt();
     }
@@ -27,14 +28,6 @@ public class GreaterThanExp extends BinExp {
     public String codeGeneration() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
-        ArrayList<SemanticError> leftErrors = super.left.checkSemantics(env);
-        ArrayList<SemanticError> rightErrors = super.right.checkSemantics(env);
-        leftErrors.addAll(rightErrors);
-        return leftErrors;
     }
 
     @Override

@@ -62,13 +62,14 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     @Override
     public Statement visitAssignment(SimpLanPlusParser.AssignmentContext ctx) {
         Exp exp = (Exp) visit(ctx.exp());
-        return new AssignmentStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.lhs().getText(), exp);
+        LhsExp left = (LhsExp) visit(ctx.lhs());
+        return new AssignmentStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, exp);
     }
 
     @Override
-    public Exp visitLhs(SimpLanPlusParser.LhsContext ctx) {
+    public LhsExp visitLhs(SimpLanPlusParser.LhsContext ctx) {
         return ctx.lhs() != null ?
-            new DerExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (Exp) visit(ctx.lhs()) ) : 
+            new DerExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (LhsExp) visit(ctx.lhs())) : 
             new VarExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.ID().getText());
     }
 
@@ -83,8 +84,12 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     }
 
     @Override
-    public Node visitRet(SimpLanPlusParser.RetContext ctx) {
-        return visitChildren(ctx);
+    public Statement visitRet(SimpLanPlusParser.RetContext ctx) {
+        if(ctx.exp() != null)
+            return new ReturnStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (Exp) visit(ctx.exp()));
+        else 
+            return new ReturnStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), null);
+
     }
 
     @Override
@@ -96,7 +101,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     }
 
     @Override
-    public Exp visitCall(SimpLanPlusParser.CallContext ctx) {
+    public Statement visitCall(SimpLanPlusParser.CallContext ctx) {
         List<Exp> exps = ctx.exp().stream().map(p -> (Exp) visit(p)).collect(Collectors.toList());
         return new CallStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.ID().getText(), exps);
     }
