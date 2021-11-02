@@ -3,9 +3,12 @@ package com.unibo.ci.ast.stmt;
 import java.util.ArrayList;
 
 import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.STentry;
+import com.unibo.ci.util.TypeErrorsStorage;
 
 public class DeleteStmt extends Statement {
 
@@ -34,13 +37,18 @@ public class DeleteStmt extends Statement {
         return indent + "Stmt: Remove \"" + id + "\"\n";
     }
 
-    // devo controllare che sia di tipo puntatore
     @Override
     public Type typeCheck() {
+
         if (stEntry == null) {
             return null;
         }
+
+        if (!(stEntry.getType() instanceof TypePointer)) {
+            TypeErrorsStorage.add(new TypeError(super.column, super.row, "Return type must be pointer."));
+        }
         return stEntry.getType();
+
     }
 
     @Override
