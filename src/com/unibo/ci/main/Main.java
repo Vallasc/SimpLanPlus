@@ -11,6 +11,7 @@ import com.unibo.ci.ast.types.*;
 import com.unibo.ci.listeners.SyntaxErrorListener;
 import com.unibo.ci.parser.*;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
 public class Main
@@ -47,7 +48,7 @@ public class Main
 
 		System.out.println("AST three: \n" + ast.toPrint("\t"));
 
-		Environment env = new Environment();
+		GammaEnv env = new GammaEnv();
 		
 		ast.checkSemantics(env).forEach(semnErr -> {
 			System.out.println("Semantic error " + semnErr.row + ", " + semnErr.col + ": " + semnErr.desc);

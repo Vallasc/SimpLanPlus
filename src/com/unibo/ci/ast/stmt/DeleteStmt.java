@@ -8,6 +8,7 @@ import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.STentry;
 import com.unibo.ci.util.TypeErrorsStorage;
 
@@ -22,10 +23,10 @@ public class DeleteStmt extends Statement {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
-        stEntry = env.lookupSTentry(id);
+        stEntry = env.lookup(id);
         if (stEntry == null) {
             errors.add(new SemanticError(super.column, super.row,
                     "cannot delete variable " + id + ", cause it is not declared."));
