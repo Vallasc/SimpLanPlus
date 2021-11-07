@@ -7,6 +7,7 @@ import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.Environment.DuplicateSTEntryException;
 
 public class Arg extends Node {
     private final String id;
@@ -32,12 +33,18 @@ public class Arg extends Node {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
-        return new ArrayList<SemanticError>();
+        ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
+        try {
+            env.addDeclaration(id, type);
+        } catch (DuplicateSTEntryException e) {
+            errors.add(new SemanticError(row, column, "Already declared [" + id + "]"));
+        }
+        return errors;
     }
     
     @Override
     public Type typeCheck() {
-        return type.typeCheck();
+        return type;
     }
 
     @Override
