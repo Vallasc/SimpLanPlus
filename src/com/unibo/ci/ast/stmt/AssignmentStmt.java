@@ -52,7 +52,7 @@ public class AssignmentStmt extends Statement {
 
 		if(!typeLeft.equals(typeExp)){
 			TypeErrorsStorage.add(new TypeError(super.row, super.column, 
-				"cannot assign [" + typeExp.getTypeName() + "] to [" + typeLeft.getTypeName() + "]"));
+				"Cannot assign [" + typeExp.getTypeName() + "] to [" + typeLeft.getTypeName() + "]"));
 			return null;
 		}
 		return new TypeVoid();

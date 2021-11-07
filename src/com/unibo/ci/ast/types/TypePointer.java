@@ -25,6 +25,11 @@ public class TypePointer extends Type {
     }
 
     @Override
+    public String getTypeName(){
+        return TYPE_NAME + "[" + pointedType.getTypeName() + "]";
+    }
+
+    @Override
     public boolean equals(Type e) { 
 
 		if (e == null)

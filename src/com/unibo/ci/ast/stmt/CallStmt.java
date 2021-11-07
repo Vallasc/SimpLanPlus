@@ -6,11 +6,13 @@ import java.util.List;
 import com.unibo.ci.ast.dec.Arg;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
+import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.STentry;
+import com.unibo.ci.util.TypeErrorsStorage;
 
 public class CallStmt extends Exp {
 
@@ -27,9 +29,9 @@ public class CallStmt extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        StringBuilder sb = new StringBuilder(indent + "\t" + "Params\n");
+        StringBuilder sb = new StringBuilder(indent + "\t" + "Params:\n");
         parlist.forEach(par -> {
-            sb.append(par.toPrint(indent + "\t"));
+            sb.append(par.toPrint(indent + "\t\t"));
         });
         return indent + "Call:\n" + 
                 indent + "\tId: " + this.id + "\n" +
@@ -38,14 +40,37 @@ public class CallStmt extends Exp {
 
     @Override
     public Type typeCheck() {
+        if(entry == null)
+            return null;
+
         /// Controllo che entry.getType sia una funzione
-    	//qua ad esempio controllo che se dichiaro int pippo = 5, 
-    	//non provi a fare pippo(x)
-    	if (entry.getType() instanceof TypeFunction) {
-    		return ((TypeFunction)entry.getType()).getReturnType();
+    	if ( !(entry.getType() instanceof TypeFunction) ) {
+    		TypeErrorsStorage.add(new TypeError(row, column, 
+                            "[" + entry.getId() + "] is not a function"));
     	}
         
-        return null;
+        TypeFunction typeFun = ((TypeFunction)(entry.getType()));
+        if(parlist.size() != typeFun.getArguments().size())
+            return null;
+
+        for(int i = 0; i < parlist.size(); i++){
+            Type funParType = typeFun.getArguments().get(i).typeCheck();
+            if(funParType == null){
+    		    TypeErrorsStorage.add(new TypeError(row, column, 
+                            "[" + entry.getId() + "] is not a function"));
+                return null;
+            }
+
+            Type callParType = parlist.get(i).typeCheck();
+
+            if( !funParType.equals(callParType) ){
+    		    TypeErrorsStorage.add(new TypeError(row, column, 
+                        "Argument " + i + " must be of type [" + funParType.getTypeName() + "]"));
+                return null;
+            }
+        }
+
+        return typeFun.getReturnType();
     }
 
     @Override
@@ -60,46 +85,28 @@ public class CallStmt extends Exp {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         entry = env.lookupSTentry(id);
         if( entry == null ){
-            errors.add(new SemanticError(super.column, super.row, 
-            "Function " + id + " not declared."));
+            errors.add(new SemanticError(super.row, super.column, 
+                "Function [" + id + "] not declared"));
             return errors;
         }
-         
-        
-        // Controllo numero e tipi dei parametri dato entry
-        TypeFunction stmTypeFun = ((TypeFunction)(entry.getType()));
-        TypeFunction decTypeFun = ((TypeFunction)env.lookup(id)); 
-    	if (!decTypeFun .getArguments().isEmpty()) {
-    		//se la funzione ha dei parametri
-    		if (stmTypeFun.getArguments().size() == decTypeFun.getArguments().size()) {
-    			int arg2check = 0;
-	    		for (Arg argDec : decTypeFun.getArguments()) {
-	    			Arg argStm = stmTypeFun.getArguments().get(arg2check);
-	    				
-    				Type argStmType = argStm.typeCheck();
-    				Type argDecType = argDec.typeCheck();
 
-    				if (!argStmType.getClass().equals(argDecType.getClass())) {
-    					 errors.add(new SemanticError(super.column, super.row, 
-				            "Function " + id + ": " + argDecType.getTypeName() + " expected, got " + argStmType.getTypeName() + " instead."));
-    				}
-    					
-	    			arg2check++;
-	    		}
-    		} else {
-    			errors.add(new SemanticError(super.column, super.row, 
-    		            "Function " + id + ": wrong number of parameters."));
-    		}
-    	} else {
-    		//se la funzione non ha parametri
-    		if (!stmTypeFun.getArguments().isEmpty()) {
-    			errors.add(new SemanticError(super.column, super.row, "Function " + id + " has no parameters."));
-    		}
-    	}
-    	
+        if(! (entry.getType() instanceof TypeFunction)){
+            errors.add(new SemanticError(super.row, super.column, 
+                "Function [" + id + "] not declared"));
+            return errors;
+        }
+
+        TypeFunction typeFun = ((TypeFunction)(entry.getType()));
+
+        parlist.forEach((par) -> errors.addAll(par.checkSemantics(env)));
+
+        if(parlist.size() != typeFun.getArguments().size()){
+            errors.add(new SemanticError(super.row, super.column, 
+                "Bad number of parameters"));
+            return errors;
+        }
     	
         return errors;
-
     }
 
 	@Override

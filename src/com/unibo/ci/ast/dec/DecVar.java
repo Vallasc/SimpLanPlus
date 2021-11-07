@@ -22,7 +22,7 @@ public class DecVar extends Dec {
     @Override
     public String toPrint(String indent) {
         
-        return indent + "Declaration: Var\n" + 
+        return indent + "Declaration:\n" + 
                 indent + "\tId: \"" + this.id + "\"\n" + 
                 type.toPrint(indent + "\t") +
                 (exp == null ? "" : exp.toPrint(indent + "\t"));
@@ -31,9 +31,10 @@ public class DecVar extends Dec {
     @Override
     public ArrayList<SemanticError> checkSemantics(Environment env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
+        if(exp != null)
+            errors.addAll(exp.checkSemantics(env));
         try {
             env.addDeclaration(id, type);
-
         } catch (DuplicateSTEntryException e) {
             // Aggiungere anche la riga e la colonna nel messaggio di errore
             errors.add(new SemanticError(row, column, "Already declared [" + id + "]"));
@@ -44,11 +45,10 @@ public class DecVar extends Dec {
     @Override
     public Type typeCheck() {
 		if (type instanceof TypeVoid)
-			TypeErrorsStorage.add(new TypeError(row, column, "Variable type cannot be void"));
+			TypeErrorsStorage.add(new TypeError(row, column, "Variable type cannot be " + type.getTypeName()));
 
         if( exp == null)
             return new TypeVoid();
-
 
         Type expType = exp.typeCheck();
         if(expType == null)
@@ -56,12 +56,26 @@ public class DecVar extends Dec {
 
         if (!type.equals(expType)){
             TypeErrorsStorage.add( new TypeError(this.exp.getRow(), this.exp.getColumn(), 
-                                "Expression type (" + expType + ") is not equal to variable type (" + type + ")"));
+                    "Expression type [" + expType.getTypeName() + "] is not equal to declared type [" + type.getTypeName() + "]"));
             return null;
         }
         return new TypeVoid();
     }
     
+    /*public Type typeCheck2() {
+		Type typeLeft = left.typeCheck();
+		Type typeExp = exp.typeCheck();
+		if(typeExp == null)
+			return null;
+
+		if(!typeLeft.equals(typeExp)){
+			TypeErrorsStorage.add(new TypeError(super.row, super.column, 
+				"cannot assign [" + typeExp.getTypeName() + "] to [" + typeLeft.getTypeName() + "]"));
+			return null;
+		}
+		return new TypeVoid();
+	}*/
+
     @Override
     public String codeGeneration() {
         // TODO Auto-generated method stub

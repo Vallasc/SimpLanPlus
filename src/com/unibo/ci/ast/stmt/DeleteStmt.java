@@ -46,7 +46,7 @@ public class DeleteStmt extends Statement {
         }
 
         if (!(stEntry.getType() instanceof TypePointer)) {
-            TypeErrorsStorage.add(new TypeError(super.column, super.row, "Return type must be pointer."));
+            TypeErrorsStorage.add(new TypeError(super.column, super.row, "Variable type must be [POINTER[*]]"));
         }
         return stEntry.getType();
 

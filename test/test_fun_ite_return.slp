@@ -1,5 +1,5 @@
 {
-    int abba2(int a, int b){ 
+    int atta(int a, int b){ 
         if(3 == 0)
             return a;
         return b;
@@ -7,6 +7,7 @@
 
     int abba(){ 
         int ff;
+        
         int abba(int a){
             int abba(int a){
                 int fe = 4;
@@ -15,11 +16,27 @@
             int fe = 4;
             return fe + a;
         }
+
+        ^^int p;
+        ^int k;
         if(3 == 0)
             return 4;
-        return 3;
+        k = new int;
+        p^ = k;
+        return p^^;
     }
 
-    abba();
+    ^^int abra(^^int p, bool b) { 
+        int x;
+        ^int k = p^;
+        p^ = k;
+        delete k;
+        return p;
+    }
+
+    int ff = 4;
+    ^^int aa;
+
+    abra(aa, false);
     return;
 }
