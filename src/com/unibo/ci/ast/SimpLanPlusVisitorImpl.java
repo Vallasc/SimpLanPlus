@@ -41,7 +41,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Arg visitArg(SimpLanPlusParser.ArgContext ctx) {
-        return (Arg) visitChildren(ctx);
+        return new Arg(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.ID().getText(), (Type) visit(ctx.type()) );
     }
 
     @Override
