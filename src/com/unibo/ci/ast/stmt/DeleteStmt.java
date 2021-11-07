@@ -35,7 +35,7 @@ public class DeleteStmt extends Statement {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Stmt: Remove \"" + id + "\"\n";
+        return indent + "Stmt: delete \"" + id + "\"\n";
     }
 
     @Override

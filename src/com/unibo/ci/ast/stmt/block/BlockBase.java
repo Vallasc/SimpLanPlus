@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.unibo.ci.ast.stmt.CallStmt;
+import com.unibo.ci.ast.stmt.IteStmt;
+import com.unibo.ci.ast.stmt.ReturnStmt;
 import com.unibo.ci.ast.stmt.Statement;
+import com.unibo.ci.ast.dec.Arg;
 import com.unibo.ci.ast.dec.Dec;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
@@ -47,6 +50,24 @@ public class BlockBase extends Block {
 		return errors;
 	}
 
+	public ArrayList<SemanticError> checkSemanticsInjectArgs(Environment env, List<Arg> args) {
+		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
+
+		env.newScope();
+		args.forEach(arg -> {
+			errors.addAll(arg.checkSemantics(env));
+		});
+		declarations.forEach(dec -> {
+			errors.addAll(dec.checkSemantics(env));
+		});
+		statements.forEach(stmt -> {
+			errors.addAll(stmt.checkSemantics(env));
+		});
+		env.exitScope();
+
+		return errors;
+	}
+
 	@Override
 	public String toPrint(String indent) {
 		StringBuilder out = new StringBuilder(indent + "Block\n");
@@ -68,33 +89,29 @@ public class BlockBase extends Block {
 		ArrayList<Type> stmtReturn = new ArrayList<Type>();
 		statements.forEach(stmt -> {
 			Type type = stmt.typeCheck();
-			if(!(stmt instanceof CallStmt)){ 
-				/*DUBBIO DI SHIMO: perché controlliamo tutti gli statement tranne le call? Non ci interessano solo gli statement 'return'?*/
+			//System.out.println("DEBUG blockbase: type " + type);
+			if( type != null && (stmt instanceof IteStmt || stmt instanceof ReturnStmt || stmt instanceof BlockBase) ) { 
 				stmtReturn.add(type);
 			}
 		});
 
+
+		
 		Type returnType = stmtReturn.stream()
-				.reduce(new TypeVoid(), (accumulator, element) -> {
-					if (accumulator == null) {
-						return null;
-					}
-					if(element instanceof TypeVoid){
+				.reduce(null, (accumulator, element) -> {
+					//System.out.println("DEBUG blockbase stream: element" + element);
+					if(element == null){
 						return accumulator;
 					}
-					if((element instanceof TypeInt || element instanceof TypeBool) 
-						&& (accumulator instanceof TypeVoid || accumulator.equals(element))){
-						/*DUBBIO DI SHIMO: se abbiamo un blocco con tante 'return' semplici (quindi solo valori 'void') 
-						 * l'accumulatore dovrebbe essere void, ma se all'ultimo becchiamo una 'return 3' la reduce() non restituisce 'int'?
-						 * E questo non è un errore? (perchè un blocco restituisce sia void che int) */
-						return element;
-					}
-					return null;
+
+					if((element instanceof TypeInt || element instanceof TypeBool || element instanceof TypeVoid) && 
+							(accumulator != null && !accumulator.equals(element))) {
+							TypeErrorsStorage.add(new TypeError(row, column, "return type mismatch in block element"));
+					} 					
+					return element;
 				});
 
-		if(returnType == null){
-			TypeErrorsStorage.add(new TypeError(row, column, "return type mismatch in block element"));
-		}
+		
 		return returnType;
 	}
 

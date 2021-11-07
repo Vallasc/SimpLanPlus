@@ -20,7 +20,7 @@ public class Main
 
 	public static void main( String[] args) throws Exception
 	{
-		String fileName = "test/prova2.slp";
+		String fileName = "test/test_fun_ite_return.slp";
 
 		FileInputStream is = new FileInputStream(fileName);
 		ANTLRInputStream input = new ANTLRInputStream(is);

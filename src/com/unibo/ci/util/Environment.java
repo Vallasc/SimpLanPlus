@@ -1,16 +1,10 @@
 package com.unibo.ci.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Set;
-import java.util.Map.Entry;
 
-import com.unibo.ci.ast.stmt.ReturnStmt;
-import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
 
@@ -59,18 +53,20 @@ public class Environment {
 		return null;
 	}
 
-	/*public STentry lookupFunction() {
-		for (int i = symTable.size(); i-- > 0;) {
+	public STentry lookupFunction() {
+		for (int i = symTable.size() -2; i >= 0; i--) {
 			ListIterator<STentry> iterator = new ArrayList<STentry>(symTable.get(i).values())
 					.listIterator(symTable.get(i).size());
-			while (iterator.hasPrevious()) {
-				STentry entry = iterator.previous();
-				if (entry.getType() instanceof TypeFunction)
-					return entry;
+
+				while (iterator.hasPrevious()) {
+					STentry entry = iterator.previous();
+					//System.out.println("DEBUG Entry: " + entry.toPrint("*"));
+					if (entry.getType() instanceof TypeFunction)
+						return entry;
 			}
 		}
 		return null;
-	}*/
+	}
 
 	public LinkedList<LinkedHashMap<String, STentry>> getSymTable() {
 		return symTable;

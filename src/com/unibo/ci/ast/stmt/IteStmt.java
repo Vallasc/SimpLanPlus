@@ -6,9 +6,9 @@ import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
+import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
-import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.TypeErrorsStorage;
 
@@ -49,30 +49,31 @@ public class IteStmt extends Statement {
     public Type typeCheck() {
         Type expType = exp.typeCheck();
         if (!(expType instanceof TypeBool)) {
-            TypeErrorsStorage.add(new TypeError(super.row, super.column, "if condition must be of" + (new TypeBool()).getTypeName()));
-            return null;
+            TypeErrorsStorage.add(new TypeError(super.row, super.column, "If condition must be of [" + (new TypeBool()).getTypeName() + "]"));
         }
 
         Type thenType = thenStmt.typeCheck();
-        if(thenStmt instanceof CallStmt)
-            thenType = new TypeVoid();
 
-        if(elseStmt != null)
-            return thenType;
-        
+        // Nessun ramo else
+        if(elseStmt == null)
+            return null;
+
         Type elseType = elseStmt.typeCheck();  
-        if(elseStmt instanceof CallStmt)
-            elseType = new TypeVoid();
+
+        // Posso avere solo return, blocchi o altri ite
+        if(!(thenStmt instanceof ReturnStmt || thenStmt instanceof BlockBase || thenStmt instanceof IteStmt))
+            return null;
+        if(!(elseStmt instanceof ReturnStmt || elseStmt instanceof BlockBase || elseStmt instanceof IteStmt))
+            return null;
+        
+
+        if(elseType == null || thenType == null)
+            return null;
 
         if(elseType.equals(thenType))
             return thenType;
-        
-        if(thenType instanceof TypeVoid)
-            return elseType;
-        if(elseType instanceof TypeVoid)
-            return thenType;
-
-        TypeErrorsStorage.add(new TypeError(super.row, super.column, "Type braches mismatch"));
+    
+        TypeErrorsStorage.add(new TypeError(super.row, super.column, "Braches types mismatch"));
         return null;
     }
 

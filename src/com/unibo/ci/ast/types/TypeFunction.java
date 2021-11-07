@@ -10,7 +10,7 @@ public class TypeFunction extends Type{
 	private List<Arg> arguments;
 	
 	public TypeFunction(int row, int column, String typeName, int dimension, Type returnType, List<Arg> arguments) {
-		super(row, column, typeName, dimension);
+		super(row, column, "FUNCTION", dimension);
 		this.returnType = returnType;
 		this.arguments = arguments;
 	}

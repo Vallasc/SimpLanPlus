@@ -28,7 +28,7 @@ public class VarExp extends LhsExp {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 		stEntry = env.lookupSTentry(id);
 		if (stEntry == null)
-			errors.add(new SemanticError(row, column, "var " + id + " does not exist"));
+			errors.add(new SemanticError(row, column, "var [" + id + "] does not exist"));
 		return errors;
     }
 

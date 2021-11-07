@@ -58,10 +58,13 @@ public class CallStmt extends Exp {
     public ArrayList<SemanticError> checkSemantics(Environment env) {
     	
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-        if( env.lookup(id) == null ){
+        entry = env.lookupSTentry(id);
+        if( entry == null ){
             errors.add(new SemanticError(super.column, super.row, 
             "Function " + id + " not declared."));
+            return errors;
         }
+         
         
         // Controllo numero e tipi dei parametri dato entry
         TypeFunction stmTypeFun = ((TypeFunction)(entry.getType()));
