@@ -1,0 +1,25 @@
+{
+    int abba2(int a, int b){ 
+        if(3 == 0)
+            return a;
+        return b;
+    }
+
+    int abba(){ 
+        int ff;
+        int abba(int a){
+            int abba(int a){
+                int fe = 4;
+                return fe + a;
+            }
+            int fe = 4;
+            return fe + a;
+        }
+        if(3 == 0)
+            return 4;
+        return 3;
+    }
+
+    abba();
+    return;
+}
