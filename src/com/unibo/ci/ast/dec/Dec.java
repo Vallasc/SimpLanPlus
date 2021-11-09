@@ -6,6 +6,7 @@ import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.SigmaEnv;
 
 public abstract class Dec extends Node {
     protected final Type type;
@@ -23,7 +24,7 @@ public abstract class Dec extends Node {
     }
     
     @Override
-	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}

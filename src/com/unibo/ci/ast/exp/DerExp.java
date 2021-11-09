@@ -8,6 +8,8 @@ import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
 public class DerExp extends LhsExp {
@@ -26,7 +28,7 @@ public class DerExp extends LhsExp {
 
     
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 		return child.checkSemantics(env);
     }
 
@@ -56,7 +58,7 @@ public class DerExp extends LhsExp {
     }
 
 	@Override
-	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}

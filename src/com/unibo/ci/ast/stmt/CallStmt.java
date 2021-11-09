@@ -11,8 +11,13 @@ import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.STentry;
+<<<<<<< HEAD
 import com.unibo.ci.util.TypeErrorsStorage;
+=======
+import com.unibo.ci.util.SigmaEnv;
+>>>>>>> analisi_effetti
 
 public class CallStmt extends Exp {
 
@@ -80,7 +85,7 @@ public class CallStmt extends Exp {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
     	
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         entry = env.lookupSTentry(id);
@@ -110,7 +115,7 @@ public class CallStmt extends Exp {
     }
 
 	@Override
-	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}

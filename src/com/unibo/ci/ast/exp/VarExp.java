@@ -6,7 +6,9 @@ import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.STentry;
+import com.unibo.ci.util.SigmaEnv;
 
 public class VarExp extends LhsExp {
     private final String id;
@@ -24,9 +26,9 @@ public class VarExp extends LhsExp {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-		stEntry = env.lookupSTentry(id);
+		stEntry = env.lookup(id);
 		if (stEntry == null)
 			errors.add(new SemanticError(row, column, "var [" + id + "] does not exist"));
 		return errors;
@@ -51,7 +53,7 @@ public class VarExp extends LhsExp {
     }
 
 	@Override
-	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}

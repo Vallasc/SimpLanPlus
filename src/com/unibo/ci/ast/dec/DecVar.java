@@ -8,8 +8,9 @@ import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.Environment.DuplicateEntryException;
+import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
-import com.unibo.ci.util.Environment.DuplicateSTEntryException;
 
 public class DecVar extends Dec {
     private final Exp exp;
@@ -29,13 +30,14 @@ public class DecVar extends Dec {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         if(exp != null)
             errors.addAll(exp.checkSemantics(env));
         try {
             env.addDeclaration(id, type);
-        } catch (DuplicateSTEntryException e) {
+
+        } catch (DuplicateEntryException e) {
             // Aggiungere anche la riga e la colonna nel messaggio di errore
             errors.add(new SemanticError(row, column, "Already declared [" + id + "]"));
         }

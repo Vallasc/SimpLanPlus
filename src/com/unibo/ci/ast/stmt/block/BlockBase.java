@@ -17,6 +17,8 @@ import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
 /**
@@ -33,7 +35,7 @@ public class BlockBase extends Block {
 	}
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
 		env.newScope();
@@ -122,7 +124,7 @@ public class BlockBase extends Block {
 	}
 
 	@Override
-	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}

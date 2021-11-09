@@ -7,7 +7,9 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
-import com.unibo.ci.util.Environment.DuplicateSTEntryException;
+import com.unibo.ci.util.Environment.DuplicateEntryException;
+import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.util.TypeErrorsStorage;
@@ -45,7 +47,7 @@ public class DecFun extends Dec {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 
         ArrayList<SemanticError> semanticErrors = new ArrayList<SemanticError>();
         try {
@@ -55,7 +57,7 @@ public class DecFun extends Dec {
 
             // Nota: type dovrebbe essere T_1, ..., T_n -> T
 
-        } catch (DuplicateSTEntryException e) {
+        } catch (DuplicateEntryException e) {
             SemanticError error = new SemanticError(row, column, "Already declared [" + id + "]");
             semanticErrors.add(error);
             // return semanticErrors;

@@ -8,50 +8,48 @@ import java.util.ListIterator;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
 
-public class Environment {
 
-	private LinkedList<LinkedHashMap<String, STentry>> symTable = new LinkedList<LinkedHashMap<String, STentry>>();
-	private int nestingLevel = -1;
-	private int offset = 0; // TODO VEDERE COME FUNZIONA OFFSET
+
+public abstract class Environment <T> {
+
+	LinkedList<LinkedHashMap<String, T>> table;
+	int nestingLevel; 
+	int offset; // TODO VEDERE COME FUNZIONA OFFSET
 
 	// Extends the symbol table with a new scope
 	public void newScope() {
 		nestingLevel++;
-		symTable.add(new LinkedHashMap<String, STentry>());
+		table.add(new LinkedHashMap<String, T>());
 	}
 
 	// Remove the last scope
 	public void exitScope() {
 		nestingLevel--;
-		symTable.removeLast();
+		table.removeLast();
 	}
 
 	// If there is no clash of names, adds id ⟼ t to st
-	public void addDeclaration(String id, Type type) throws DuplicateSTEntryException {
-		STentry value = symTable.getLast().get(id);
-		// There is already an entry
-		if (value != null)
-			throw new DuplicateSTEntryException();
-		symTable.getLast().put(id, new STentry(id, type, nestingLevel, offset++));
-	}
+	//T può essere STEntry o un effetto
+	/*public abstract void addDeclaration (String id, <? extends Entry> type) throws DuplicateEntryException ; /* { 
+		// public void addDeclaration(String id, Type type) throws DuplicateSTEntryException {
+			T value = table.getLast().get(id);
+			// There is already an entry
+			if (value != null)
+				throw new DuplicateEntryException();
+			symTable.getLast().put(id, new );
+		}*/
 
-	// Looks for the type of id in symbol table, if there is any
-	public Type lookup(String id) {
-		for (int i = symTable.size(); i-- > 0;) {
-			STentry entry = symTable.get(i).get(id);
+	// Looks for the entry of id in symbol/effect table, if there is any
+	public T lookup(String id) {
+		for (int i = table.size(); i-- > 0;) {
+			T entry = table.get(i).get(id);
 			if (entry != null) {
-				return entry.getType();
+				
+				return entry ; //.getType();
 			}
 		}
 		return null;
-	}
-
-	public STentry lookupSTentry(String id) {
-		for (int i = symTable.size(); i-- > 0;) {
-			return symTable.get(i).get(id);
-		}
-		return null;
-	}
+	} 
 
 	public STentry lookupFunction() {
 		for (int i = symTable.size() -2; i >= 0; i--) {
@@ -68,21 +66,11 @@ public class Environment {
 		return null;
 	}
 
-	public LinkedList<LinkedHashMap<String, STentry>> getSymTable() {
-		return symTable;
-	}
+	public LinkedList<LinkedHashMap<String, T>> getTable(){
+		return this.table;
+	};
 
-	public String toPrint(String indent) {
-		StringBuilder sb = new StringBuilder(indent + "Symbol table:\n");
-		sb.append(indent + "---------------------------\n");
-		symTable.forEach(scope -> {
-			scope.forEach((id, entry) -> {
-				sb.append(entry.toPrint(indent));
-			});
-			sb.append("---------------------------\n");
-		});
-		return sb.toString();
-	}
+	public abstract String toPrint(String indent);
 
 	/*
 	 * public void setSymTable(LinkedList<HashMap<String, STentry>> symTable) {
@@ -98,7 +86,9 @@ public class Environment {
 	 * public void setOffset(int offset) { this.offset = offset; }
 	 */
 
-	public class DuplicateSTEntryException extends Exception {
+	public static class DuplicateEntryException extends Exception {
+		
 	}
+
 
 }
