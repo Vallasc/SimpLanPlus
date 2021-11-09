@@ -10,6 +10,7 @@ import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.STentry;
+import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
 public class DeleteStmt extends Statement {
@@ -60,7 +61,7 @@ public class DeleteStmt extends Statement {
     }
 
     @Override
-    public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+    public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -6,6 +6,8 @@ import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.SigmaEnv;
 
 public abstract class Type extends Node{
 
@@ -37,7 +39,7 @@ public abstract class Type extends Node{
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         return new ArrayList<SemanticError>();
     }
     
@@ -53,7 +55,7 @@ public abstract class Type extends Node{
     }
     
     @Override
-	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}

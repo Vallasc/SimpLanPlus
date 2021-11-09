@@ -8,6 +8,8 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.*;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
 public class NotExp extends Exp {
@@ -26,7 +28,7 @@ public class NotExp extends Exp {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         return child.checkSemantics(env);
     }
 
@@ -47,7 +49,7 @@ public class NotExp extends Exp {
     }
 
 	@Override
-	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}

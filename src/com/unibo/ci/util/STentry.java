@@ -2,35 +2,12 @@ package com.unibo.ci.util;
 
 import com.unibo.ci.ast.types.Type;
 
-public class STentry {
-
-    private final int nestLevel;
-    private final Type type;
-    private final String id;
-    private final int offset;
+public class STentry extends Entry<Type> {
 
     public STentry(String id, Type type, int nestLevel, int offset) {
-        this.nestLevel = nestLevel;
-        this.offset = offset;
-        this.type = type;
-        this.id = id;
+    	super(id, type, nestLevel, offset);
     }
 
-    public Type getType() {
-        return type;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public int getNestinglevel() {
-        return nestLevel;
-    }
-
-    public String getId() {
-        return id;
-    }
 
     public String toPrint(String indent) {
         return indent + "STentry:\n" + indent + "\tNesting Level: " + nestLevel + "\n" + indent + "\tId: \"" + this.id

@@ -5,6 +5,8 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.SigmaEnv;
 
 public abstract class Node {
     protected final int row;
@@ -24,9 +26,9 @@ public abstract class Node {
 
     public abstract String codeGeneration();
 
-    public abstract ArrayList<SemanticError> checkSemantics(Environment env);
+    public abstract ArrayList<SemanticError> checkSemantics(GammaEnv env);
     
-    public abstract ArrayList<EffectError> AnalyzeEffect(Environment env);
+    public abstract ArrayList<EffectError> AnalyzeEffect(SigmaEnv env);
 
     public int getRow() {
         return row;

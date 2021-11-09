@@ -10,7 +10,9 @@ import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.STentry;
+import com.unibo.ci.util.SigmaEnv;
 
 public class CallStmt extends Exp {
 
@@ -55,7 +57,7 @@ public class CallStmt extends Exp {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
     	
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         if( env.lookup(id) == null ){
@@ -100,7 +102,7 @@ public class CallStmt extends Exp {
     }
 
 	@Override
-	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}

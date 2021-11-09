@@ -12,7 +12,9 @@ import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.STentry;
+import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
 // tipo ritorno = tipo funzione
@@ -34,12 +36,12 @@ public class ReturnStmt extends Statement {
     }
 
     @Override
-    public ArrayList<SemanticError> checkSemantics(Environment env) {
+    public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
         exp.checkSemantics(env);
 
-        funStEntry = env.lookupFunction();
+        funStEntry = env.lookupFunction(); 
         /*
          * Non concesso nel main { return; }
          */
@@ -83,7 +85,7 @@ public class ReturnStmt extends Statement {
     }
 
 	@Override
-	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}

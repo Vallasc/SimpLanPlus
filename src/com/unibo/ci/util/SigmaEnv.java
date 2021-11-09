@@ -3,7 +3,7 @@ package com.unibo.ci.util;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-public class SigmaEnv extends Environment<STentry>{
+public class SigmaEnv extends Environment<EEntry>{
 
 
     public SigmaEnv(){
@@ -11,7 +11,7 @@ public class SigmaEnv extends Environment<STentry>{
         offset = 0;
     }
 
-    public LinkedList<LinkedHashMap<String, STentry>> getTable(){
+    public LinkedList<LinkedHashMap<String, EEntry>> getTable(){
         return super.getTable();
     }	
 
@@ -27,17 +27,17 @@ public class SigmaEnv extends Environment<STentry>{
 
 	// If there is no clash of names, adds id ⟼ t to st
 	public void addDeclaration(String id, EffectHelper.ETypes type) throws DuplicateEntryException { 
-		STentry value = table.getLast().get(id);
+		EEntry value = table.getLast().get(id);
 		// There is already an entry
 		if (value != null)
 			throw new DuplicateEntryException();
-		table.getLast().put(id, new EEntry(id, EffectHelper.ETypes, nestingLevel, offset));
+		table.getLast().put(id, new EEntry(id, type, nestingLevel, offset));
 	}
 	
 	
 
 	// Looks for the entry of id in symbol/effect table, if there is any
-	public STentry lookup(String id) {
+	public EEntry lookup(String id) {
 		return super.lookup(id);
 	}
 

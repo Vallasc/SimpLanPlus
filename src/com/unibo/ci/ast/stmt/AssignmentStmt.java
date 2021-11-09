@@ -10,6 +10,8 @@ import com.unibo.ci.ast.exp.LhsExp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
 /**
@@ -36,7 +38,7 @@ public class AssignmentStmt extends Statement {
     }
 
 	@Override
-	public ArrayList<SemanticError> checkSemantics(Environment env) {
+	public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 		errors.addAll(left.checkSemantics(env));
 		errors.addAll(exp.checkSemantics(env));
@@ -65,7 +67,7 @@ public class AssignmentStmt extends Statement {
 	}
 
 	@Override
-	public ArrayList<EffectError> AnalyzeEffect(Environment env) {
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}
