@@ -16,6 +16,10 @@ public abstract class Environment <T> {
 	int nestingLevel; 
 	int offset; // TODO VEDERE COME FUNZIONA OFFSET
 
+	public Environment() {
+		this.table = new LinkedList<LinkedHashMap<String, T>>();
+	}
+	
 	// Extends the symbol table with a new scope
 	public void newScope() {
 		nestingLevel++;
@@ -51,21 +55,7 @@ public abstract class Environment <T> {
 		return null;
 	} 
 
-	public STentry lookupFunction() {
-		for (int i = symTable.size() -2; i >= 0; i--) {
-			ListIterator<STentry> iterator = new ArrayList<STentry>(symTable.get(i).values())
-					.listIterator(symTable.get(i).size());
-
-				while (iterator.hasPrevious()) {
-					STentry entry = iterator.previous();
-					//System.out.println("DEBUG Entry: " + entry.toPrint("*"));
-					if (entry.getType() instanceof TypeFunction)
-						return entry;
-			}
-		}
-		return null;
-	}
-
+	
 	public LinkedList<LinkedHashMap<String, T>> getTable(){
 		return this.table;
 	};

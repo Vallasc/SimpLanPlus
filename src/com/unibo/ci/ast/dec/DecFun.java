@@ -46,7 +46,7 @@ public class DecFun extends Dec {
         return sb.toString();
     }
 
-    @Override
+    @Override 
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 
         ArrayList<SemanticError> semanticErrors = new ArrayList<SemanticError>();

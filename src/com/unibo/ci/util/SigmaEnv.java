@@ -1,12 +1,17 @@
 package com.unibo.ci.util;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.ListIterator;
+
+import com.unibo.ci.ast.types.TypeFunction;
 
 public class SigmaEnv extends Environment<EEntry>{
 
 
     public SigmaEnv(){
+    	super();
         nestingLevel = -1;
         offset = 0;
     }
@@ -54,7 +59,7 @@ public class SigmaEnv extends Environment<EEntry>{
 		return null;
 	}*/
 
-
+	
     @Override
     public String toPrint(String indent) {
         // TODO Auto-generated method stub

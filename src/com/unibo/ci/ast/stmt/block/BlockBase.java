@@ -52,7 +52,7 @@ public class BlockBase extends Block {
 		return errors;
 	}
 
-	public ArrayList<SemanticError> checkSemanticsInjectArgs(Environment env, List<Arg> args) {
+	public ArrayList<SemanticError> checkSemanticsInjectArgs(GammaEnv env, List<Arg> args) {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
 		env.newScope();

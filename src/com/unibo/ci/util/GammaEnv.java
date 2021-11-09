@@ -19,6 +19,7 @@ import com.unibo.ci.util.Environment;
 public class GammaEnv extends Environment<STentry>  {	
 
     public GammaEnv(){
+    	super();
         nestingLevel = -1;
         offset = 0;
     }
@@ -51,6 +52,21 @@ public class GammaEnv extends Environment<STentry>  {
 	// Looks for the entry of id in symbol/effect table, if there is any
 	public STentry lookup(String id) {
 		return super.lookup(id);
+	}
+	
+	public STentry lookupFunction() {
+		for (int i = table.size() -2; i >= 0; i--) {
+			ListIterator<STentry> iterator = new ArrayList<STentry>(table.get(i).values())
+					.listIterator(table.get(i).size());
+
+				while (iterator.hasPrevious()) {
+					STentry entry = iterator.previous();
+					//System.out.println("DEBUG Entry: " + entry.toPrint("*"));
+					if (entry.getType() instanceof TypeFunction)
+						return entry;
+			}
+		}
+		return null;
 	}
 
 	/*public STentry lookupFunction() {

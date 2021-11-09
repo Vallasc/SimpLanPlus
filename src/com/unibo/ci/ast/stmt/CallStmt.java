@@ -85,7 +85,7 @@ public class CallStmt extends Exp {
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
     	
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-        entry = env.lookupSTentry(id);
+        entry = env.lookup(id);
         if( entry == null ){
             errors.add(new SemanticError(super.row, super.column, 
                 "Function [" + id + "] not declared"));
