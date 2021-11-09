@@ -6,6 +6,7 @@ import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.util.EffectHelper;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
@@ -55,11 +56,35 @@ public class Arg extends Node {
         return null;
     }
 
+    /*   
+     * 
+     *        ids(e)={x_1 ,..., x_n }
+     * ------------------------------------- [Exp-e]
+     *  ∑ ⊢ e : ∑ ⊳[x_1 ⟼ rw,..., x_n ⟼ rw]
+     *  
+     * */
     
     @Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
+
+    	ArrayList<EffectError> errors = null;
+    	
+    	//TODO possiamo ridichiarare una variabile cancellata?
+    	//TODO come gestiamo 'int x;' e 'int x = 5;'? (dichiarazione vs dichiarazione e assegnamento)
+    	// (perché nell'altro progetto hanno dichiarazione e espressione, che può essere null nel primo caso e != da null nel secondo)
+    	
+		try {
+			env.addDeclaration(id, EffectHelper.ETypes.BOT); //TODO abbiamo la duplicate exception per gli effetti?
+		} catch(Exception e) {
+			e.printStackTrace();
+			errors = new ArrayList<EffectError>();
+			errors.add(new EffectError(column, column, "TODO"));
+		}
+		
+		return errors;
+		
+		
+	
 	}
 
 

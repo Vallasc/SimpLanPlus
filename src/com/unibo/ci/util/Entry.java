@@ -3,7 +3,7 @@ package com.unibo.ci.util;
 public abstract class Entry<T> {
     
 	final int nestLevel;
-    final T type;
+    T type;
     final String id;
     final int offset;
 	

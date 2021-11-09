@@ -14,4 +14,8 @@ public class EEntry extends Entry<ETypes> {
                 + "\"\n" + indent + "Effect: " + type + "\n" + indent + "\tOffset: \"" + this.offset + "\"\n";
     };
 
+    public void updateEffectType(ETypes type) {
+    	this.type = type;
+    }
+    
 }

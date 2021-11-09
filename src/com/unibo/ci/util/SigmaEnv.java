@@ -46,19 +46,7 @@ public class SigmaEnv extends Environment<EEntry>{
 		return super.lookup(id);
 	}
 
-	/*public STentry lookupFunction() {
-		for (int i = symTable.size(); i-- > 0;) {
-			ListIterator<STentry> iterator = new ArrayList<STentry>(symTable.get(i).values())
-					.listIterator(symTable.get(i).size());
-			while (iterator.hasPrevious()) {
-				STentry entry = iterator.previous();
-				if (entry.getType() instanceof TypeFunction)
-					return entry;
-			}
-		}
-		return null;
-	}*/
-
+	
 	
     @Override
     public String toPrint(String indent) {
