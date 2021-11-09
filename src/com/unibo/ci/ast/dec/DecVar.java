@@ -10,7 +10,14 @@ import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
+import com.unibo.ci.util.EffectHelper;
+import com.unibo.ci.util.EEntry;
+import com.unibo.ci.util.EffectHelper.ETypes;
+import com.unibo.ci.ast.errors.EffectError;
+
+
 
 public class DecVar extends Dec {
     private final Exp exp;
@@ -84,5 +91,38 @@ public class DecVar extends Dec {
         return null;
     }
 
+/*   
+     * 
+     *       ids(e)={x_1 ,..., x_n }
+     * ------------------------------------------ [Exp-e]
+     *   ∑ ⊢ e : ∑ ⊳ [x_1 ⟼ rw,..., x_n ⟼ rw] 
+     *  
+     * */
+    
+    @Override
+	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+
+    	ArrayList<EffectError> errors = new ArrayList<EffectError>();
+        EEntry entry = env.lookup(id);
+        
+        if (entry == null) //entry non c'è
+            env.addDeclaration(id, EffectHelper.ETypes.BOT);
+        else { //entry c'è già ma la variabile è stata cancellata
+            if (entry.getEtype() == EffectHelper.ETypes.D) {
+                env.lookup(id).updateEffectType(EffectHelper.ETypes.BOT);
+            } else { //la variabile non è stata cancellata
+                env.lookup(id).updateEffectType(EffectHelper.ETypes.T);
+                errors.add(new EffectError(row, column, "Variable " + id + " already declared"));
+            }
+        }
+        
+        if (exp != null){
+            errors.addAll(exp.AnalyzeEffect(env));
+            env.lookup(id).updateEffectType(EffectHelper.seq(env.lookup(id).getEtype(), ETypes.RW));
+        }
+    
+		return errors;
+		
+	}
 
 }

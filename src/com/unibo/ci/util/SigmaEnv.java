@@ -31,11 +31,7 @@ public class SigmaEnv extends Environment<EEntry>{
 	}
 
 	// If there is no clash of names, adds id ⟼ t to st
-	public void addDeclaration(String id, EffectHelper.ETypes type) throws DuplicateEntryException { 
-		EEntry value = table.getLast().get(id);
-		// There is already an entry
-		if (value != null)
-			throw new DuplicateEntryException();
+	public void addDeclaration(String id, EffectHelper.ETypes type) { 
 		table.getLast().put(id, new EEntry(id, type, nestingLevel, offset));
 	}
 	

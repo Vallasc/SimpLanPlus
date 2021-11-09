@@ -45,8 +45,7 @@ public class ValExp extends Exp {
 
 	@Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<EffectError>();
 	}
     
 }

@@ -1,0 +1,6 @@
+{
+    ^int x;
+    delete x;
+    int x = 6;
+    
+}

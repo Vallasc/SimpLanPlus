@@ -14,10 +14,6 @@ public abstract class Entry<T> {
         this.id = id;
     }
 
-	public T getType() {
-        return type;
-    }
-
     public int getOffset() {
         return offset;
     }

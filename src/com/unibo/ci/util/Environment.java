@@ -55,6 +55,19 @@ public abstract class Environment <T> {
 		return null;
 	} 
 
+	public T lookupFunction() {
+			for (int i = table.size() - 2; i >= 0; i--) {
+				ListIterator<T> iterator = new ArrayList<T>(table.get(i).values()).listIterator(table.get(i).size());
+
+				while (iterator.hasPrevious()) {
+					T entry = iterator.previous();
+					// System.out.println("DEBUG Entry: " + entry.toPrint("*"));
+					// if (entry.getType() instanceof TypeFunction)
+					// return entry;
+				}
+			}
+			return null;
+	}
 	
 	public LinkedList<LinkedHashMap<String, T>> getTable(){
 		return this.table;

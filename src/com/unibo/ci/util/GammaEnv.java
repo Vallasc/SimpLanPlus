@@ -14,6 +14,7 @@ import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.STentry;
 
 
 public class GammaEnv extends Environment<STentry>  {	

@@ -14,4 +14,8 @@ public class STentry extends Entry<Type> {
                 + "\"\n" + type.toPrint(indent + "\t") + indent + "\tOffset: \"" + this.offset + "\"\n";
     }
 
+    public Type getType() {
+        return super.type;
+    }
+
 }

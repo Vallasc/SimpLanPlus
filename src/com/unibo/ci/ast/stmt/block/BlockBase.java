@@ -125,8 +125,20 @@ public class BlockBase extends Block {
 
 	@Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<EffectError> errors = new ArrayList<EffectError>();
+		
+		env.newScope();
+		declarations.forEach( dec -> {
+			errors.addAll(dec.AnalyzeEffect(env));
+		});
+
+		statements.forEach(stmt -> {
+			errors.addAll(stmt.AnalyzeEffect(env));
+		});
+		
+		env.exitScope();
+
+		return errors;
 	}
 
 }

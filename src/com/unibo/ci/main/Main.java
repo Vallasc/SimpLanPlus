@@ -7,11 +7,13 @@ import java.io.FileInputStream;
 import java.util.logging.Logger;
 
 import com.unibo.ci.ast.*;
+import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.types.*;
 import com.unibo.ci.listeners.SyntaxErrorListener;
 import com.unibo.ci.parser.*;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
 public class Main
@@ -21,7 +23,8 @@ public class Main
 
 	public static void main( String[] args) throws Exception
 	{
-		String fileName = "test/test_fun_ite_return.slp";
+		//String fileName = "test/test_fun_ite_return.slp";
+		String fileName = "test/effect.slp";
 
 		FileInputStream is = new FileInputStream(fileName);
 		ANTLRInputStream input = new ANTLRInputStream(is);
@@ -49,6 +52,7 @@ public class Main
 		System.out.println("AST three: \n" + ast.toPrint("\t"));
 
 		GammaEnv env = new GammaEnv();
+		SigmaEnv effects_env = new SigmaEnv();
 		
 		ast.checkSemantics(env).forEach(semnErr -> {
 			System.out.println("Semantic error " + semnErr.row + ", " + semnErr.col + ": " + semnErr.desc);
@@ -57,7 +61,17 @@ public class Main
 		TypeErrorsStorage.getErrorList().forEach(typeErr -> {
 			System.out.println("Type error " + typeErr.row + ", " + typeErr.col + ": " + typeErr.desc);
 		});
+
+		if (ast.AnalyzeEffect(effects_env) != null) //TODO togli questo if - tutti gli analyze effect devono restituire una lista != null
+			ast.AnalyzeEffect(effects_env).forEach( effectErr -> {
+				System.out.println("Effect error " + effectErr.row + ", " + effectErr.col + ": " + effectErr.desc);
+			});
+		else {
+			System.out.println("Non ho trovato errori sugli effetti");
+		}
 		
+
+
 		System.out.println("Programma terminato");
 		
 		
