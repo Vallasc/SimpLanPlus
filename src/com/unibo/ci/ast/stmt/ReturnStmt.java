@@ -37,22 +37,9 @@ public class ReturnStmt extends Statement {
     @Override
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-<<<<<<< HEAD
         stEntry = env.lookupFunction();
         if(exp != null)
             errors.addAll(exp.checkSemantics(env));
-=======
-
-        exp.checkSemantics(env);
-
-        funStEntry = env.lookupFunction(); 
-        /*
-         * Non concesso nel main { return; }
-         */
-        if (funStEntry == null) {
-            errors.add(new SemanticError(super.column, super.row, "No function to return."));
-        }
->>>>>>> analisi_effetti
         return errors;
     }
 
@@ -81,18 +68,10 @@ public class ReturnStmt extends Statement {
         return null;
     }
 
-<<<<<<< HEAD
-    @Override
-    public ArrayList<EffectError> AnalyzeEffect(Environment env) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-=======
 	@Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		// TODO Auto-generated method stub
 		return null;
 	}
->>>>>>> analisi_effetti
 
 }

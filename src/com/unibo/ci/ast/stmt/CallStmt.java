@@ -13,11 +13,8 @@ import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.STentry;
-<<<<<<< HEAD
 import com.unibo.ci.util.TypeErrorsStorage;
-=======
 import com.unibo.ci.util.SigmaEnv;
->>>>>>> analisi_effetti
 
 public class CallStmt extends Exp {
 
