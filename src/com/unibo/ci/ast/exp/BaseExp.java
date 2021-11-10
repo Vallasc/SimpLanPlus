@@ -27,7 +27,7 @@ public class BaseExp extends Exp {
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         return child.checkSemantics(env);
     }
-    
+
     @Override
     public Type typeCheck() {
         return child.typeCheck();
@@ -39,10 +39,9 @@ public class BaseExp extends Exp {
         return null;
     }
 
-	@Override
-	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    @Override
+    public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+        return child.AnalyzeEffect(env);
+    }
+    
 }

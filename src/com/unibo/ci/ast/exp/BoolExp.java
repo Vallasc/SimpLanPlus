@@ -6,7 +6,6 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.SigmaEnv;
 
@@ -44,10 +43,9 @@ public class BoolExp extends Exp {
         return null;
     }
 
-	@Override
-	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
+    @Override
+    public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+        return new ArrayList<EffectError>();
+    }
+
 }

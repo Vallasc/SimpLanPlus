@@ -16,13 +16,14 @@
             int fe = 4;
             return fe + a;
         }
-
+       
         ^^int p;
         ^int k;
         if(3 == 0)
             return 4;
         k = new int;
         p^ = k;
+        abba(ff);
         return p^^;
     }
 

@@ -26,10 +26,13 @@ public abstract class BinExp extends Exp {
         leftErrors.addAll(rightErrors);
         return leftErrors;
     }
-    
-	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
-	}
- 
+
+    public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+        ArrayList<EffectError> toRet = new ArrayList<EffectError>();
+        toRet.addAll(left.AnalyzeEffect(env));
+        toRet.addAll(right.AnalyzeEffect(env));
+
+        return toRet;
+    }
+
 }

@@ -15,7 +15,7 @@ import com.unibo.ci.util.TypeErrorsStorage;
  * Neg Expression
  */
 public class NegExp extends Exp {
-    
+
     private final Exp child;
 
     public NegExp(int row, int column, Exp child) {
@@ -25,8 +25,7 @@ public class NegExp extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Exp: Neg\n" + 
-                child.toPrint(indent + "\t");
+        return indent + "Exp: Neg\n" + child.toPrint(indent + "\t");
     }
 
     @Override
@@ -37,9 +36,9 @@ public class NegExp extends Exp {
     @Override
     public Type typeCheck() {
         Type childType = child.typeCheck();
-        if(!(childType instanceof TypeBool)){
-            TypeErrorsStorage.add(
-                new TypeError(super.row, super.column, "expecting type  [" + (new TypeBool()).getTypeName() + "], found [" + childType.getTypeName() + "]"));
+        if (!(childType instanceof TypeBool)) {
+            TypeErrorsStorage.add(new TypeError(super.row, super.column, "expecting type  ["
+                    + (new TypeBool()).getTypeName() + "], found [" + childType.getTypeName() + "]"));
             return null;
         }
         return childType;
@@ -51,10 +50,9 @@ public class NegExp extends Exp {
         return null;
     }
 
-	@Override
-	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
+    @Override
+    public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+        return child.AnalyzeEffect(env);
+    }
+
 }

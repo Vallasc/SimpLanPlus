@@ -22,24 +22,22 @@ public class DerExp extends LhsExp {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Exp: Der\n" + 
-                child.toPrint(indent + "\t");
+        return indent + "Exp: Der\n" + child.toPrint(indent + "\t");
     }
 
-    
     @Override
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
-		return child.checkSemantics(env);
+        return child.checkSemantics(env);
     }
 
     @Override
-    public Type typeCheck() { 
+    public Type typeCheck() {
         Type returnType = child.typeCheck();
-        if(returnType == null){
+        if (returnType == null) {
             return null;
         }
-        
-        if( !(returnType instanceof TypePointer)){
+
+        if (!(returnType instanceof TypePointer)) {
             TypeErrorsStorage.add(new TypeError(row, column, "Dereferencing error"));
             return null;
         }
@@ -57,10 +55,9 @@ public class DerExp extends LhsExp {
         return child.getVarId();
     }
 
-	@Override
-	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+        return child.AnalyzeEffect(env);
+    }
 
 }

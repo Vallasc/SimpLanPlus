@@ -23,8 +23,7 @@ public class NotExp extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Exp: Not\n" + 
-                child.toPrint(indent + "\t");
+        return indent + "Exp: Not\n" + child.toPrint(indent + "\t");
     }
 
     @Override
@@ -35,9 +34,9 @@ public class NotExp extends Exp {
     @Override
     public Type typeCheck() {
         Type childType = child.typeCheck();
-        if(!(childType instanceof TypeBool)){
-            TypeErrorsStorage.add(
-                new TypeError(super.row, super.column, "expecting type [" + (new TypeBool()).getTypeName() + "] found [" + childType.getTypeName() + "]"));
+        if (!(childType instanceof TypeBool)) {
+            TypeErrorsStorage.add(new TypeError(super.row, super.column,
+                    "expecting type [" + (new TypeBool()).getTypeName() + "] found [" + childType.getTypeName() + "]"));
         }
         return childType;
     }
@@ -48,10 +47,9 @@ public class NotExp extends Exp {
         return null;
     }
 
-	@Override
-	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
+    @Override
+    public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+        return child.AnalyzeEffect(env);
+    }
+
 }

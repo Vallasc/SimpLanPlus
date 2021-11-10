@@ -16,15 +16,13 @@ import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
-public class Main
-{
+public class Main {
 	private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
 	private static SyntaxErrorListener parserErrorsListener;
 
-	public static void main( String[] args) throws Exception
-	{
-		//String fileName = "test/test_fun_ite_return.slp";
-		String fileName = "test/effect.slp";
+	public static void main(String[] args) throws Exception {
+		// String fileName = "test/test_fun_ite_return.slp";
+		String fileName = "test/test_fun_ite_return.slp";
 
 		FileInputStream is = new FileInputStream(fileName);
 		ANTLRInputStream input = new ANTLRInputStream(is);
@@ -37,11 +35,11 @@ public class Main
 		parserErrorsListener = new SyntaxErrorListener(LOGGER);
 		parser.addErrorListener(parserErrorsListener);
 		// Tell the parser to build the AST
-		//parser.setBuildParseTree(true);
+		// parser.setBuildParseTree(true);
 
 		ParseTree tree = parser.block(); // begin parsing at rule 'block'
 
-		if(parserErrorsListener.errorsDetected())
+		if (parserErrorsListener.errorsDetected())
 			System.exit(-1);
 
 		LOGGER.info(tree.toStringTree(parser)); // print LISP-style tre
@@ -53,7 +51,7 @@ public class Main
 
 		GammaEnv env = new GammaEnv();
 		SigmaEnv effects_env = new SigmaEnv();
-		
+
 		ast.checkSemantics(env).forEach(semnErr -> {
 			System.out.println("Semantic error " + semnErr.row + ", " + semnErr.col + ": " + semnErr.desc);
 		});
@@ -62,36 +60,32 @@ public class Main
 			System.out.println("Type error " + typeErr.row + ", " + typeErr.col + ": " + typeErr.desc);
 		});
 
-		if (ast.AnalyzeEffect(effects_env) != null) //TODO togli questo if - tutti gli analyze effect devono restituire una lista != null
-			ast.AnalyzeEffect(effects_env).forEach( effectErr -> {
+		if (ast.AnalyzeEffect(effects_env) != null) // TODO togli questo if - tutti gli analyze effect devono restituire
+													// una lista != null
+			ast.AnalyzeEffect(effects_env).forEach(effectErr -> {
 				System.out.println("Effect error " + effectErr.row + ", " + effectErr.col + ": " + effectErr.desc);
 			});
 		else {
 			System.out.println("Non ho trovato errori sugli effetti");
 		}
-		
-
 
 		System.out.println("Programma terminato");
-		
-		
-		
-		//fase 1: stampare errori lessicali - scoprire come si può fare con antlr in automatico
-		//fase 2: stampare errori semantici - fare a mano nodi dell'AST oppure scoprire come farlo in automatico
-		//fase 3: controllo dei tipi ???
 
-		//TODO se usiamo una variabile non inizializzata, cosa permessa dalla grammatica, il programma crasha
-		//vedi prova.slp
-		
+		// fase 1: stampare errori lessicali - scoprire come si può fare con antlr in
+		// automatico
+		// fase 2: stampare errori semantici - fare a mano nodi dell'AST oppure scoprire
+		// come farlo in automatico
+		// fase 3: controllo dei tipi ???
 
-		/*Type a = new TypePointer(new TypePointer(new TypePointer(new TypeInt())));
-		Type b = new TypePointer(new TypePointer(new TypeInt()));
-		Type c = new TypePointer(new TypePointer(new TypeInt()));
-		LOGGER.info(a.equals(b) + "");*/
+		// TODO se usiamo una variabile non inizializzata, cosa permessa dalla
+		// grammatica, il programma crasha
+		// vedi prova.slp
 
-		
+		/*
+		 * Type a = new TypePointer(new TypePointer(new TypePointer(new TypeInt())));
+		 * Type b = new TypePointer(new TypePointer(new TypeInt())); Type c = new
+		 * TypePointer(new TypePointer(new TypeInt())); LOGGER.info(a.equals(b) + "");
+		 */
+
 	}
 }
-
-
-

@@ -17,8 +17,6 @@ import com.unibo.ci.util.EEntry;
 import com.unibo.ci.util.EffectHelper.ETypes;
 import com.unibo.ci.ast.errors.EffectError;
 
-
-
 public class DecVar extends Dec {
     private final Exp exp;
 
@@ -29,17 +27,15 @@ public class DecVar extends Dec {
 
     @Override
     public String toPrint(String indent) {
-        
-        return indent + "Declaration:\n" + 
-                indent + "\tId: \"" + this.id + "\"\n" + 
-                type.toPrint(indent + "\t") +
-                (exp == null ? "" : exp.toPrint(indent + "\t"));
+
+        return indent + "Declaration:\n" + indent + "\tId: \"" + this.id + "\"\n" + type.toPrint(indent + "\t")
+                + (exp == null ? "" : exp.toPrint(indent + "\t"));
     }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-        if(exp != null)
+        if (exp != null)
             errors.addAll(exp.checkSemantics(env));
         try {
             env.addDeclaration(id, type);
@@ -53,37 +49,32 @@ public class DecVar extends Dec {
 
     @Override
     public Type typeCheck() {
-		if (type instanceof TypeVoid)
-			TypeErrorsStorage.add(new TypeError(row, column, "Variable type cannot be " + type.getTypeName()));
+        if (type instanceof TypeVoid)
+            TypeErrorsStorage.add(new TypeError(row, column, "Variable type cannot be " + type.getTypeName()));
 
-        if( exp == null)
+        if (exp == null)
             return new TypeVoid();
 
         Type expType = exp.typeCheck();
-        if(expType == null)
+        if (expType == null)
             return null;
 
-        if (!type.equals(expType)){
-            TypeErrorsStorage.add( new TypeError(this.exp.getRow(), this.exp.getColumn(), 
-                    "Expression type [" + expType.getTypeName() + "] is not equal to declared type [" + type.getTypeName() + "]"));
+        if (!type.equals(expType)) {
+            TypeErrorsStorage.add(new TypeError(this.exp.getRow(), this.exp.getColumn(), "Expression type ["
+                    + expType.getTypeName() + "] is not equal to declared type [" + type.getTypeName() + "]"));
             return null;
         }
         return new TypeVoid();
     }
-    
-    /*public Type typeCheck2() {
-		Type typeLeft = left.typeCheck();
-		Type typeExp = exp.typeCheck();
-		if(typeExp == null)
-			return null;
 
-		if(!typeLeft.equals(typeExp)){
-			TypeErrorsStorage.add(new TypeError(super.row, super.column, 
-				"cannot assign [" + typeExp.getTypeName() + "] to [" + typeLeft.getTypeName() + "]"));
-			return null;
-		}
-		return new TypeVoid();
-	}*/
+    /*
+     * public Type typeCheck2() { Type typeLeft = left.typeCheck(); Type typeExp =
+     * exp.typeCheck(); if(typeExp == null) return null;
+     * 
+     * if(!typeLeft.equals(typeExp)){ TypeErrorsStorage.add(new TypeError(super.row,
+     * super.column, "cannot assign [" + typeExp.getTypeName() + "] to [" +
+     * typeLeft.getTypeName() + "]")); return null; } return new TypeVoid(); }
+     */
 
     @Override
     public String codeGeneration() {
@@ -91,38 +82,55 @@ public class DecVar extends Dec {
         return null;
     }
 
-/*   
+    /*
      * 
-     *       ids(e)={x_1 ,..., x_n }
-     * ------------------------------------------ [Exp-e]
-     *   ∑ ⊢ e : ∑ ⊳ [x_1 ⟼ rw,..., x_n ⟼ rw] 
-     *  
-     * */
-    
-    @Override
-	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+     * ids(e)={x_1 ,..., x_n } ------------------------------------------ [Exp-e] ∑
+     * ⊢ e : ∑ ⊳ [x_1 ⟼ rw,..., x_n ⟼ rw]
+     * 
+     */
 
-    	ArrayList<EffectError> errors = new ArrayList<EffectError>();
+    @Override
+    public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+
+        ArrayList<EffectError> errors = new ArrayList<EffectError>();
         EEntry entry = env.lookup(id);
-        
-        if (entry == null) //entry non c'è
+
+        /*
+         * ^^int xy; xy = ^int x; delete x; xy = x;
+         * 
+         * ^int x; [ x -> BOTTOM]
+         * 
+         * 
+         * 
+         * ^int x = 5; ^int x;
+         */
+
+        if (entry == null) // entry non c'è
             env.addDeclaration(id, EffectHelper.ETypes.BOT);
-        else { //entry c'è già ma la variabile è stata cancellata
-            if (entry.getEtype() == EffectHelper.ETypes.D) {
-                env.lookup(id).updateEffectType(EffectHelper.ETypes.BOT);
-            } else { //la variabile non è stata cancellata
-                env.lookup(id).updateEffectType(EffectHelper.ETypes.T);
-                errors.add(new EffectError(row, column, "Variable " + id + " already declared"));
-            }
-        }
-        
-        if (exp != null){
+
+        /*
+         * else { env.lookup(id).updateEffectType(EffectHelper.ETypes.T); errors.add(new
+         * EffectError(row, column, "Variable " + id + " already declared")); }
+         */
+
+        if (exp != null) {
             errors.addAll(exp.AnalyzeEffect(env));
             env.lookup(id).updateEffectType(EffectHelper.seq(env.lookup(id).getEtype(), ETypes.RW));
         }
-    
-		return errors;
-		
-	}
+
+        /*
+         * 
+         * -------------------------[Var-e] ∑ ⊢ T x; : ∑[x⟼ ⊥]
+         * 
+         * 
+         * 
+         * 
+         * Γ ⊢ e : T' x ∉ dom(top(Γ)) T=T' --------------------------------------[VarD]
+         * Γ ⊢ T x = e ; : Γ[x ⟼ T]
+         */
+
+        return errors;
+
+    }
 
 }
