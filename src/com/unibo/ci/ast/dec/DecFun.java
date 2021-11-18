@@ -31,11 +31,8 @@ public class DecFun extends Dec {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Declaration: Function\n" + 
-                indent + "\tId: \"" + this.id + "\"\n" + 
-                type.toPrint(indent + "\t") +
-                printArgs(indent + "\t") + 
-                block.toPrint(indent + "\t");
+        return indent + "Declaration: Function\n" + indent + "\tId: \"" + this.id + "\"\n" + type.toPrint(indent + "\t")
+                + printArgs(indent + "\t") + block.toPrint(indent + "\t");
     }
 
     private String printArgs(String indent) {
@@ -46,14 +43,15 @@ public class DecFun extends Dec {
         return sb.toString();
     }
 
-    @Override 
+    @Override
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 
         ArrayList<SemanticError> semanticErrors = new ArrayList<SemanticError>();
         try {
             // Aggiungi tipo funzione
-            env.addDeclaration(id, new TypeFunction(row, column, id, args.size(), type, args) );
-            //TODO quanta memoria occupa la decfun? solo il numero deli argomenti? (args.size())
+            env.addDeclaration(id, new TypeFunction(row, column, id, args.size(), type, args));
+            // TODO quanta memoria occupa la decfun? solo il numero deli argomenti?
+            // (args.size())
 
             // Nota: type dovrebbe essere T_1, ..., T_n -> T
 
@@ -65,25 +63,29 @@ public class DecFun extends Dec {
         semanticErrors.addAll(block.checkSemanticsInjectArgs(env, args));
         return semanticErrors;
     }
-    
+
     @Override
     public Type typeCheck() {
         for (Arg arg : args) {
             if (arg.typeCheck() == null)
                 return null;
         }
-        
-        Type blockType = this.block.typeCheck() ;
-        //System.out.println("DEBUG: il tipo del blocco nella funzione " + id + " è " + blockType);
-        //System.out.println("DEBUG: il tipo della funzione " + id + " è " + this.type);
-        if ( (blockType == null && !(this.type instanceof TypeVoid)) || (blockType != null && !this.type.equals( blockType))){
-            //Errore! Tipo del blocco e tipo di ritorno della funzione incompatibili
-            TypeErrorsStorage.add( new TypeError(super.row, super.column, 
-                "Function [" + this.id + "] must return with type [" + type.getTypeName() +"]" ));
+
+        Type blockType = this.block.typeCheck();
+        // System.out.println("DEBUG: il tipo del blocco nella funzione " + id + " è " +
+        // blockType);
+        // System.out.println("DEBUG: il tipo della funzione " + id + " è " +
+        // this.type);
+        if ((blockType == null && !(this.type instanceof TypeVoid))
+                || (blockType != null && !this.type.equals(blockType))) {
+            // Errore! Tipo del blocco e tipo di ritorno della funzione incompatibili
+            TypeErrorsStorage.add(new TypeError(super.row, super.column,
+                    "Function [" + this.id + "] must return with type [" + type.getTypeName() + "]"));
         }
 
-        return new TypeFunction(row, column, id, args.size(), type, args); 
-        //TODO quanta memoria occupa la decfun? solo il numero deli argomenti? (args.size())
+        return new TypeFunction(row, column, id, args.size(), type, args);
+        // TODO quanta memoria occupa la decfun? solo il numero deli argomenti?
+        // (args.size())
     }
 
     @Override
@@ -91,6 +93,5 @@ public class DecFun extends Dec {
         // TODO Auto-generated method stub
         return null;
     }
-
 
 }
