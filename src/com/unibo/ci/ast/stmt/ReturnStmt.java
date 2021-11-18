@@ -22,7 +22,7 @@ import com.unibo.ci.util.TypeErrorsStorage;
 public class ReturnStmt extends Statement {
     private Exp exp;
     private STentry stEntry;
-    
+
     public ReturnStmt(int row, int column, Exp exp) {
         super(row, column);
         this.exp = exp;
@@ -30,15 +30,14 @@ public class ReturnStmt extends Statement {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Stmt: return\n" + 
-                (exp != null ? exp.toPrint(indent) : "");
+        return indent + "Stmt: return\n" + (exp != null ? exp.toPrint(indent) : "");
     }
 
     @Override
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         stEntry = env.lookupFunction();
-        if(exp != null)
+        if (exp != null)
             errors.addAll(exp.checkSemantics(env));
         return errors;
     }
@@ -46,18 +45,19 @@ public class ReturnStmt extends Statement {
     @Override
     public Type typeCheck() {
         Type functionType;
-        if(stEntry == null)
+        if (stEntry == null)
             functionType = new TypeVoid();
         else
             functionType = ((TypeFunction) stEntry.getType()).getReturnType();
         Type returnType;
-        if(exp == null)
+        if (exp == null)
             returnType = new TypeVoid();
         else
             returnType = exp.typeCheck();
 
-        if(! functionType.equals(returnType)) {
-            TypeErrorsStorage.add(new TypeError(super.row, super.column, "Return type must be [" + functionType.getTypeName() + "]"));
+        if (!functionType.equals(returnType)) {
+            TypeErrorsStorage.add(
+                    new TypeError(super.row, super.column, "Return type must be [" + functionType.getTypeName() + "]"));
         }
         return returnType;
     }
@@ -68,10 +68,17 @@ public class ReturnStmt extends Statement {
         return null;
     }
 
-	@Override
-	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+
+        ArrayList<EffectError> toRet = new ArrayList<EffectError>();
+
+        if (exp != null) {
+
+            toRet.addAll(exp.AnalyzeEffect(env));
+        }
+
+        return toRet;
+    }
 
 }
