@@ -1,13 +1,13 @@
 package com.unibo.ci.util;
 
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypeFunction;
 
 public class STentry extends Entry<Type> {
 
     public STentry(String id, Type type, int nestLevel, int offset) {
-    	super(id, type, nestLevel, offset);
+        super(id, type, nestLevel, offset);
     }
-
 
     public String toPrint(String indent) {
         return indent + "STentry:\n" + indent + "\tNesting Level: " + nestLevel + "\n" + indent + "\tId: \"" + this.id
@@ -16,6 +16,11 @@ public class STentry extends Entry<Type> {
 
     public Type getType() {
         return super.type;
+    }
+
+    @Override
+    public boolean isNotFunction() {
+        return type instanceof TypeFunction ? true : false;
     }
 
 }
