@@ -1,24 +1,25 @@
 package com.unibo.ci.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Map;
 
 import com.unibo.ci.ast.types.TypeFunction;
 
-public class SigmaEnv extends Environment<EEntry>{
+public class SigmaEnv extends Environment<EEntry> {
 
+	public SigmaEnv() {
+		super();
+		nestingLevel = -1;
+		offset = 0;
+	}
 
-    public SigmaEnv(){
-    	super();
-        nestingLevel = -1;
-        offset = 0;
-    }
-
-    public LinkedList<LinkedHashMap<String, EEntry>> getTable(){
-        return super.getTable();
-    }	
+	public LinkedList<LinkedHashMap<String, EEntry>> getTable() {
+		return super.getTable();
+	}
 
 	// Extends the symbol table with a new scope
 	public void newScope() {
@@ -31,23 +32,30 @@ public class SigmaEnv extends Environment<EEntry>{
 	}
 
 	// If there is no clash of names, adds id ⟼ t to st
-	public void addDeclaration(String id, EffectHelper.ETypes type) { 
+	public void addDeclaration(String id, EffectHelper.ETypes type) {
 		table.getLast().put(id, new EEntry(id, type, nestingLevel, offset));
 	}
-	
-	
 
 	// Looks for the entry of id in symbol/effect table, if there is any
 	public EEntry lookup(String id) {
 		return super.lookup(id);
 	}
 
-	
-	
-    @Override
-    public String toPrint(String indent) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String toPrint(String indent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
+	public Map<String, EEntry> getAllIDs() {
+
+		Map<String, EEntry> map = new HashMap<String, EEntry>();
+		table.descendingIterator().forEachRemaining(scope -> map.putAll(scope));
+		return map;
+	}
 }
