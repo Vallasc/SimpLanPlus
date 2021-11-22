@@ -9,6 +9,9 @@ public class EEntry extends Entry<ETypes> {
   ETypes etype;
 
   private List<EEntry> funEffects;
+  
+  SigmaEnv sigma0;
+  SigmaEnv sigma1; 
 
   public EEntry(String id, ETypes type, int nestLevel, int offset) {
     super(id, type, nestLevel, offset);
@@ -32,6 +35,14 @@ public class EEntry extends Entry<ETypes> {
   public boolean isNotFunction() {
 
     return funEffects != null;
+  }
+
+  public SigmaEnv getSigma0() {
+	return this.sigma0;
+  }
+  
+  public SigmaEnv getSigma1() {
+	return this.sigma1;
   }
 
 }

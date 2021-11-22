@@ -1,15 +1,25 @@
 package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import com.unibo.ci.ast.dec.Arg;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
+import com.unibo.ci.ast.exp.ValExp;
+import com.unibo.ci.ast.exp.VarExp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
+import com.unibo.ci.ast.types.TypeInt;
+import com.unibo.ci.ast.types.TypePointer;
+import com.unibo.ci.util.EEntry;
+import com.unibo.ci.util.EffectHelper;
+import com.unibo.ci.util.EffectHelper.ETypes;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.STentry;
@@ -113,8 +123,60 @@ public class CallStmt extends Exp {
 
 	@Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<EffectError> errors = new ArrayList<EffectError>();
+		
+		SigmaEnv sigma_0 = env.lookup(id).getSigma0();
+		SigmaEnv sigma_1 = env.lookup(id).getSigma1();
+		
+		for (Exp par : parlist) {
+			if (!(par.typeCheck() instanceof TypePointer)) {
+				if (par.AnalyzeEffect(sigma_1).equals(EffectHelper.ETypes.T)) { //questo equivale al controllo ( ∑_1 (y_i ) ≤ d ) per 1 ≤ i ≤ n
+					errors.add(null); //TODO
+				}
+			}
+		}
+		
+		for (Exp par : parlist) {
+			if (par instanceof VarExp) { 
+				ETypes tmp = EffectHelper.seq(env.lookup(((VarExp)par).getVarId()).getEtype(), EffectHelper.ETypes.RW);
+				env.lookup(((VarExp)par).getVarId()).updateEffectType(tmp);
+			}
+		}
+		
+		//sigma secondo associa ad un nome di variabile (parametro attuale della funzione) un effetto, servirà per fare il par
+		//logica: se ho una funzione pippo(var a, var b, var c) e la chiamo come pippo(x,x,y) dovrò fare il par sugli effetti associati ad x (ne avrò due, perché x viene legata ai parametri formali 'a' e 'b'  
+		HashMap<String, ArrayList<ETypes>> sigma_secondo = new HashMap<String, ArrayList<ETypes>>();
+		int position = 0; //conta la posizione della variabile - serve per corrispondenza parametri attuali e formali
+		for (Exp par : parlist) {
+			if (par instanceof ValExp) { 
+				
+				String formal_parameter = ((TypeFunction)entry.getType()).getArguments().get(position).getId();
+				ETypes tmp = EffectHelper.seq(env.lookup(((VarExp)par).getVarId() /*parametri attuali*/).getEtype(), sigma_1.lookup(formal_parameter/*partametri formali*/).getEtype());
+				
+				ArrayList<ETypes> valEffectList = sigma_secondo.getOrDefault(env.lookup(((VarExp)par).getVarId()), new ArrayList<ETypes>()); 
+				valEffectList.add(tmp);
+				sigma_secondo.put(((VarExp)par).getVarId(), valEffectList);
+				
+			}
+		}
+		
+
+		sigma_secondo.forEach( (id, effect_list) -> {
+			//calcoliamo effettivamente par
+			ETypes tmp = effect_list.stream().reduce( (a, b) -> b == null ? a: EffectHelper.par(a, b) ).get();		
+			
+			//controlliamo gli errori
+			if (tmp != null && tmp == ETypes.T) {
+				errors.add(null); //TODO 
+			}
+			
+			//update
+			env.lookup(id).updateEffectType(tmp);
+			
+		});
+
+		
+		return errors;
 	}
-    
+ 
 }

@@ -18,9 +18,8 @@ public abstract class Type extends Node{
         super(row, column);
         this.TYPE_NAME = typeName;
         this.DIMENSION = dimension;
-        
     }
-
+    
     public int getDimension(){
         return DIMENSION;
     }

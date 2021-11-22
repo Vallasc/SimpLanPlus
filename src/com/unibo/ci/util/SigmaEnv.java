@@ -33,7 +33,15 @@ public class SigmaEnv extends Environment<EEntry> {
 
 	// If there is no clash of names, adds id ⟼ t to st
 	public void addDeclaration(String id, EffectHelper.ETypes type) {
+		//TODO servono nestingLevel e offset?
 		table.getLast().put(id, new EEntry(id, type, nestingLevel, offset));
+	}
+	
+	public void addDeclaration(String id, SigmaEnv env0, SigmaEnv env1) { //per le funzioni
+		//TODO servono nestingLevel e offset?
+		table.getLast().put(id, null);
+		table.getLast().get(id).sigma0 = env0 ;
+		table.getLast().get(id).sigma1 = env1 ;
 	}
 
 	// Looks for the entry of id in symbol/effect table, if there is any
@@ -48,8 +56,12 @@ public class SigmaEnv extends Environment<EEntry> {
 	}
 
 	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
+	public SigmaEnv clone() {
+		SigmaEnv toReturn = new SigmaEnv();
+		toReturn.table = (LinkedList<LinkedHashMap<String, EEntry>>) table.clone();
+		toReturn.offset = offset;
+		toReturn.nestingLevel = nestingLevel; 
+		return toReturn;
 	}
 
 	public Map<String, EEntry> getAllIDs() {
@@ -58,4 +70,5 @@ public class SigmaEnv extends Environment<EEntry> {
 		table.descendingIterator().forEachRemaining(scope -> map.putAll(scope));
 		return map;
 	}
+	
 }
