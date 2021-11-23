@@ -100,6 +100,7 @@ public class DecFun extends Dec {
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
     	ArrayList<EffectError> errors = new ArrayList<EffectError>();
     	SigmaEnv env_0 = new SigmaEnv(), env_1 = new SigmaEnv();
+    	env_0.newScope(); env_1.newScope();
     
     	
     	args.forEach( arg -> {
@@ -113,8 +114,11 @@ public class DecFun extends Dec {
     	//FIXME non ho tenuto in considerazione che teoricamente bisognerebbe valutare tutto in sigma senza variabili globali - a cui non abbiamo accesso, questa cosa non vale per i puntatori
     	// forse si risolve nella lookup però
     	
+    	
     	errors.addAll(AnalyzeEffect(env_0, env_1)); //env_0 e env_1 sono stati modificati
     	env.addDeclaration(id, env_0, env_1);
+    	
+    	env_0.exitScope(); env_1.exitScope();
     	return errors;
     
     }
@@ -123,7 +127,7 @@ public class DecFun extends Dec {
     private ArrayList<EffectError> AnalyzeEffect(SigmaEnv env_0, SigmaEnv env_1){
     	
     	ArrayList<EffectError> errors = new ArrayList<EffectError>();
-    	
+    	    	
     	//ci salviamo env_1 per la chiamata ricorsiva
     	env_0 = (SigmaEnv) env_1.clone();
     	//all'inizio env_1 e env_0 sono uguali, la valutazione degli s modifica env_1
@@ -132,15 +136,24 @@ public class DecFun extends Dec {
     	if (equal_envs(env_0, env_1))
     		return errors;
     	
+    	
     	return AnalyzeEffect(env_0, env_1); //in realtà env_0 è env_1 prima dell'analisi degli effetti
     	
     }
     
     private boolean equal_envs(SigmaEnv env_0, SigmaEnv env_1){
-    	boolean is_equal = false;
+    	boolean is_equal = true;
     	for (String id : env_0.getAllIDs().keySet() ) {
-    		if (!is_equal || env_1.lookup(id) == null)
+    		if (!env_0.lookup(id).isNotFunction())
+    			continue;
+    		
+    		if (env_1.lookup(id) != null)
+    		
+    		if (!is_equal || env_1.lookup(id) == null) {
+    		
     			break;
+    		}
+    		
     		is_equal |= env_1.lookup(id).getEtype() == env_0.lookup(id).getEtype() ;
     	}
     	

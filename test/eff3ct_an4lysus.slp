@@ -1,0 +1,14 @@
+{
+	void pippo(^int x, int n){
+		if (n==0){
+			delete x;
+		}
+		else {
+			^int y;
+			pippo(y, n-1);
+			delete x;
+		}
+	}
+	
+}    
+	

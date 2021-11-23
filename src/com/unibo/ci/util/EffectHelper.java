@@ -39,6 +39,7 @@ public class EffectHelper {
 	public static void maxModifyEnv(SigmaEnv e, SigmaEnv tempE) {
 		e.getAllIDs().entrySet().stream().filter(id -> !id.getValue().isNotFunction())
 				.forEach(en -> e.lookup(en.getKey()).updateEffectType(
+						
 						EffectHelper.max(e.lookup(en.getKey()).etype, tempE.lookup(en.getKey()).etype)));
 	}
 

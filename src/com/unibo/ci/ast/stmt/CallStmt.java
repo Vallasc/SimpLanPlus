@@ -129,6 +129,7 @@ public class CallStmt extends Exp {
 		SigmaEnv sigma_1 = env.lookup(id).getSigma1();
 		
 		for (Exp par : parlist) {
+			
 			if (!(par.typeCheck() instanceof TypePointer)) {
 				if (par.AnalyzeEffect(sigma_1).equals(EffectHelper.ETypes.T)) { //questo equivale al controllo ( ∑_1 (y_i ) ≤ d ) per 1 ≤ i ≤ n
 					errors.add(null); //TODO

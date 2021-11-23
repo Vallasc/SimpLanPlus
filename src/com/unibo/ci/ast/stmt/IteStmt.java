@@ -95,17 +95,13 @@ public class IteStmt extends Statement implements Cloneable {
 
         SigmaEnv tempE = null;
 
-        try {
 
-            if (elseStmt != null) {
+        if (elseStmt != null) {
 
-                tempE = (SigmaEnv) env.clone();
-                analyzeBlockEffect(tempE, elseStmt, toRet);
-            }
-
-        } catch (CloneNotSupportedException e) {
-            new CloneException();
+            tempE = (SigmaEnv) env.clone();
+            analyzeBlockEffect(tempE, elseStmt, toRet);
         }
+
 
         analyzeBlockEffect(env, thenStmt, toRet);
 

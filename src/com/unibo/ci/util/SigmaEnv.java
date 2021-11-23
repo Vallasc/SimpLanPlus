@@ -39,7 +39,7 @@ public class SigmaEnv extends Environment<EEntry> {
 	
 	public void addDeclaration(String id, SigmaEnv env0, SigmaEnv env1) { //per le funzioni
 		//TODO servono nestingLevel e offset?
-		table.getLast().put(id, null);
+		table.getLast().put(id, new EEntry(id, null, -1, 0));
 		table.getLast().get(id).sigma0 = env0 ;
 		table.getLast().get(id).sigma1 = env1 ;
 	}
@@ -51,8 +51,17 @@ public class SigmaEnv extends Environment<EEntry> {
 
 	@Override
 	public String toPrint(String indent) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		StringBuilder sb = new StringBuilder();
+		table.forEach( env -> {
+			sb.append("\n== env: \n");
+			env.keySet().forEach( key -> {
+				sb.append("===== ").append( key ).append( " |- " ).append( env.get(key).type).append( "\n");
+			});
+			
+		});
+		
+		return sb.toString();
 	}
 
 	@Override

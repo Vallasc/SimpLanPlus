@@ -33,8 +33,8 @@ public class EEntry extends Entry<ETypes> {
 
   @Override
   public boolean isNotFunction() {
-
-    return funEffects != null;
+	  return sigma0 != null;
+    //return funEffects != null;
   }
 
   public SigmaEnv getSigma0() {

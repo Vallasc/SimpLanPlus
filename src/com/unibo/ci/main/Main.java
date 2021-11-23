@@ -22,7 +22,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		// String fileName = "test/test_fun_ite_return.slp";
-		String fileName = "test/test_fun_ite_return.slp";
+		String fileName = "test/eff3ct_an4lysus.slp";
 
 		FileInputStream is = new FileInputStream(fileName);
 		ANTLRInputStream input = new ANTLRInputStream(is);
