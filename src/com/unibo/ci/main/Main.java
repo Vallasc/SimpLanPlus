@@ -4,15 +4,20 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.unibo.ci.ast.*;
 import com.unibo.ci.ast.errors.EffectError;
+import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.*;
 import com.unibo.ci.listeners.SyntaxErrorListener;
 import com.unibo.ci.parser.*;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
@@ -20,12 +25,21 @@ public class Main {
 	private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
 	private static SyntaxErrorListener parserErrorsListener;
 
-	public static void main(String[] args) throws Exception {
-		// String fileName = "test/test_fun_ite_return.slp";
-		String fileName = "test/eff3ct_an4lysus.slp";
+	public static void main(String[] args) {
 
-		FileInputStream is = new FileInputStream(fileName);
-		ANTLRInputStream input = new ANTLRInputStream(is);
+		if(args.length != 1)
+			LOGGER.info("WOOOOO INSERISCI IN FILE SORGENTE WOOOOOO");
+
+		String fileName = args[0];
+
+		ANTLRInputStream input;
+		try {
+			FileInputStream is = new FileInputStream(fileName);
+	 		input = new ANTLRInputStream(is);
+		} catch ( IOException e) {
+			LOGGER.severe("File " + fileName + " not exist 😡");
+			return;
+		}
 
 		SimpLanPlusLexer lexer = new SimpLanPlusLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -42,31 +56,41 @@ public class Main {
 		if (parserErrorsListener.errorsDetected())
 			System.exit(-1);
 
-		LOGGER.info(tree.toStringTree(parser)); // print LISP-style tre
+		//LOGGER.info(tree.toStringTree(parser)); // print LISP-style tre
 
 		SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
 		Node ast = visitor.visit(tree); // Generazione AST
 
-		System.out.println("AST three: \n" + ast.toPrint("\t"));
+		if(GlobalConfig.PRINT_AST)
+			System.out.println("AST three: \n" + ast.toPrint("\t"));
 
+		/* Check Semantics */
 		GammaEnv env = new GammaEnv();
-		SigmaEnv effects_env = new SigmaEnv();
-
-		ast.checkSemantics(env).forEach(semnErr -> {
-			System.out.println("Semantic error " + semnErr.row + ", " + semnErr.col + ": " + semnErr.desc);
-		});
-		ast.typeCheck();
-		TypeErrorsStorage.getErrorList().forEach(typeErr -> {
-			System.out.println("Type error " + typeErr.row + ", " + typeErr.col + ": " + typeErr.desc);
-		});
-		
-		if (ast.AnalyzeEffect(effects_env) != null) // TODO togli questo if - tutti gli analyze effect devono restituire
-													// una lista != null
-			ast.AnalyzeEffect(effects_env).forEach(effectErr -> {
-				System.out.println("Effect error " + effectErr.row + ", " + effectErr.col + ": " + effectErr.desc);
+		ArrayList<SemanticError> semanticErrors = ast.checkSemantics(env);
+		if(semanticErrors.size() > 0) {
+			semanticErrors.forEach(semnErr -> {
+				LOGGER.info("Semantic error " + semnErr.row + ", " + semnErr.col + ": " + semnErr.desc);
 			});
-		else {
-			System.out.println("Non ho trovato errori sugli effetti");
+			return;
+		}
+
+		/* Check Type */
+		ast.typeCheck();
+		if( TypeErrorsStorage.getErrorList().size() > 0 ) {
+			TypeErrorsStorage.getErrorList().forEach(typeErr -> {
+				LOGGER.info("Type error " + typeErr.row + ", " + typeErr.col + ": " + typeErr.desc);
+			});
+			return;
+		}
+		
+		/* Check Effects */
+		SigmaEnv effects_env = new SigmaEnv();
+		ArrayList<EffectError> effectsErrors = ast.AnalyzeEffect(effects_env);
+		if(effectsErrors.size() > 0) {
+			effectsErrors.forEach(effectErr -> {
+				LOGGER.info("Effect error " + effectErr.row + ", " + effectErr.col + ": " + effectErr.desc);
+			});
+			return;
 		}
 
 		System.out.println("Programma terminato");

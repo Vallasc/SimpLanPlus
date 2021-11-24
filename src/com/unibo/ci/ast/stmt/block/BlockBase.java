@@ -3,7 +3,6 @@ package com.unibo.ci.ast.stmt.block;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.unibo.ci.ast.stmt.CallStmt;
 import com.unibo.ci.ast.stmt.IteStmt;
 import com.unibo.ci.ast.stmt.ReturnStmt;
 import com.unibo.ci.ast.stmt.Statement;
@@ -18,7 +17,6 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.ast.types.TypeVoid;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
@@ -31,13 +29,12 @@ public class BlockBase extends Block {
 	private final List<Dec> declarations;
 	private final List<Statement> statements;
 
-	private final boolean isMain;
+	private boolean isMain = false;
 
-	public BlockBase(List<Dec> declarations, List<Statement> statements, int row, int column, boolean isMain) {
+	public BlockBase(List<Dec> declarations, List<Statement> statements, int row, int column) {
 		super(row, column);
 		this.declarations = declarations;
 		this.statements = statements;
-		this.isMain = isMain;
 	}
 
 	@Override
@@ -222,5 +219,7 @@ public class BlockBase extends Block {
 		return errors;
 	}
 
-
+	public void setMain(boolean isMain) {
+		this.isMain = isMain;
+	}
 }

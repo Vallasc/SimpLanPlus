@@ -6,7 +6,6 @@ import com.unibo.ci.ast.types.*;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
@@ -34,14 +33,14 @@ public class NegExp extends Exp {
     }
 
     @Override
-    public Type typeCheck() {
+    public TypeInt typeCheck() {
         Type childType = child.typeCheck();
         if (!(childType instanceof TypeBool)) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column, "expecting type  ["
                     + (new TypeBool()).getTypeName() + "], found [" + childType.getTypeName() + "]"));
             return null;
         }
-        return childType;
+        return (TypeInt) childType;
     }
 
     @Override

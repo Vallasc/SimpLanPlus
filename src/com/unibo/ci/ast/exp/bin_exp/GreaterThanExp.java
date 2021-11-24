@@ -9,6 +9,7 @@ import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.LabelManager;
 import com.unibo.ci.util.TypeErrorsStorage;
+import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.types.TypeInt;
 
 public class GreaterThanExp extends BinExp {
@@ -18,12 +19,12 @@ public class GreaterThanExp extends BinExp {
     }
 
     @Override
-    public TypeInt typeCheck() {
+    public TypeBool typeCheck() {
         if (!(super.left.typeCheck() instanceof TypeInt && super.right.typeCheck() instanceof TypeInt)) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column, "Expecting an integer value"));
             return null;
         }
-        return new TypeInt();
+        return new TypeBool();
     }
 
     @Override

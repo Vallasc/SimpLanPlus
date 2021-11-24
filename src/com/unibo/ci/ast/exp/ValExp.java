@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.*;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.SigmaEnv;
 
@@ -33,7 +32,7 @@ public class ValExp extends Exp {
     }
     
     @Override
-    public Type typeCheck() {
+    public TypeInt typeCheck() {
         return new TypeInt();
     }
 

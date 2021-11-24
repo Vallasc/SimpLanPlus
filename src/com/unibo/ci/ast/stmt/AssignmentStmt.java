@@ -10,7 +10,6 @@ import com.unibo.ci.ast.exp.LhsExp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.EffectHelper;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
@@ -82,13 +81,12 @@ public class AssignmentStmt extends Statement {
 		toRet.addAll(exp.AnalyzeEffect(env));
 
 		// set id effect as seq from his actual effect to RW
-		env.lookup(left.getVarId())
-				.updateEffectType(EffectHelper.seq(env.lookup(left.getVarId()).getEtype(), EffectHelper.ETypes.RW));
+		env.lookup(left.getVarId().getId())
+				.updateEffectType(EffectHelper.seq(env.lookup(left.getVarId().getId()).getEtype(), EffectHelper.ETypes.RW));
 
-		if (env.lookup(left.getVarId()).getEtype().equals(EffectHelper.ETypes.T)) {
+		if (env.lookup(left.getVarId().getId()).getEtype().equals(EffectHelper.ETypes.T)) {
 
-			toRet.add(new EffectError(row, column,
-					"Cannot use variable " + env.lookup(left.getVarId()) + ": the variable in RW"));
+			toRet.add(new EffectError(row, column, "Cannot use variable [" + left.getVarId().getId() + "]: the variable was deleted"));
 		}
 		return toRet;
 	}

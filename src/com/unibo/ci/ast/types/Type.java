@@ -54,8 +54,7 @@ public abstract class Type extends Node{
     
     @Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
+        return new ArrayList<EffectError>();
 	}
 
 

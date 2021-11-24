@@ -8,7 +8,6 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.EffectHelper.ETypes;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
@@ -138,9 +137,9 @@ public class DecFun extends Dec {
     	env.addDeclaration(id, env_0, env_1);
     	
 
-    	System.out.println("DEBUG: ho analizzato la funzione " + id + " che ha come sigma_0 e sigma_1 rispettivamente:");
-    	System.out.println(env_0.toPrint(""));
-    	System.out.println(env_1.toPrint(""));
+    	//System.out.println("DEBUG: ho analizzato la funzione " + id + " che ha come sigma_0 e sigma_1 rispettivamente:");
+    	//System.out.println(env_0.toPrint(""));
+    	//System.out.println(env_1.toPrint(""));
     	
     	//env_0.exitScope(); env_1.exitScope();
     	

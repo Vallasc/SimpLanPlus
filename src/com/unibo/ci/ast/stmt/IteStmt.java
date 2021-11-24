@@ -1,7 +1,6 @@
 package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.unibo.ci.ast.dec.Dec;
 import com.unibo.ci.ast.errors.EffectError;
@@ -11,9 +10,7 @@ import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
-import com.unibo.ci.util.EEntry;
 import com.unibo.ci.util.EffectHelper;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.LabelManager;

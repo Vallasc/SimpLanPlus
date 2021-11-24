@@ -19,8 +19,9 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     public BlockBase visitBlock(SimpLanPlusParser.BlockContext ctx) {
         List<Statement> statements = ctx.statement().stream().map(this::visitStatement).collect(Collectors.toList());
         List<Dec> declarations = ctx.declaration().stream().map(this::visitDeclaration).collect(Collectors.toList());
-
-        return new BlockBase(declarations, statements, ctx.start.getLine(), ctx.start.getCharPositionInLine(), blockNL++ == 0);
+        BlockBase block = new BlockBase(declarations, statements, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+        block.setMain(blockNL++ == 0);
+        return block;
     }
 
     @Override

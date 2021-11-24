@@ -64,8 +64,7 @@ public class Arg extends Node {
 
     @Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-
-    	ArrayList<EffectError> errors = null;
+    	ArrayList<EffectError> errors = new ArrayList<EffectError>();
         return errors;
 		
 	}

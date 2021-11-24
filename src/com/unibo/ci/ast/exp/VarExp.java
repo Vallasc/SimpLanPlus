@@ -1,12 +1,10 @@
 package com.unibo.ci.ast.exp;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.util.EEntry;
 import com.unibo.ci.util.EffectHelper;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
@@ -68,6 +66,10 @@ public class VarExp extends LhsExp {
         return this;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public int getNestingLevel() {
         return nestingLevel;
     }
@@ -91,7 +93,7 @@ public class VarExp extends LhsExp {
         //TODO potrebbe essere che se c'è un errore di tipo qui viene generata un'eccezione; cosa facciamo? 
         env.lookup(id).updateEffectType(EffectHelper.seq(env.lookup(id).getEtype(), EffectHelper.ETypes.RW));
         if (env.lookup(id).getEtype() == EffectHelper.ETypes.T) {
-            toRet.add(new EffectError(row, column, "Cannot access variable " + id + ": the variable was deleted"));
+            toRet.add(new EffectError(row, column, "Cannot use variable [" + id + "]: the variable was deleted"));
         }
 
         return toRet;

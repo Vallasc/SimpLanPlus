@@ -2,25 +2,18 @@ package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
-import com.unibo.ci.ast.dec.Arg;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
-import com.unibo.ci.ast.exp.ValExp;
 import com.unibo.ci.ast.exp.VarExp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
-import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.ast.types.TypePointer;
-import com.unibo.ci.util.EEntry;
 import com.unibo.ci.util.EffectHelper;
 import com.unibo.ci.util.EffectHelper.ETypes;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.STentry;
@@ -159,7 +152,7 @@ public class CallStmt extends Exp {
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		ArrayList<EffectError> errors = new ArrayList<EffectError>();
 		
-		SigmaEnv sigma_0 = env.lookup(id).getSigma0();
+		//SigmaEnv sigma_0 = env.lookup(id).getSigma0();
 		SigmaEnv sigma_1 = env.lookup(id).getSigma1();
 		
 		/*for (Exp par : parlist) {
@@ -187,16 +180,16 @@ public class CallStmt extends Exp {
 			if (par.typeCheck() instanceof TypePointer ) { 
 
 				String formal_parameter = ((TypeFunction)entry.getType()).getArguments().get(position).getId();
-				System.out.println("DEBUG: cerco \n " + formal_parameter + " \n nell'ambiente " + sigma_1.toPrint(""));
+				//System.out.println("DEBUG: cerco \n " + formal_parameter + " \n nell'ambiente " + sigma_1.toPrint(""));
 				ETypes tmp = EffectHelper.seq(
-						env.lookup(((VarExp)par).getVarId() /*parametri attuali*/).getEtype(), 
+						env.lookup(((VarExp)par).getVarId().getId() /*parametri attuali*/).getEtype(), 
 						sigma_1.lookup(
 								formal_parameter/*partametri formali*/)
 						.getEtype());
 				
-				ArrayList<ETypes> valEffectList = sigma_secondo.getOrDefault(env.lookup(((VarExp)par).getVarId()), new ArrayList<ETypes>()); 
+				ArrayList<ETypes> valEffectList = sigma_secondo.getOrDefault(env.lookup(((VarExp)par).getVarId().getId()), new ArrayList<ETypes>()); 
 				valEffectList.add(tmp);
-				sigma_secondo.put(((VarExp)par).getVarId(), valEffectList);
+				sigma_secondo.put(((VarExp)par).getVarId().getId(), valEffectList);
 				
 			}
 		}
