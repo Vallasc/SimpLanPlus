@@ -1,7 +1,9 @@
-{
+{ 
+
 	void pippo(^int x, int n){
 		if (n==0){
-			delete x;
+			//delete x;
+			return;
 		}
 		else {
 			^int y;
@@ -9,6 +11,10 @@
 			delete x;
 		}
 	}
+		
+	^int alfa ;
+	
+	pippo(alfa, 4);
 	
 }    
 	

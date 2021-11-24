@@ -118,7 +118,14 @@ public class DecFun extends Dec {
     	errors.addAll(AnalyzeEffect(env_0, env_1)); //env_0 e env_1 sono stati modificati
     	env.addDeclaration(id, env_0, env_1);
     	
-    	env_0.exitScope(); env_1.exitScope();
+
+    	System.out.println("DEBUG: ho analizzato la funzione " + id + " che ha come sigma_0 e sigma_1 rispettivamente:");
+    	System.out.println(env_0.toPrint(""));
+    	System.out.println(env_1.toPrint(""));
+    	
+    	//env_0.exitScope(); env_1.exitScope();
+    	
+    	
     	return errors;
     
     }

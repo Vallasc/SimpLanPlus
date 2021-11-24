@@ -1,7 +1,9 @@
 package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.unibo.ci.ast.dec.Dec;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
@@ -24,8 +26,21 @@ public class IteStmt extends Statement implements Cloneable {
     public IteStmt(Exp exp, Statement thenStmt, Statement elseStmt, int row, int column) {
         super(row, column);
         this.exp = exp;
-        this.thenStmt = thenStmt;
-        this.elseStmt = elseStmt;
+        if ((thenStmt instanceof BlockBase)) {
+        	this.thenStmt = thenStmt;
+        } else {
+        	ArrayList<Statement> tmp = new ArrayList<Statement>();
+        	tmp.add(thenStmt);
+        	this.thenStmt = new BlockBase(new ArrayList<Dec>(), tmp, thenStmt.getRow(), thenStmt.getColumn());
+        } 
+        if ((elseStmt != null && elseStmt instanceof BlockBase)) {
+        	this.elseStmt = elseStmt;
+        } else {
+        	ArrayList<Statement> tmp = new ArrayList<Statement>();
+        	tmp.add(thenStmt);
+        	this.elseStmt = new BlockBase(new ArrayList<Dec>(), tmp, elseStmt.getRow(), elseStmt.getColumn());
+        }
+        
 
     }
 
@@ -40,12 +55,15 @@ public class IteStmt extends Statement implements Cloneable {
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
-        errors.addAll(exp.checkSemantics(env));
+        errors.addAll(exp.checkSemantics(env));        
+	        
         errors.addAll(thenStmt.checkSemantics(env));
-
+       
+        
         if (elseStmt != null) {
             errors.addAll(elseStmt.checkSemantics(env));
         }
+        
         return errors;
     }
 

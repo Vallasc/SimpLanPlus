@@ -59,7 +59,7 @@ public class Main {
 		TypeErrorsStorage.getErrorList().forEach(typeErr -> {
 			System.out.println("Type error " + typeErr.row + ", " + typeErr.col + ": " + typeErr.desc);
 		});
-
+		
 		if (ast.AnalyzeEffect(effects_env) != null) // TODO togli questo if - tutti gli analyze effect devono restituire
 													// una lista != null
 			ast.AnalyzeEffect(effects_env).forEach(effectErr -> {

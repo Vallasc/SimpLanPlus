@@ -128,31 +128,37 @@ public class CallStmt extends Exp {
 		SigmaEnv sigma_0 = env.lookup(id).getSigma0();
 		SigmaEnv sigma_1 = env.lookup(id).getSigma1();
 		
-		for (Exp par : parlist) {
+		/*for (Exp par : parlist) {
 			
 			if (!(par.typeCheck() instanceof TypePointer)) {
 				if (par.AnalyzeEffect(sigma_1).equals(EffectHelper.ETypes.T)) { //questo equivale al controllo ( ∑_1 (y_i ) ≤ d ) per 1 ≤ i ≤ n
 					errors.add(null); //TODO
 				}
 			}
-		}
+		}*/
 		
-		for (Exp par : parlist) {
-			if (par instanceof VarExp) { 
+		/*for (Exp par : parlist) {
+			if (!(par.typeCheck() instanceof TypePointer)) { 
 				ETypes tmp = EffectHelper.seq(env.lookup(((VarExp)par).getVarId()).getEtype(), EffectHelper.ETypes.RW);
+				//ETypes tmp = EffectHelper.seq(env.lookup(((VarExp)par).getVarId()).getEtype(), EffectHelper.ETypes.RW);
 				env.lookup(((VarExp)par).getVarId()).updateEffectType(tmp);
 			}
-		}
+		}*/
 		
 		//sigma secondo associa ad un nome di variabile (parametro attuale della funzione) un effetto, servirà per fare il par
 		//logica: se ho una funzione pippo(var a, var b, var c) e la chiamo come pippo(x,x,y) dovrò fare il par sugli effetti associati ad x (ne avrò due, perché x viene legata ai parametri formali 'a' e 'b'  
 		HashMap<String, ArrayList<ETypes>> sigma_secondo = new HashMap<String, ArrayList<ETypes>>();
 		int position = 0; //conta la posizione della variabile - serve per corrispondenza parametri attuali e formali
 		for (Exp par : parlist) {
-			if (par instanceof ValExp) { 
-				
+			if (par.typeCheck() instanceof TypePointer ) { 
+
 				String formal_parameter = ((TypeFunction)entry.getType()).getArguments().get(position).getId();
-				ETypes tmp = EffectHelper.seq(env.lookup(((VarExp)par).getVarId() /*parametri attuali*/).getEtype(), sigma_1.lookup(formal_parameter/*partametri formali*/).getEtype());
+				System.out.println("DEBUG: cerco \n " + formal_parameter + " \n nell'ambiente " + sigma_1.toPrint(""));
+				ETypes tmp = EffectHelper.seq(
+						env.lookup(((VarExp)par).getVarId() /*parametri attuali*/).getEtype(), 
+						sigma_1.lookup(
+								formal_parameter/*partametri formali*/)
+						.getEtype());
 				
 				ArrayList<ETypes> valEffectList = sigma_secondo.getOrDefault(env.lookup(((VarExp)par).getVarId()), new ArrayList<ETypes>()); 
 				valEffectList.add(tmp);
