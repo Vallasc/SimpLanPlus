@@ -9,6 +9,7 @@ import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.TypeFunction;
@@ -20,6 +21,7 @@ public class DecFun extends Dec {
     private final Type type;
     private final List<Arg> args;
     private final BlockBase block;
+    private final TypeFunction typeFun;
 
     public DecFun(int row, int column, Type type, String id, List<Arg> args, BlockBase block) {
         super(row, column, type, id);
@@ -27,6 +29,7 @@ public class DecFun extends Dec {
         this.type = type;
         this.args = args;
         this.block = block;
+        this.typeFun = new TypeFunction(row, column, id, args.size(), type, args);
     }
 
     @Override
@@ -52,7 +55,7 @@ public class DecFun extends Dec {
         ArrayList<SemanticError> semanticErrors = new ArrayList<SemanticError>();
         try {
             // Aggiungi tipo funzione
-            env.addDeclaration(id, new TypeFunction(row, column, id, args.size(), type, args) );
+            env.addDeclaration(id, typeFun );
             //TODO quanta memoria occupa la decfun? solo il numero deli argomenti? (args.size())
 
             // Nota: type dovrebbe essere T_1, ..., T_n -> T
@@ -82,14 +85,32 @@ public class DecFun extends Dec {
                 "Function [" + this.id + "] must return with type [" + type.getTypeName() +"]" ));
         }
 
-        return new TypeFunction(row, column, id, args.size(), type, args); 
+        return typeFun; 
         //TODO quanta memoria occupa la decfun? solo il numero deli argomenti? (args.size())
     }
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        boolean debug = GlobalConfig.PRINT_COMMENTS;
+
+        String labelFun = id;
+		String skip = "end" + labelFun;
+        typeFun.setLabelEndFun(skip);
+
+        String out = (debug ? ";BEGIN DECFUN " + id + "\n" : "");        
+		out += "b " + skip + "\n";
+		out += labelFun + ":\n";
+		out += "sw $ra -1($cl)\n";
+        out += block.codeGeneration();
+		out += skip + ":\n";
+		out += "lw $ra -1($cl)\n";
+		out += "lw $fp 1($cl)\n";
+		out += "lw $sp 0($cl) \n";
+        out += "addi $cl $fp 2\n";
+		out += "jr $ra\n";
+        out += skip + ":\n";
+        out += (debug ? ";END DECFUN " + id + "\n" : "");
+        return out;
     }
 
 

@@ -13,12 +13,14 @@ import com.unibo.ci.parser.*;
 
 public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
+    private int blockNL = 0;
+
     @Override
     public BlockBase visitBlock(SimpLanPlusParser.BlockContext ctx) {
         List<Statement> statements = ctx.statement().stream().map(this::visitStatement).collect(Collectors.toList());
         List<Dec> declarations = ctx.declaration().stream().map(this::visitDeclaration).collect(Collectors.toList());
 
-        return new BlockBase(declarations, statements, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+        return new BlockBase(declarations, statements, ctx.start.getLine(), ctx.start.getCharPositionInLine(), blockNL++ == 0);
     }
 
     @Override
@@ -63,6 +65,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     public Statement visitAssignment(SimpLanPlusParser.AssignmentContext ctx) {
         Exp exp = (Exp) visit(ctx.exp());
         LhsExp left = (LhsExp) visit(ctx.lhs());
+        left.setAssignment(true);
         return new AssignmentStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), left, exp);
     }
 
@@ -131,7 +134,7 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
             case ">":
                 return new GreaterThanExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), right, left);
             case ">=":
-                return new GreaterThanExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), right, left);
+                return new GreaterThanEqExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), right, left);
             case "==":
                 return new EqualExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), right, left);
             case "!=":

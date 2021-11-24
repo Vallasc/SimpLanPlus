@@ -46,8 +46,7 @@ public class NegExp extends Exp {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        return child.codeGeneration() +  "multi $a0 $a0 -1\n";
     }
 
     @Override

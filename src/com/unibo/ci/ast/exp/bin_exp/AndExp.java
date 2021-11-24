@@ -6,6 +6,8 @@ import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.util.Environment;
+import com.unibo.ci.util.GlobalConfig;
+import com.unibo.ci.util.LabelManager;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.ast.types.TypeBool;
 
@@ -26,8 +28,19 @@ public class AndExp extends BinExp {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        boolean debug = GlobalConfig.PRINT_COMMENTS;
+        
+        String out = (debug ? ";BEGIN " + 	this.toPrint("") + "\n" : "");
+        out += left.codeGeneration();
+        out += "push $a0" + (debug ? " ; push on the stack e1\n" : "\n");
+        out += right.codeGeneration();
+        out += "lw $t1 0($sp)" + (debug ? " ;$t1 = e1, $a0 = e2\n" : "\n");
+        out += "pop" + (debug ? " ;pop e1 from the stack\n" : "\n");
+
+        out += "and $a0 $t1 $a0\n";
+
+        out += (debug ? ";END \n" : "");
+        return out;
     }
 
     @Override

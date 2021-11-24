@@ -35,8 +35,7 @@ public class BaseExp extends Exp {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        return child.codeGeneration();
     }
 
     @Override

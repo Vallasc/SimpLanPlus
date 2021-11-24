@@ -10,6 +10,8 @@ import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.GlobalConfig;
+import com.unibo.ci.util.LabelManager;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
@@ -80,8 +82,27 @@ public class IteStmt extends Statement {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        boolean debug = GlobalConfig.PRINT_COMMENTS;
+
+        String out = (debug ? ";BEGIN ITE " + 	this.toPrint("") + "\n" : "");        
+
+        String then = LabelManager.getInstance().newLabel("then");
+        String end = LabelManager.getInstance().newLabel("endif");
+		out += exp.codeGeneration();
+        out += "li $t1 1\n";
+		out += "beq $a0 $t1 " + then + "\n";
+
+        if(elseStmt != null) {
+            out += (debug ? ";ELSE\n" : "");
+            out += elseStmt.codeGeneration(); 
+		}
+		out += "\t b " + end +"\n" + "\t"+ then + ":\n";
+		out += "; THAN\n";
+        out += thenStmt.codeGeneration();
+
+        out += end + " :\n";
+        out += (debug ? ";END ITE\n" : "");
+        return out;
     }
 
 	@Override

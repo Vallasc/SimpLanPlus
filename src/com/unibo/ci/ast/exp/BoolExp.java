@@ -39,8 +39,7 @@ public class BoolExp extends Exp {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+		return "li $a0 " + (this.value ? 1 : 0) +"\n";
     }
 
     @Override

@@ -48,11 +48,10 @@ public abstract class Type extends Node{
         return this;
     }
 
-    @Override
-    public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String codeGeneration() {
+		return "";
+	}
     
     @Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {

@@ -32,6 +32,10 @@ public abstract class Environment <T> {
 		table.removeLast();
 	}
 
+	public int getNestingLevel() {
+		return nestingLevel;
+	}
+
 	// If there is no clash of names, adds id ⟼ t to st
 	//T può essere STEntry o un effetto
 	/*public abstract void addDeclaration (String id, <? extends Entry> type) throws DuplicateEntryException ; /* { 

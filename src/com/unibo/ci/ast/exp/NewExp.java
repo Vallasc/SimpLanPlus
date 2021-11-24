@@ -43,8 +43,8 @@ public class NewExp extends Exp {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        return "li $t1 -1\n" + 
+                "sw $t1 0($hp) \n";
     }
 
 	@Override

@@ -10,6 +10,7 @@ import com.unibo.ci.util.EffectHelper;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
 
 public class Arg extends Node {
@@ -52,8 +53,13 @@ public class Arg extends Node {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        boolean debug = GlobalConfig.PRINT_COMMENTS;
+
+        String out = (debug ? ";BEGIN ARG" + 	this.toPrint("") + "\n" : "");        
+		out += "addi $sp $sp 1" + (debug ? " ;allocates space on the stack for arg [" + id + "]\n" : "\n");
+        
+        out += (debug ? ";END ARG\n" : "");
+        return out;
     }
 
     @Override

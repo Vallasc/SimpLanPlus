@@ -40,13 +40,7 @@ public abstract class Dec extends Node {
                 errors.add(new EffectError(row, column, "Variable " + id + " declared variable"));
             }
         }
-        
-
-    
-    
 		return errors;
-		
-	
 	}
 
 }

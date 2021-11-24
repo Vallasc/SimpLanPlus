@@ -12,6 +12,7 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.STentry;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.util.SigmaEnv;
@@ -22,6 +23,7 @@ public class CallStmt extends Exp {
     // Entry function definition
     private STentry entry; 
     private final List<Exp> parlist;
+    private int nestingLevel;
 
     public CallStmt(int row, int column, String id, List<Exp> parlist) {
         super(row, column);
@@ -77,8 +79,38 @@ public class CallStmt extends Exp {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        boolean debug = GlobalConfig.PRINT_COMMENTS;
+
+        String out = (debug ? ";BEGIN CALL FUN [" + id + "]\n" : "");     
+        out += "push $fp\n";
+		out += "push $sp\n";
+		out += "mv $cl $sp\n";
+		
+		out += "addi $t1 $cl 2\n";
+        out += "sw $t1 0($cl)\n";
+		
+		out += "addi $sp $sp -1\n";     
+
+        TypeFunction typeFun = ((TypeFunction)(entry.getType()));
+
+		if(typeFun.getLabelEndFun() == null || !(typeFun.getLabelEndFun().contains(id)))
+			out += "mv $al $fp\n";	
+		else
+			out += "lw $al 0($fp)\n";
+		
+		for(int i = 0; i < nestingLevel - entry.getNestinglevel(); i++)
+			out += "lw $al 0($al)\n";
+		
+		out += "push $al\n";
+		for(Exp p : parlist){
+			out += p.codeGeneration() + "push $a0" + (debug ? " ;pushing " + p.toPrint("") +"\n" : "\n");
+		}
+		out += "mv $fp $sp\n";
+		out += "addi $fp $fp " + parlist.size() + "\n";
+		out += "jal " + id; // decfun saves ra firstly
+
+        out += (debug ? ";END DELETE\n" : "");
+        return out;
     }
 
     @Override
@@ -86,6 +118,8 @@ public class CallStmt extends Exp {
     	
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         entry = env.lookup(id);
+        nestingLevel = env.getNestingLevel();
+
         if( entry == null ){
             errors.add(new SemanticError(super.row, super.column, 
                 "Function [" + id + "] not declared"));

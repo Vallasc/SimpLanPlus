@@ -8,6 +8,7 @@ public class TypeFunction extends Type{
 
 	private Type returnType;
 	private List<Arg> arguments;
+	private String labelEndFun = null;
 	
 	public TypeFunction(int row, int column, String typeName, int dimension, Type returnType, List<Arg> arguments) {
 		super(row, column, "FUNCTION", dimension);
@@ -23,9 +24,22 @@ public class TypeFunction extends Type{
 		return this.returnType;
 	}
 
-	@Override
-	public boolean equals(Type e) {
-		// TODO Auto-generated method stub
+	public void setLabelEndFun(String label){
+		labelEndFun = label;
+	}
+
+	public String getLabelEndFun(){
+		return labelEndFun;
+	}
+
+    @Override
+    public boolean equals(Type e) {
+		if (e == null)
+			return false;
+		if(e instanceof TypeFunction){
+			TypeFunction o = (TypeFunction)e;
+			return  o.returnType.equals(returnType) && o.arguments.equals(arguments);
+		}
 		return false;
 	}
 	

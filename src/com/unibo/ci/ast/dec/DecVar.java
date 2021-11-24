@@ -10,6 +10,7 @@ import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.util.EffectHelper;
@@ -78,8 +79,18 @@ public class DecVar extends Dec {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        boolean debug = GlobalConfig.PRINT_COMMENTS;
+
+        String out = (debug ? ";BEGIN DECVAR" + this.toPrint("") + "\n" : "");        
+		out += "addi $sp $sp 1" + (debug ? " ;allocates space on the stack for arg [" + id + "]\n" : "\n");
+        
+        if(exp == null)
+            out += "addi $sp $sp -1\n";
+        else
+            out += exp.codeGeneration() + "\n" + "push $a0\n";
+
+        out += (debug ? ";END DECVAR\n" : "");
+        return out;
     }
 
     /*

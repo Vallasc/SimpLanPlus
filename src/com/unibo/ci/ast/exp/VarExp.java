@@ -8,12 +8,14 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.EffectHelper;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.STentry;
 import com.unibo.ci.util.SigmaEnv;
 
 public class VarExp extends LhsExp {
     private final String id;
     private STentry stEntry;
+    private int nestingLevel;
 
     public VarExp(int row, int column, String id) {
         super(row, column);
@@ -29,6 +31,7 @@ public class VarExp extends LhsExp {
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         stEntry = env.lookup(id);
+        nestingLevel = env.getNestingLevel();
         if (stEntry == null)
             errors.add(new SemanticError(row, column, "var [" + id + "] does not exist"));
         return errors;
@@ -43,13 +46,33 @@ public class VarExp extends LhsExp {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        boolean debug = GlobalConfig.PRINT_COMMENTS;
+
+        String out = (debug ? ";BEGIN ID " + this.toPrint("") + "\n" : "");        
+        out += "mv $al $fp \n";
+
+        for (int i = 0; i < nestingLevel - stEntry.getNestinglevel(); i++) {
+            out += "lw $al 0($al)\n";
+        }
+
+        int offset = stEntry.getOffset() - 1;
+        out += "\t lw $a0 " + offset + "($al)\n";
+
+        out += (debug ? ";END ID\n" : "");
+        return out;
     }
 
     @Override
-    public String getVarId() {
-        return id;
+    public VarExp getVarId() {
+        return this;
+    }
+
+    public int getNestingLevel() {
+        return nestingLevel;
+    }
+
+    public STentry getSTentry() {
+        return stEntry;
     }
 
     @Override

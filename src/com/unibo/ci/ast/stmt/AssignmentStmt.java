@@ -11,6 +11,7 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
@@ -62,8 +63,18 @@ public class AssignmentStmt extends Statement {
 
 	@Override
 	public String codeGeneration() {
-		// TODO Auto-generated method stub
-		return null;
+        boolean debug = GlobalConfig.PRINT_COMMENTS;
+
+        String out = (debug ? ";BEGIN ASSIGNMENT " + this.toPrint("") + "\n" : "");        
+		out += exp.codeGeneration();
+		out += "push $a0\n";
+		out += left.codeGeneration();
+		out += "lw $t1 0($sp)\n";
+		out += "pop\n";
+		out += "sw $t1 0($a0)\n";
+
+        out += (debug ? ";END ASSIGNMENT\n" : "");
+        return out;
 	}
 
 	@Override

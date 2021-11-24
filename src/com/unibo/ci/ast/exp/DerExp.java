@@ -7,8 +7,8 @@ import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypePointer;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
+import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 
@@ -46,12 +46,32 @@ public class DerExp extends LhsExp {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        boolean debug = GlobalConfig.PRINT_COMMENTS;
+
+        String out = (debug ? ";BEGIN DER " + this.toPrint("") + "\n" : "");    
+        VarExp id = getVarId();  
+        if(assignment){
+            out += "mv $al $fp\n";
+			for (int i = 0; i < (id.getNestingLevel() - id.getSTentry().getNestinglevel()); i++) {
+				out += "lw $al 0($al)\n";
+			}
+			out += " addi $a0 $al " + ( id.getSTentry().getOffset() - 1) + "\n";
+        } else {
+            out = id.codeGeneration();
+        }
+    
+        LhsExp pointer = child;
+        while(pointer instanceof DerExp) { //dereference pointer
+            out += " lw $a0 0($a0)\n";
+            pointer = ((DerExp) pointer).child;
+        }
+        
+        out += (debug ? ";END DER\n" : "");
+        return out;
     }
 
     @Override
-    public String getVarId() {
+    public VarExp getVarId() {
         return child.getVarId();
     }
 
