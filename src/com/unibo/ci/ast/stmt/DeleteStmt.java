@@ -1,18 +1,23 @@
 package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.lang.model.util.Types;
 
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypePointer;
+import com.unibo.ci.util.EffectHelper;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.STentry;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
+import com.unibo.ci.util.EffectHelper.ETypes;
 
 public class DeleteStmt extends Statement {
 
@@ -78,8 +83,18 @@ public class DeleteStmt extends Statement {
 
     @Override
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-        // TODO Auto-generated method stub
-        return new ArrayList<EffectError>();
+
+        ArrayList<EffectError> toRet = new ArrayList<EffectError>();
+
+        env.lookup(id).updateEffectType(EffectHelper.seq(env.lookup(id).getEtype(), EffectHelper.ETypes.D));
+
+        if (env.lookup(id).getEtype().equals(EffectHelper.ETypes.T)) {
+            toRet.add(new EffectError(row, column,
+                    "Cannot delete variable " + id + ": the variable has already been deleted"));
+
+        }
+
+        return toRet;
     }
 
 }

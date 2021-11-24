@@ -116,8 +116,10 @@ public class DecVar extends Dec {
          * ^int x = 5; ^int x;
          */
 
-        if (entry == null) // entry non c'è
-            env.addDeclaration(id, EffectHelper.ETypes.BOT);
+        if (entry == null) { // entry non c'è
+        	env.addDeclaration(id, EffectHelper.ETypes.BOT);
+            
+        }
 
         /*
          * else { env.lookup(id).updateEffectType(EffectHelper.ETypes.T); errors.add(new
@@ -139,7 +141,9 @@ public class DecVar extends Dec {
          * Γ ⊢ e : T' x ∉ dom(top(Γ)) T=T' --------------------------------------[VarD]
          * Γ ⊢ T x = e ; : Γ[x ⟼ T]
          */
-
+        
+        
+        
         return errors;
 
     }

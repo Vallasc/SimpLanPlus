@@ -16,18 +16,17 @@ import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.STentry;
 
+public class GammaEnv extends Environment<STentry> {
 
-public class GammaEnv extends Environment<STentry>  {	
+	public GammaEnv() {
+		super();
+		nestingLevel = -1;
+		offset = 0;
+	}
 
-    public GammaEnv(){
-    	super();
-        nestingLevel = -1;
-        offset = 0;
-    }
-
-    public LinkedList<LinkedHashMap<String, STentry>> getTable(){
-        return super.getTable();
-    }	
+	public LinkedList<LinkedHashMap<String, STentry>> getTable() {
+		return super.getTable();
+	}
 
 	// Extends the symbol table with a new scope
 	public void newScope() {
@@ -40,49 +39,42 @@ public class GammaEnv extends Environment<STentry>  {
 	}
 
 	// If there is no clash of names, adds id ⟼ t to st
-	public void addDeclaration(String id, Type type) throws DuplicateEntryException { 
+	public void addDeclaration(String id, Type type) throws DuplicateEntryException {
 		STentry value = table.getLast().get(id);
 		// There is already an entry
 		if (value != null)
 			throw new DuplicateEntryException();
 		table.getLast().put(id, new STentry(id, type, nestingLevel, offset));
 	}
-	
-	
 
 	// Looks for the entry of id in symbol/effect table, if there is any
 	public STentry lookup(String id) {
 		return super.lookup(id);
 	}
-	
+
 	public STentry lookupFunction() {
-		for (int i = table.size() -2; i >= 0; i--) {
+		for (int i = table.size() - 2; i >= 0; i--) {
 			ListIterator<STentry> iterator = new ArrayList<STentry>(table.get(i).values())
 					.listIterator(table.get(i).size());
 
-				while (iterator.hasPrevious()) {
-					STentry entry = iterator.previous();
-					//System.out.println("DEBUG Entry: " + entry.toPrint("*"));
-					if (entry.getType() instanceof TypeFunction)
-						return entry;
-			}
-		}
-		return null;
-	}
-
-	/*public STentry lookupFunction() {
-		for (int i = symTable.size(); i-- > 0;) {
-			ListIterator<STentry> iterator = new ArrayList<STentry>(symTable.get(i).values())
-					.listIterator(symTable.get(i).size());
 			while (iterator.hasPrevious()) {
 				STentry entry = iterator.previous();
+				// System.out.println("DEBUG Entry: " + entry.toPrint("*"));
 				if (entry.getType() instanceof TypeFunction)
 					return entry;
 			}
 		}
 		return null;
-	}*/
+	}
 
+	/*
+	 * public STentry lookupFunction() { for (int i = symTable.size(); i-- > 0;) {
+	 * ListIterator<STentry> iterator = new
+	 * ArrayList<STentry>(symTable.get(i).values())
+	 * .listIterator(symTable.get(i).size()); while (iterator.hasPrevious()) {
+	 * STentry entry = iterator.previous(); if (entry.getType() instanceof
+	 * TypeFunction) return entry; } } return null; }
+	 */
 
 	public String toPrint(String indent) {
 		StringBuilder sb = new StringBuilder(indent + "Symbol table:\n");
@@ -110,11 +102,8 @@ public class GammaEnv extends Environment<STentry>  {
 	 * public void setOffset(int offset) { this.offset = offset; }
 	 */
 
-	/*public class DuplicateSTEntryException extends Exception {
-	}*/
-
-
-
-
+	/*
+	 * public class DuplicateSTEntryException extends Exception { }
+	 */
 
 }

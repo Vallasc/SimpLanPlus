@@ -22,7 +22,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		// String fileName = "test/test_fun_ite_return.slp";
-		String fileName = "test/test_fun_ite_return.slp";
+		String fileName = "test/eff3ct_an4lysus.slp";
 
 		FileInputStream is = new FileInputStream(fileName);
 		ANTLRInputStream input = new ANTLRInputStream(is);
@@ -59,7 +59,7 @@ public class Main {
 		TypeErrorsStorage.getErrorList().forEach(typeErr -> {
 			System.out.println("Type error " + typeErr.row + ", " + typeErr.col + ": " + typeErr.desc);
 		});
-
+		
 		if (ast.AnalyzeEffect(effects_env) != null) // TODO togli questo if - tutti gli analyze effect devono restituire
 													// una lista != null
 			ast.AnalyzeEffect(effects_env).forEach(effectErr -> {

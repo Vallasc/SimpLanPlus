@@ -28,8 +28,7 @@ public class ReturnStmt extends Statement {
 
     @Override
     public String toPrint(String indent) {
-        return indent + "Stmt: return\n" + 
-                (exp != null ? exp.toPrint(indent) : "");
+        return indent + "Stmt: return\n" + (exp != null ? exp.toPrint(indent) : "");
     }
 
     @Override
@@ -49,13 +48,14 @@ public class ReturnStmt extends Statement {
         else
             functionType = ((TypeFunction) functionStEntry.getType()).getReturnType();
         Type returnType;
-        if(exp == null)
+        if (exp == null)
             returnType = new TypeVoid();
         else
             returnType = exp.typeCheck();
 
-        if(! functionType.equals(returnType)) {
-            TypeErrorsStorage.add(new TypeError(super.row, super.column, "Return type must be [" + functionType.getTypeName() + "]"));
+        if (!functionType.equals(returnType)) {
+            TypeErrorsStorage.add(
+                    new TypeError(super.row, super.column, "Return type must be [" + functionType.getTypeName() + "]"));
         }
         return returnType;
     }
@@ -73,10 +73,17 @@ public class ReturnStmt extends Statement {
         return out;
     }
 
-	@Override
-	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
+
+        ArrayList<EffectError> toRet = new ArrayList<EffectError>();
+
+        if (exp != null) {
+
+            toRet.addAll(exp.AnalyzeEffect(env));
+        }
+
+        return toRet;
+    }
 
 }

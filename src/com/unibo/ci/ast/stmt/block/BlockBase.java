@@ -200,6 +200,17 @@ public class BlockBase extends Block {
 		ArrayList<EffectError> errors = new ArrayList<EffectError>();
 		
 		env.newScope();
+		
+		errors.addAll(AnalyzeEffectNoScope(env));
+		
+		env.exitScope();
+
+		return errors;
+	}
+	
+	public ArrayList<EffectError> AnalyzeEffectNoScope(SigmaEnv env) { //serve per l'analisi degli effetti nella dichiarazione di funzione
+		ArrayList<EffectError> errors = new ArrayList<EffectError>();
+		
 		declarations.forEach( dec -> {
 			errors.addAll(dec.AnalyzeEffect(env));
 		});
@@ -207,10 +218,9 @@ public class BlockBase extends Block {
 		statements.forEach(stmt -> {
 			errors.addAll(stmt.AnalyzeEffect(env));
 		});
-		
-		env.exitScope();
 
 		return errors;
 	}
+
 
 }
