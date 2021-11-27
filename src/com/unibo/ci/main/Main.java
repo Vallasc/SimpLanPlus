@@ -27,10 +27,11 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		String fileName = "";
 		if(args.length != 1)
 			LOGGER.info("WOOOOO INSERISCI IN FILE SORGENTE WOOOOOO");
-
-		String fileName = args[0];
+		else 
+			fileName = args[0];
 
 		ANTLRInputStream input;
 		try {
@@ -93,7 +94,7 @@ public class Main {
 			return;
 		}
 
-		System.out.println("Programma terminato");
+		System.out.println("Programma " + fileName + " terminato");
 
 		// fase 1: stampare errori lessicali - scoprire come si può fare con antlr in
 		// automatico

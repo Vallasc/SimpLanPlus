@@ -208,6 +208,7 @@ public class BlockBase extends Block {
 	public ArrayList<EffectError> AnalyzeEffectNoScope(SigmaEnv env) { //serve per l'analisi degli effetti nella dichiarazione di funzione
 		ArrayList<EffectError> errors = new ArrayList<EffectError>();
 		
+
 		declarations.forEach( dec -> {
 			errors.addAll(dec.AnalyzeEffect(env));
 		});

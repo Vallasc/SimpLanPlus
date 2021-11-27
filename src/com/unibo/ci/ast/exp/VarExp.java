@@ -82,16 +82,11 @@ public class VarExp extends LhsExp {
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
-        /*System.out.println("DEBUG: sto cercando la variabile " + id);
-        
-        System.out.println("DEBUG: "  + env.lookup(id) == null );
-        
-        EEntry test = env.lookup(id);
-        
-        System.out.println(test != null ? "DEBUG: la variabile ha effetto " + env.lookup(id).getEtype() == null : "DEBUG: non ho trovato la variabile!!! nell'ambiente " + env.toPrint(""));
-        */
-        //TODO potrebbe essere che se c'è un errore di tipo qui viene generata un'eccezione; cosa facciamo? 
-        env.lookup(id).updateEffectType(EffectHelper.seq(env.lookup(id).getEtype(), EffectHelper.ETypes.RW));
+        env.lookup(id).
+        	updateEffectType(
+        			EffectHelper.seq(
+        					env.lookup(id).getEtype(), 
+        					EffectHelper.ETypes.RW));
         if (env.lookup(id).getEtype() == EffectHelper.ETypes.T) {
             toRet.add(new EffectError(row, column, "Cannot use variable [" + id + "]: the variable was deleted"));
         }

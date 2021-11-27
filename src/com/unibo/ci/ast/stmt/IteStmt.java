@@ -34,10 +34,12 @@ public class IteStmt extends Statement implements Cloneable {
         } 
         if ((elseStmt != null && elseStmt instanceof BlockBase)) {
         	this.elseStmt = elseStmt;
-        } else {
+        } else if (elseStmt != null){
         	ArrayList<Statement> tmp = new ArrayList<Statement>();
         	tmp.add(thenStmt);
         	this.elseStmt = new BlockBase(new ArrayList<Dec>(), tmp, elseStmt.getRow(), elseStmt.getColumn());
+        } else {
+        	this.elseStmt = null;
         }
         
 

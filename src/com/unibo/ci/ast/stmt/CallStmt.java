@@ -155,23 +155,6 @@ public class CallStmt extends Exp {
 		//SigmaEnv sigma_0 = env.lookup(id).getSigma0();
 		SigmaEnv sigma_1 = env.lookup(id).getSigma1();
 		
-		/*for (Exp par : parlist) {
-			
-			if (!(par.typeCheck() instanceof TypePointer)) {
-				if (par.AnalyzeEffect(sigma_1).equals(EffectHelper.ETypes.T)) { //questo equivale al controllo ( ∑_1 (y_i ) ≤ d ) per 1 ≤ i ≤ n
-					errors.add(null); //TODO
-				}
-			}
-		}*/
-		
-		/*for (Exp par : parlist) {
-			if (!(par.typeCheck() instanceof TypePointer)) { 
-				ETypes tmp = EffectHelper.seq(env.lookup(((VarExp)par).getVarId()).getEtype(), EffectHelper.ETypes.RW);
-				//ETypes tmp = EffectHelper.seq(env.lookup(((VarExp)par).getVarId()).getEtype(), EffectHelper.ETypes.RW);
-				env.lookup(((VarExp)par).getVarId()).updateEffectType(tmp);
-			}
-		}*/
-		
 		//sigma secondo associa ad un nome di variabile (parametro attuale della funzione) un effetto, servirà per fare il par
 		//logica: se ho una funzione pippo(var a, var b, var c) e la chiamo come pippo(x,x,y) dovrò fare il par sugli effetti associati ad x (ne avrò due, perché x viene legata ai parametri formali 'a' e 'b'  
 		HashMap<String, ArrayList<ETypes>> sigma_secondo = new HashMap<String, ArrayList<ETypes>>();
@@ -187,7 +170,8 @@ public class CallStmt extends Exp {
 								formal_parameter/*partametri formali*/)
 						.getEtype());
 				
-				ArrayList<ETypes> valEffectList = sigma_secondo.getOrDefault(env.lookup(((VarExp)par).getVarId().getId()), new ArrayList<ETypes>()); 
+				String var_id = ((VarExp)par).getVarId().getId();
+				ArrayList<ETypes> valEffectList = sigma_secondo.getOrDefault(var_id, new ArrayList<ETypes>()); 
 				valEffectList.add(tmp);
 				sigma_secondo.put(((VarExp)par).getVarId().getId(), valEffectList);
 				
@@ -197,11 +181,16 @@ public class CallStmt extends Exp {
 
 		sigma_secondo.forEach( (id, effect_list) -> {
 			//calcoliamo effettivamente par
-			ETypes tmp = effect_list.stream().reduce( (a, b) -> b == null ? a: EffectHelper.par(a, b) ).get();		
+			ETypes tmp = effect_list
+					.stream()
+					.reduce( (a, b) -> {
+						return b == null ? a: EffectHelper.par(a, b);
+					}
+					).get();		
 			
 			//controlliamo gli errori
 			if (tmp != null && tmp == ETypes.T) {
-				errors.add(null); //TODO 
+				errors.add(new EffectError(row,  column, "Effect Error in function call " + "[" + this.id + "]"));  
 			}
 			
 			//update

@@ -20,10 +20,12 @@ import com.unibo.ci.ast.errors.EffectError;
 
 public class DecVar extends Dec {
     private final Exp exp;
+    private final String id;
 
     public DecVar(int row, int column, Type type, String id, Exp exp) {
         super(row, column, type, id);
         this.exp = exp;
+        this.id = id;
     }
 
     @Override
@@ -118,7 +120,6 @@ public class DecVar extends Dec {
 
         if (entry == null) { // entry non c'è
         	env.addDeclaration(id, EffectHelper.ETypes.BOT);
-            
         }
 
         /*

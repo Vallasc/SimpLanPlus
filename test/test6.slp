@@ -1,10 +1,12 @@
 {
     int x = 1; // BUGGETTINO?
-    //void f(int y){ 
-    //    if (y == 0) 
-    //        print(x); 
-    //    else  
-    //        f(y-1) ; 
-    //}
-    //f(54) ;
+    
+    void f(int y){ 
+        if (y == 0) 
+            print(x); 
+        else  
+            f(y-1) ; 
+    }
+    
+    f(54) ;
 }

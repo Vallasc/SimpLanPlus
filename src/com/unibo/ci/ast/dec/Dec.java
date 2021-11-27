@@ -29,9 +29,11 @@ public abstract class Dec extends Node {
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> errors = new ArrayList<EffectError>();
         EEntry entry = env.lookup(id);
+        
 
-        if (entry == null) // entry non c'è
+        if (entry == null) { // entry non c'è
             env.addDeclaration(id, EffectHelper.ETypes.BOT);
+        }
         else { // entry c'è già ma la variabile è stata cancellata
             if (entry.getEtype() == EffectHelper.ETypes.D) {
                 entry.updateEffectType(EffectHelper.ETypes.BOT);

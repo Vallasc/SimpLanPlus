@@ -117,7 +117,8 @@ public class DecFun extends Dec {
     @Override
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
     	ArrayList<EffectError> errors = new ArrayList<EffectError>();
-    	SigmaEnv env_0 = new SigmaEnv(), env_1 = new SigmaEnv();
+    	//SigmaEnv env_0 = new SigmaEnv(), env_1 = new SigmaEnv();
+    	SigmaEnv env_0 = env.clone(), env_1 = env.clone();
     	env_0.newScope(); env_1.newScope();
     
     	
@@ -127,11 +128,7 @@ public class DecFun extends Dec {
     	});
     	
     	env_0.addDeclaration(id, env_0, (SigmaEnv) env_0.clone());
-    	env_1.addDeclaration(id, env_0, (SigmaEnv) env_0.clone());
-    	
-    	//FIXME non ho tenuto in considerazione che teoricamente bisognerebbe valutare tutto in sigma senza variabili globali - a cui non abbiamo accesso, questa cosa non vale per i puntatori
-    	// forse si risolve nella lookup però
-    	
+    	env_1.addDeclaration(id, env_0, (SigmaEnv) env_0.clone());  	
     	
     	errors.addAll(AnalyzeEffect(env_0, env_1)); //env_0 e env_1 sono stati modificati
     	env.addDeclaration(id, env_0, env_1);
