@@ -5,15 +5,21 @@ import java.util.ArrayList;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
+import com.unibo.ci.ast.errors.Warning;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.exp.LhsExp;
+import com.unibo.ci.ast.exp.VarExp;
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.ast.types.TypeVoid;
+import com.unibo.ci.util.EEntry;
 import com.unibo.ci.util.EffectHelper;
+import com.unibo.ci.util.EffectHelper.ETypes;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
+import com.unibo.ci.util.WarningsStorage;
 
 /**
  * Example: x = 3;
@@ -78,9 +84,17 @@ public class AssignmentStmt extends Statement {
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
+		//create a warning if an uninitialized pointer is assigned to another pointer
+		if (exp instanceof VarExp && exp.typeCheck() instanceof TypePointer) {
+			EEntry _exp = env.lookup(  ((VarExp)exp).getId()  );
+			if (_exp != null && _exp.getEtype() == ETypes.BOT) {
+				WarningsStorage.add(new Warning(row, column, "uninitialized pointer " + "[" + _exp.getId() + "]" + " assigned\n"));
+			}
+		}
+		
 		toRet.addAll(exp.AnalyzeEffect(env));
-
-		// set id effect as seq from his actual effect to RW
+		
+		// set id effect as seq from his actual effect to RW	
 		env.lookup(left.getVarId().getId())
 				.updateEffectType(EffectHelper.seq(env.lookup(left.getVarId().getId()).getEtype(), EffectHelper.ETypes.RW));
 

@@ -20,6 +20,7 @@ import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
+import com.unibo.ci.util.WarningsStorage;
 
 public class Main {
 	private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
@@ -93,6 +94,8 @@ public class Main {
 			});
 			return;
 		}
+		
+		WarningsStorage.printAll(); WarningsStorage.clear();
 
 		System.out.println("Programma " + fileName + " terminato");
 

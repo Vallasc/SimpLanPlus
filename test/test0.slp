@@ -5,6 +5,10 @@
     ^^int d = new ^int;
     ^int e;
 
+	^int x;
+    ^int y;
+    
+
     c^ = a;
     d^ = c;
     delete d;
@@ -14,5 +18,10 @@
 
     // BUGGETTINO?
     b = c^ + a + 4;
+    
+    //delete y;
+	
+	y = x;
+    
     return;
 }
