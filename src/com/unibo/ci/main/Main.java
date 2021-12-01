@@ -55,9 +55,9 @@ public class Main {
 
 		ParseTree tree = parser.block(); // begin parsing at rule 'block'
 
-		if (parserErrorsListener.errorsDetected())
+		if (parserErrorsListener.errorsDetected())	
 			System.exit(-1);
-
+		
 		//LOGGER.info(tree.toStringTree(parser)); // print LISP-style tre
 
 		SimpLanPlusVisitorImpl visitor = new SimpLanPlusVisitorImpl();
@@ -84,6 +84,7 @@ public class Main {
 			});
 			return;
 		}
+		TypeErrorsStorage.getErrorList().clear();
 		
 		/* Check Effects */
 		SigmaEnv effects_env = new SigmaEnv();
@@ -95,7 +96,7 @@ public class Main {
 			return;
 		}
 		
-		WarningsStorage.printAll(); WarningsStorage.clear();
+		WarningsStorage.printAll(); WarningsStorage.getWarningList().clear();
 
 		System.out.println("Programma " + fileName + " terminato");
 
