@@ -33,15 +33,15 @@ public class SigmaEnv extends Environment<EEntry> {
 
 	// If there is no clash of names, adds id ⟼ t to st
 	public void addDeclaration(String id, EffectHelper.ETypes type) {
-		//TODO servono nestingLevel e offset?
+		// TODO servono nestingLevel e offset?
 		table.getLast().put(id, new EEntry(id, type, nestingLevel, offset));
 	}
-	
-	public void addDeclaration(String id, SigmaEnv env0, SigmaEnv env1) { //per le funzioni
-		//TODO servono nestingLevel e offset?
+
+	public void addDeclaration(String id, SigmaEnv env0, SigmaEnv env1) { // per le funzioni
+		// TODO servono nestingLevel e offset?
 		table.getLast().put(id, new EEntry(id, null, -1, 0));
-		table.getLast().get(id).sigma0 = env0 ;
-		table.getLast().get(id).sigma1 = env1 ;
+		table.getLast().get(id).sigma0 = env0;
+		table.getLast().get(id).sigma1 = env1;
 	}
 
 	// Looks for the entry of id in symbol/effect table, if there is any
@@ -51,16 +51,22 @@ public class SigmaEnv extends Environment<EEntry> {
 
 	@Override
 	public String toPrint(String indent) {
-		
+
 		StringBuilder sb = new StringBuilder();
-		table.forEach( env -> {
-			sb.append("\n== env: \n");
-			env.keySet().forEach( key -> {
-				sb.append("===== ").append( key ).append( " |- " ).append( env.get(key).type).append( "\n");
+		sb.append("\n== env: \n");
+
+		table.forEach(env -> {
+
+			env.keySet().forEach(key -> {
+				sb.append("===== ").append(key).append(" |- ").append(env.get(key).type).append("\n");
 			});
-			
-		});
-		
+
+			sb.append("================== \n");
+		}
+
+		);
+		sb.append("end env \n");
+
 		return sb.toString();
 	}
 
@@ -69,7 +75,7 @@ public class SigmaEnv extends Environment<EEntry> {
 		SigmaEnv toReturn = new SigmaEnv();
 		toReturn.table = (LinkedList<LinkedHashMap<String, EEntry>>) table.clone();
 		toReturn.offset = offset;
-		toReturn.nestingLevel = nestingLevel; 
+		toReturn.nestingLevel = nestingLevel;
 		return toReturn;
 	}
 
@@ -79,5 +85,5 @@ public class SigmaEnv extends Environment<EEntry> {
 		table.descendingIterator().forEachRemaining(scope -> map.putAll(scope));
 		return map;
 	}
-	
+
 }
