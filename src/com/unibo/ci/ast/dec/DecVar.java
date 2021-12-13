@@ -83,10 +83,10 @@ public class DecVar extends Dec {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DECVAR" + this.toPrint("") + "\n" : "");        
-		out += "addi $sp $sp 1" + (debug ? " ;allocates space on the stack for arg [" + id + "]\n" : "\n");
-        
-        if(exp == null)
+        String out = (debug ? ";BEGIN DECVAR" + this.toPrint("") + "\n" : "");
+        out += "addi $sp $sp 1" + (debug ? " ;allocates space on the stack for arg [" + id + "]\n" : "\n");
+
+        if (exp == null)
             out += "addi $sp $sp -1\n";
         else
             out += exp.codeGeneration() + "\n" + "push $a0\n";
@@ -117,10 +117,7 @@ public class DecVar extends Dec {
          * 
          * ^int x = 5; ^int x;
          */
-
-        if (entry == null) { // entry non c'è
-        	env.addDeclaration(id, EffectHelper.ETypes.BOT);
-        }
+        env.addDeclaration(id, EffectHelper.ETypes.BOT);
 
         /*
          * else { env.lookup(id).updateEffectType(EffectHelper.ETypes.T); errors.add(new
@@ -142,9 +139,7 @@ public class DecVar extends Dec {
          * Γ ⊢ e : T' x ∉ dom(top(Γ)) T=T' --------------------------------------[VarD]
          * Γ ⊢ T x = e ; : Γ[x ⟼ T]
          */
-        
-        
-        
+
         return errors;
 
     }
