@@ -66,7 +66,7 @@ public class DeleteStmt extends Statement {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DELETE " + this.toPrint("") + "\n" : "");        
+        String out = (debug ? ";BEGIN DELETE " + this.toPrint("") + "\n" : "");
         out += "mv $al $fp \n";
 
         for (int i = 0; i < nestingLevel - stEntry.getNestinglevel(); i++) {
@@ -75,7 +75,7 @@ public class DeleteStmt extends Statement {
 
         int offset = stEntry.getOffset() - 1;
         out += "\t lw $a0 " + offset + "($al)\n";
-        
+
         out += "del $a0\n";
         out += (debug ? ";END DELETE\n" : "");
         return out;
@@ -93,6 +93,18 @@ public class DeleteStmt extends Statement {
                     "Cannot delete variable " + id + ": the variable has already been deleted"));
 
         }
+        System.out.println(env.toPrint("*"));
+        /*
+         * 
+         * statement.forEach(stmt -> stmt.analyzeEffect())
+         * 
+         * DEBUG: analizzo statement com.unibo.ci.ast.stmt.IteStmt@27ddd392, 3, 8
+         * DEBUG: analizzo statement com.unibo.ci.ast.stmt.AssignmentStmt@19e1023e, 6,
+         * 12
+         * DEBUG: analizzo statement com.unibo.ci.ast.stmt.CallStmt@7cef4e59, 7, 12
+         * DEBUG: analizzo statement com.unibo.ci.ast.stmt.DeleteStmt@64b8f8f4, 8, 12
+         * DEBUG: analizzo statement com.unibo.ci.ast.stmt.DeleteStmt@2db0f6b2, 4, 12
+         */
 
         return toRet;
     }
