@@ -20,7 +20,7 @@ import com.unibo.ci.util.TypeErrorsStorage;
 public class ReturnStmt extends Statement {
     private Exp exp;
     private STentry functionStEntry;
-    
+
     public ReturnStmt(int row, int column, Exp exp) {
         super(row, column);
         this.exp = exp;
@@ -35,7 +35,7 @@ public class ReturnStmt extends Statement {
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         functionStEntry = env.lookupFunction();
-        if(exp != null)
+        if (exp != null)
             errors.addAll(exp.checkSemantics(env));
         return errors;
     }
@@ -43,7 +43,7 @@ public class ReturnStmt extends Statement {
     @Override
     public Type typeCheck() {
         Type functionType;
-        if(functionStEntry == null)
+        if (functionStEntry == null)
             functionType = new TypeVoid();
         else
             functionType = ((TypeFunction) functionStEntry.getType()).getReturnType();
@@ -64,10 +64,10 @@ public class ReturnStmt extends Statement {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN RETURN " + this.toPrint("") + "\n" : "");        
-		if(exp != null)
+        String out = (debug ? ";BEGIN RETURN " + "\n" : "");
+        if (exp != null)
             out += exp.codeGeneration();
-		out += "b " + ((TypeFunction)functionStEntry.getType()).getLabelEndFun() + "\n";
+        out += "b " + ((TypeFunction) functionStEntry.getType()).getLabelEndFun() + "\n";
 
         out += (debug ? ";END RETURN\n" : "");
         return out;

@@ -42,14 +42,14 @@ public class BlockBase extends Block {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
 		env.newScope();
-		
+
 		declarations.forEach(dec -> {
 			errors.addAll(dec.checkSemantics(env));
 		});
 		statements.forEach(stmt -> {
 			errors.addAll(stmt.checkSemantics(env));
 		});
-		//System.out.println(env.toPrint(""));
+		// System.out.println(env.toPrint(""));
 		env.exitScope();
 
 		return errors;
@@ -94,29 +94,26 @@ public class BlockBase extends Block {
 		ArrayList<Type> stmtReturn = new ArrayList<Type>();
 		statements.forEach(stmt -> {
 			Type type = stmt.typeCheck();
-			//System.out.println("DEBUG blockbase: type " + type);
-			if( type != null && (stmt instanceof IteStmt || stmt instanceof ReturnStmt || stmt instanceof BlockBase) ) { 
+			// System.out.println("DEBUG blockbase: type " + type);
+			if (type != null && (stmt instanceof IteStmt || stmt instanceof ReturnStmt || stmt instanceof BlockBase)) {
 				stmtReturn.add(type);
 			}
 		});
 
-
-		
 		Type returnType = stmtReturn.stream()
 				.reduce(null, (accumulator, element) -> {
-					//System.out.println("DEBUG blockbase stream: element" + element);
-					if(element == null){
+					// System.out.println("DEBUG blockbase stream: element" + element);
+					if (element == null) {
 						return accumulator;
 					}
 
-					if((element instanceof TypeInt || element instanceof TypeBool || element instanceof TypeVoid) && 
+					if ((element instanceof TypeInt || element instanceof TypeBool || element instanceof TypeVoid) &&
 							(accumulator != null && !accumulator.equals(element))) {
-							TypeErrorsStorage.add(new TypeError(row, column, "return type mismatch in block element"));
-					} 					
+						TypeErrorsStorage.add(new TypeError(row, column, "return type mismatch in block element"));
+					}
 					return element;
 				});
 
-		
 		return returnType;
 	}
 
@@ -124,15 +121,14 @@ public class BlockBase extends Block {
 	public String codeGeneration() {
 		boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN BLOCK\n" : "");        
+		String out = (debug ? ";BEGIN BLOCK\n" : "");
 
 		// New scope
-		if(isMain) {
+		if (isMain) {
 			out += "push $sp\n";
 		} else {
 			out += "push $fp" + (debug ? " ;push old fp\n" : "\n");
 			out += "push $cl\n";
-
 		}
 
 		// Pushing ra so the stack is always consistent
@@ -148,34 +144,36 @@ public class BlockBase extends Block {
 		List<DecVar> varDecs = new ArrayList<>();
 		List<DecFun> funDecs = new ArrayList<>();
 
-		for(Dec d : declarations) {
-			if(d instanceof DecVar)
+		for (Dec d : declarations) {
+			if (d instanceof DecVar)
 				varDecs.add((DecVar) d);
-			if(d instanceof DecFun)
+			if (d instanceof DecFun)
 				funDecs.add((DecFun) d);
 		}
 
 		// Generate code for declarations
-		for(DecVar d : varDecs)
+		for (DecVar d : varDecs)
 			out += d.codeGeneration();
 
 		if (!isMain) {
 			out += "mv $fp $sp" + (debug ? " ;frame pointer above the new declarations\n" : "\n");
-			out += "addi $fp $fp " + varDecs.size() + (debug ? " ;frame pointer before decs (n =: " + varDecs.size()+")\n" : "\n");
+			out += "addi $fp $fp " + varDecs.size()
+					+ (debug ? " ;frame pointer before decs (n =: " + varDecs.size() + ")\n" : "\n");
 		}
 
 		// Generate statements
-		for(Statement s : statements)
+		for (Statement s : statements)
 			out += s.codeGeneration();
 
 		if (isMain)
 			out += "halt\n";
 
-        out += (debug ? ";END BLOCK\n" : "");
+		out += (debug ? ";END BLOCK\n" : "");
 
 		if (!isMain) {
 			// Pop all the declarations
-			out += "addi $sp $sp " + varDecs.size() + (debug ? " ;pop var declarations\n" : "\n"); // Pop var declarations.
+			out += "addi $sp $sp " + varDecs.size() + (debug ? " ;pop var declarations\n" : "\n"); // Pop var
+																									// declarations.
 			out += "pop" + (debug ? " ;pop $al" : "\n");
 			out += "pop" + (debug ? " ;pop consistency ra" : "\n");
 			out += "lw $cl 0($sp)\n";
@@ -185,31 +183,31 @@ public class BlockBase extends Block {
 		}
 
 		// Function declaration at the end, they need the space for ra
-		for(DecFun f : funDecs) 
+		for (DecFun f : funDecs)
 			out += f.codeGeneration();
 		out += "; END BLOCK\n";
 
-        return out;
+		return out;
 	}
 
 	@Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		ArrayList<EffectError> errors = new ArrayList<EffectError>();
-		
+
 		env.newScope();
-		
+
 		errors.addAll(AnalyzeEffectNoScope(env));
-		
+
 		env.exitScope();
 
 		return errors;
 	}
-	
-	public ArrayList<EffectError> AnalyzeEffectNoScope(SigmaEnv env) { //serve per l'analisi degli effetti nella dichiarazione di funzione
-		ArrayList<EffectError> errors = new ArrayList<EffectError>();
-		
 
-		declarations.forEach( dec -> {
+	public ArrayList<EffectError> AnalyzeEffectNoScope(SigmaEnv env) { // serve per l'analisi degli effetti nella
+																		// dichiarazione di funzione
+		ArrayList<EffectError> errors = new ArrayList<EffectError>();
+
+		declarations.forEach(dec -> {
 			errors.addAll(dec.AnalyzeEffect(env));
 		});
 

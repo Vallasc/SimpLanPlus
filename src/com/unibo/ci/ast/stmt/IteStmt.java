@@ -102,7 +102,7 @@ public class IteStmt extends Statement implements Cloneable {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN ITE " + this.toPrint("") + "\n" : "");
+        String out = (debug ? ";BEGIN ITE " + "\n" : "");
 
         String then = LabelManager.getInstance().newLabel("then");
         String end = LabelManager.getInstance().newLabel("endif");

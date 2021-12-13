@@ -66,7 +66,7 @@ public class DeleteStmt extends Statement {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DELETE " + this.toPrint("") + "\n" : "");
+        String out = (debug ? ";BEGIN DELETE " + "\n" : "");
         out += "mv $al $fp \n";
 
         for (int i = 0; i < nestingLevel - stEntry.getNestinglevel(); i++) {
