@@ -47,7 +47,7 @@ public class VarExp extends LhsExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN ID " + this.toPrint("") + "\n" : "");        
+        String out = (debug ? ";BEGIN ID " + "\n" : "");
         out += "mv $al $fp \n";
 
         for (int i = 0; i < nestingLevel - stEntry.getNestinglevel(); i++) {
@@ -82,11 +82,10 @@ public class VarExp extends LhsExp {
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
-        env.lookup(id).
-        	updateEffectType(
-        			EffectHelper.seq(
-        					env.lookup(id).getEtype(), 
-        					EffectHelper.ETypes.RW));
+        env.lookup(id).updateEffectType(
+                EffectHelper.seq(
+                        env.lookup(id).getEtype(),
+                        EffectHelper.ETypes.RW));
         if (env.lookup(id).getEtype() == EffectHelper.ETypes.T) {
             toRet.add(new EffectError(row, column, "Cannot use variable [" + id + "]: the variable was deleted"));
         }

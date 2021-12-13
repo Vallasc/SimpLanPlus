@@ -24,8 +24,9 @@ public class MultExp extends BinExp {
     @Override
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
-        
-        String out = (debug ? ";BEGIN " + 	this.toPrint("") + "\n" : "");        out += left.codeGeneration();
+
+        String out = (debug ? ";BEGIN " + "\n" : "");
+        out += left.codeGeneration();
         out += "push $a0" + (debug ? " ;push on the stack e1\n" : "\n");
         out += right.codeGeneration();
         out += "lw $t1 0($sp)" + (debug ? " ;$t1 = e1, $a0 = e2\n" : "\n");

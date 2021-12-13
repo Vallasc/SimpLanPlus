@@ -29,8 +29,8 @@ public class AndExp extends BinExp {
     @Override
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
-        
-        String out = (debug ? ";BEGIN " + 	this.toPrint("") + "\n" : "");
+
+        String out = (debug ? ";BEGIN " + "\n" : "");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ; push on the stack e1\n" : "\n");
         out += right.codeGeneration();

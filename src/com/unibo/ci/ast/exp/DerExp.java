@@ -48,24 +48,24 @@ public class DerExp extends LhsExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DER " + this.toPrint("") + "\n" : "");    
-        VarExp id = getVarId();  
-        if(assignment){
+        String out = (debug ? ";BEGIN DER " + "\n" : "");
+        VarExp id = getVarId();
+        if (assignment) {
             out += "mv $al $fp\n";
-			for (int i = 0; i < (id.getNestingLevel() - id.getSTentry().getNestinglevel()); i++) {
-				out += "lw $al 0($al)\n";
-			}
-			out += " addi $a0 $al " + ( id.getSTentry().getOffset() - 1) + "\n";
+            for (int i = 0; i < (id.getNestingLevel() - id.getSTentry().getNestinglevel()); i++) {
+                out += "lw $al 0($al)\n";
+            }
+            out += " addi $a0 $al " + (id.getSTentry().getOffset() - 1) + "\n";
         } else {
             out = id.codeGeneration();
         }
-    
+
         LhsExp pointer = child;
-        while(pointer instanceof DerExp) { //dereference pointer
+        while (pointer instanceof DerExp) { // dereference pointer
             out += " lw $a0 0($a0)\n";
             pointer = ((DerExp) pointer).child;
         }
-        
+
         out += (debug ? ";END DER\n" : "");
         return out;
     }

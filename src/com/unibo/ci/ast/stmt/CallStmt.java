@@ -106,7 +106,7 @@ public class CallStmt extends Exp {
 
         out += "push $al\n";
         for (Exp p : parlist) {
-            out += p.codeGeneration() + "push $a0" + (debug ? " ;pushing " + p.toPrint("") + "\n" : "\n");
+            out += p.codeGeneration() + "push $a0" + (debug ? " ;pushing " + "\n" : "\n");
         }
         out += "mv $fp $sp\n";
         out += "addi $fp $fp " + parlist.size() + "\n";

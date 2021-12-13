@@ -30,23 +30,24 @@ public class GreaterThanExp extends BinExp {
     @Override
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
-        
-        String out = (debug ? ";BEGIN " + 	this.toPrint("") + "\n" : "");        out += left.codeGeneration();
+
+        String out = (debug ? ";BEGIN " + "\n" : "");
+        out += left.codeGeneration();
         out += "push $a0" + (debug ? " ;push on the stack e1\n" : "\n");
         out += right.codeGeneration();
         out += "lw $t1 0($sp)" + (debug ? " ;$t1 = e1, $a0 = e2\n" : "\n");
-        out +="pop" + (debug ? " ;pop e1 from the stack\n" : "\n");
+        out += "pop" + (debug ? " ;pop e1 from the stack\n" : "\n");
 
         String trueBranchLabel = LabelManager.getInstance().newLabel("greaterTrueBranch");
         String endCheckLabel = "end" + trueBranchLabel;
 
-        out +="\t "+ "bleq $t1 $a0 " + trueBranchLabel + "\n";
-        //False branch
-        out +="\t "+"li $a0 1\n";
-        out +="\t "+"b " + endCheckLabel +"\n";
-        out +="\t "+ trueBranchLabel + ":\n";
-        out +="\t "+"li $a0 0\n";
-        out +="\t "+ endCheckLabel + ":\n";
+        out += "\t " + "bleq $t1 $a0 " + trueBranchLabel + "\n";
+        // False branch
+        out += "\t " + "li $a0 1\n";
+        out += "\t " + "b " + endCheckLabel + "\n";
+        out += "\t " + trueBranchLabel + ":\n";
+        out += "\t " + "li $a0 0\n";
+        out += "\t " + endCheckLabel + ":\n";
 
         out += (debug ? ";END \n" : "");
         return out;

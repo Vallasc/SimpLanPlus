@@ -66,9 +66,9 @@ public class AssignmentStmt extends Statement {
 
 	@Override
 	public String codeGeneration() {
-        boolean debug = GlobalConfig.PRINT_COMMENTS;
+		boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN ASSIGNMENT " + this.toPrint("") + "\n" : "");        
+		String out = (debug ? ";BEGIN ASSIGNMENT " + "\n" : "");
 		out += exp.codeGeneration();
 		out += "push $a0\n";
 		out += left.codeGeneration();
@@ -76,31 +76,34 @@ public class AssignmentStmt extends Statement {
 		out += "pop\n";
 		out += "sw $t1 0($a0)\n";
 
-        out += (debug ? ";END ASSIGNMENT\n" : "");
-        return out;
+		out += (debug ? ";END ASSIGNMENT\n" : "");
+		return out;
 	}
 
 	@Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
-		//create a warning if an uninitialized pointer is assigned to another pointer
+		// create a warning if an uninitialized pointer is assigned to another pointer
 		if (exp instanceof VarExp && exp.typeCheck() instanceof TypePointer) {
-			EEntry _exp = env.lookup(  ((VarExp)exp).getId()  );
+			EEntry _exp = env.lookup(((VarExp) exp).getId());
 			if (_exp != null && _exp.getEtype() == ETypes.BOT) {
-				WarningsStorage.add(new Warning(row, column, "uninitialized pointer " + "[" + _exp.getId() + "]" + " assigned\n"));
+				WarningsStorage.add(
+						new Warning(row, column, "uninitialized pointer " + "[" + _exp.getId() + "]" + " assigned\n"));
 			}
 		}
-		
+
 		toRet.addAll(exp.AnalyzeEffect(env));
-		
-		// set id effect as seq from his actual effect to RW	
+
+		// set id effect as seq from his actual effect to RW
 		env.lookup(left.getVarId().getId())
-				.updateEffectType(EffectHelper.seq(env.lookup(left.getVarId().getId()).getEtype(), EffectHelper.ETypes.RW));
+				.updateEffectType(
+						EffectHelper.seq(env.lookup(left.getVarId().getId()).getEtype(), EffectHelper.ETypes.RW));
 
 		if (env.lookup(left.getVarId().getId()).getEtype().equals(EffectHelper.ETypes.T)) {
 
-			toRet.add(new EffectError(row, column, "Cannot use variable [" + left.getVarId().getId() + "]: the variable was deleted"));
+			toRet.add(new EffectError(row, column,
+					"Cannot use variable [" + left.getVarId().getId() + "]: the variable was deleted"));
 		}
 		return toRet;
 	}

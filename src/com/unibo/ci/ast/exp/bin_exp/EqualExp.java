@@ -19,11 +19,11 @@ public class EqualExp extends BinExp {
     public TypeBool typeCheck() {
         Type leftType = super.left.typeCheck();
         Type rightType = super.right.typeCheck();
-        
+
         if ((leftType instanceof TypeBool && rightType instanceof TypeInt)
                 || (leftType instanceof TypeInt && rightType instanceof TypeBool)) {
-                TypeErrorsStorage.add(new TypeError(super.row, super.column, "type mismatch"));
-                return null;
+            TypeErrorsStorage.add(new TypeError(super.row, super.column, "type mismatch"));
+            return null;
         }
         return new TypeBool();
     }
@@ -31,21 +31,22 @@ public class EqualExp extends BinExp {
     @Override
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
-        
-        String out = (debug ? ";BEGIN " + 	this.toPrint("") + "\n" : "");        out += left.codeGeneration();
+
+        String out = (debug ? ";BEGIN " + "\n" : "");
+        out += left.codeGeneration();
         out += "push $a0" + (debug ? " ; push on the stack e1\n" : "\n");
         out += right.codeGeneration();
         out += "lw $t1 0($sp)" + (debug ? " ;$t1 = e1, $a0 = e2\n" : "\n");
-        out +="pop" + (debug ? " ;pop e1 from the stack\n" : "\n");
+        out += "pop" + (debug ? " ;pop e1 from the stack\n" : "\n");
 
         String trueBranchLabel = LabelManager.getInstance().newLabel("equalTrueBranch");
         String endCheckLabel = "end" + trueBranchLabel;
 
-        out +="beq $t1 $a0 " + trueBranchLabel + "\n";
-        //False branch
+        out += "beq $t1 $a0 " + trueBranchLabel + "\n";
+        // False branch
         out += "li $a0 0" + (debug ? " ;e1 != e2\n" : "\n");
-        out += "b " +endCheckLabel +"\n";
-        out += trueBranchLabel +":\n";
+        out += "b " + endCheckLabel + "\n";
+        out += trueBranchLabel + ":\n";
         out += "li $a0 1" + (debug ? " ;e1 != e2\n" : "\n");
         out += endCheckLabel + ":\n";
 
