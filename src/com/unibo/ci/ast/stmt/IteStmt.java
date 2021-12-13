@@ -26,22 +26,21 @@ public class IteStmt extends Statement implements Cloneable {
         super(row, column);
         this.exp = exp;
         if ((thenStmt instanceof BlockBase)) {
-        	this.thenStmt = thenStmt;
+            this.thenStmt = thenStmt;
         } else {
-        	ArrayList<Statement> tmp = new ArrayList<Statement>();
-        	tmp.add(thenStmt);
-        	this.thenStmt = new BlockBase(new ArrayList<Dec>(), tmp, thenStmt.getRow(), thenStmt.getColumn());
-        } 
-        if ((elseStmt != null && elseStmt instanceof BlockBase)) {
-        	this.elseStmt = elseStmt;
-        } else if (elseStmt != null){
-        	ArrayList<Statement> tmp = new ArrayList<Statement>();
-        	tmp.add(thenStmt);
-        	this.elseStmt = new BlockBase(new ArrayList<Dec>(), tmp, elseStmt.getRow(), elseStmt.getColumn());
-        } else {
-        	this.elseStmt = null;
+            ArrayList<Statement> tmp = new ArrayList<Statement>();
+            tmp.add(thenStmt);
+            this.thenStmt = new BlockBase(new ArrayList<Dec>(), tmp, thenStmt.getRow(), thenStmt.getColumn());
         }
-        
+        if ((elseStmt != null && elseStmt instanceof BlockBase)) {
+            this.elseStmt = elseStmt;
+        } else if (elseStmt != null) {
+            ArrayList<Statement> tmp = new ArrayList<Statement>();
+            tmp.add(thenStmt);
+            this.elseStmt = new BlockBase(new ArrayList<Dec>(), tmp, elseStmt.getRow(), elseStmt.getColumn());
+        } else {
+            this.elseStmt = null;
+        }
 
     }
 
@@ -56,15 +55,14 @@ public class IteStmt extends Statement implements Cloneable {
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 
-        errors.addAll(exp.checkSemantics(env));        
-	        
+        errors.addAll(exp.checkSemantics(env));
+
         errors.addAll(thenStmt.checkSemantics(env));
-       
-        
+
         if (elseStmt != null) {
             errors.addAll(elseStmt.checkSemantics(env));
         }
-        
+
         return errors;
     }
 
@@ -104,20 +102,20 @@ public class IteStmt extends Statement implements Cloneable {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN ITE " + 	this.toPrint("") + "\n" : "");        
+        String out = (debug ? ";BEGIN ITE " + this.toPrint("") + "\n" : "");
 
         String then = LabelManager.getInstance().newLabel("then");
         String end = LabelManager.getInstance().newLabel("endif");
-		out += exp.codeGeneration();
+        out += exp.codeGeneration();
         out += "li $t1 1\n";
-		out += "beq $a0 $t1 " + then + "\n";
+        out += "beq $a0 $t1 " + then + "\n";
 
-        if(elseStmt != null) {
+        if (elseStmt != null) {
             out += (debug ? ";ELSE\n" : "");
-            out += elseStmt.codeGeneration(); 
-		}
-		out += "\t b " + end +"\n" + "\t"+ then + ":\n";
-		out += "; THAN\n";
+            out += elseStmt.codeGeneration();
+        }
+        out += "\t b " + end + "\n" + "\t" + then + ":\n";
+        out += "; THAN\n";
         out += thenStmt.codeGeneration();
 
         out += end + " :\n";
@@ -133,15 +131,14 @@ public class IteStmt extends Statement implements Cloneable {
 
         SigmaEnv tempE = null;
 
+        analyzeBlockEffect(env, thenStmt, toRet);
 
+        env.toPrint("indent").toString();
         if (elseStmt != null) {
 
             tempE = (SigmaEnv) env.clone();
             analyzeBlockEffect(tempE, elseStmt, toRet);
         }
-
-
-        analyzeBlockEffect(env, thenStmt, toRet);
 
         if (tempE != null) {
             EffectHelper.maxModifyEnv(env, tempE);
