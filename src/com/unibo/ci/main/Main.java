@@ -91,6 +91,7 @@ public class Main {
 			});
 			return;
 		}
+		TypeErrorsStorage.getErrorList().clear();
 
 		/* Check Effects */
 		SigmaEnv effects_env = new SigmaEnv();

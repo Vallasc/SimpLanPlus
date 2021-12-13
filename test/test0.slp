@@ -12,15 +12,18 @@
 
     c^ = a;
     d^ = c;
-    delete d;
+    //delete d;
 
     e = c;
+    
     delete e;
+	delete d; 
+	d = e;
 
     // BUGGETTINO?
     b = c^ + a + 4;
     
-    //delete y;
+    d^ = c;
 	
 	y = x;
 */

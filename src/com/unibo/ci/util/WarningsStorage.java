@@ -20,8 +20,4 @@ public class WarningsStorage {
         return warningList; 
     }
 
-	public static void clear() {
-		warningList.clear();
-		
-	}
 }
