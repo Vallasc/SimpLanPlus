@@ -1,11 +1,19 @@
 {
+    ^int x = new int ;
+    int y;
+
     void g(^int x, int y){ 
         if (y==0) 
             delete x ; 
         else { 
             x^ = x^ - 1; 
-            g(x,y) ; 
+            g(x,y); 
             //delete x ;
         } 
     }
+
+    x^ = 1;
+    y = 1;
+    
+    g(x, y);
 }

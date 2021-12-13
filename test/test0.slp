@@ -1,4 +1,5 @@
 {
+/*    
     int a = 0;
     int b;
     ^int c = new int;
@@ -22,6 +23,19 @@
     //delete y;
 	
 	y = x;
+*/
+    ^int a;
     
+    {
+        
+        ^int a;
+        ^int b;
+    
+        delete a;
+        return ;
+    }
+
+    delete a;
+
     return;
 }

@@ -1,7 +1,15 @@
 {
+    void f(int a){
+        if(a == 0){
+
+        }else{
+
+            f(a-1);
+        }
+        
+    }
+
     int y;
-    ^int x = new int ; 
-    x^ = 1 ; 
-    //delete x ; 
-    y = x^ ; 
+    
+    f(11);
 }
