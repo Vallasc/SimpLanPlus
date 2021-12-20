@@ -30,7 +30,8 @@ public class IteStmt extends Statement implements Cloneable {
         } else {
             ArrayList<Statement> tmp = new ArrayList<Statement>();
             tmp.add(thenStmt);
-            this.thenStmt = new BlockBase(new ArrayList<Dec>(), tmp, thenStmt.getRow(), thenStmt.getColumn());
+            this.thenStmt = thenStmt;
+            //this.thenStmt = new BlockBase(new ArrayList<Dec>(), tmp, thenStmt.getRow(), thenStmt.getColumn());
         }
         if ((elseStmt != null && elseStmt instanceof BlockBase)) {
             this.elseStmt = elseStmt;
@@ -127,23 +128,29 @@ public class IteStmt extends Statement implements Cloneable {
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
+        //System.out.println("DEBUG: ambiente prima di ite_analyze_effect");
+        //env.toPrint("indent").toString();
+        
         toRet.addAll(exp.AnalyzeEffect(env));
 
         SigmaEnv tempE = null;
 
-        analyzeBlockEffect(env, thenStmt, toRet);
 
-        env.toPrint("indent").toString();
         if (elseStmt != null) {
 
             tempE = (SigmaEnv) env.clone();
             analyzeBlockEffect(tempE, elseStmt, toRet);
         }
+        
+        analyzeBlockEffect(env, thenStmt, toRet);
 
         if (tempE != null) {
             EffectHelper.maxModifyEnv(env, tempE);
         }
 
+        //System.out.println("DEBUG: ambiente dopo di ite_analyze_effect");
+        //env.toPrint("indent").toString();
+        
         return toRet;
     }
 

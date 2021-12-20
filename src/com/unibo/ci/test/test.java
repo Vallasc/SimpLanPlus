@@ -11,7 +11,7 @@ public class test {
     	
     	//uso: test.java x, dove x è il numero del test da eseguire
     	//se non viene specificato nessun numero esegui tutti i test nella testpath
-    	if (args.length == 0) {
+    	/*if (args.length == 0) {
 	    	File testFolder = new File(testpath);
 	    	for(String filename : testFolder.list()) {
 	    		if (filename.endsWith(".slp") && filename.startsWith("test")) {
@@ -19,10 +19,11 @@ public class test {
 	    			Main.main(new String[]{testpath.concat(filename)});
 	    		}
 	    	}
-    	} else {
+    	} else {*/
     		 
-    		Main.main(new String[]{testpath + "test" + args[1] + ".slp"});
-    	}
+    		//Main.main(new String[]{testpath + "test" + args[1] + ".slp"});
+    		Main.main(new String[]{testpath + "test" + "5" + ".slp"});
+    	/*}*/
     	
         /*for (int i = 0; i <= 8; i++){
             System.out.println("Test " + i);

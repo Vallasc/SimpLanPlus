@@ -3,17 +3,27 @@
     int y;
 
     void g(^int x, int y){ 
-        if (y==0) 
-            delete x ; 
-        else { 
-            x^ = x^ - 1; 
+        
+        
+        if (y==0) {
+	    	delete x ;
+	    	   
+        } else { 
+			  	     
+			
+			x^ = x^ - 1; 
             g(x,y); 
-            //delete x ;
+            x^ = 0;
+            //delete x; 
         } 
+        
+        //x^ = 1;
+        
     }
 
     x^ = 1;
     y = 1;
     
     g(x, y);
+
 }

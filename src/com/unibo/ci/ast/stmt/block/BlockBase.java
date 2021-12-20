@@ -208,6 +208,7 @@ public class BlockBase extends Block {
 		ArrayList<EffectError> errors = new ArrayList<EffectError>();
 
 		declarations.forEach(dec -> {
+
 			errors.addAll(dec.AnalyzeEffect(env));
 		});
 

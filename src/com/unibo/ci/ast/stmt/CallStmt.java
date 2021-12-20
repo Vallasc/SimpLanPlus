@@ -181,22 +181,29 @@ public class CallStmt extends Exp {
                 sigma_secondo.put(((VarExp) par).getVarId().getId(), valEffectList);
 
             }
+            position++;
         }
 
         sigma_secondo.forEach((id, effect_list) -> {
             // calcoliamo effettivamente par
             System.out.println("DEBUG effect list è lungo " + effect_list.size());
-            ETypes tmp = effect_list.size() == 1 ? effect_list.get(0)
-                    : effect_list
-                            .stream()
-                            .reduce((a, b) -> {
-                                return b == null ? a : EffectHelper.par(a, b);
-                            }).get();
+            ETypes tmp ; 
+            if (effect_list.size() == 1) {
+            	System.out.println("DEBUG Effect list di " + id + " è lungo 1 e l'unico effetto è " + effect_list.get(0));
+            	tmp = effect_list.get(0);
+            } else {
+            	tmp = effect_list
+                        .stream()
+                        .reduce((a, b) -> {
+                            return EffectHelper.par(a, b);
+                        }).get();
+            	System.out.println("DEBUG Effect list di " + id + " è più lungo di 1 e la par tra effetti è " + tmp);
+            }        
 
             // controlliamo gli errori
             if (tmp != null && tmp == ETypes.T) {
                 errors.add(new EffectError(row, column,
-                        "Aliasing error: pointer " + "[" + this.id + "]" + " could be deleted twice."));
+                        "Aliasing error: pointer " + "[" + id + "]" + " could be deleted twice."));
             }
 
             // update

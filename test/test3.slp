@@ -1,10 +1,13 @@
 {
     void f(^int x, ^int y){ //BUGGETTINO?
         delete x; 
-        delete y; 
+        
+        //delete y; 
     } 
 
-    ^int x = new int; 
-
-    f(x,x) ;
+    ^int a = new int; 
+	//par [ D, \BOT ]
+	//par [ D, RW ]
+    f(a, a);
+    
 }

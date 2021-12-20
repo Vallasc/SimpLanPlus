@@ -106,7 +106,7 @@ public class Main {
 		WarningsStorage.printAll();
 		WarningsStorage.clear();
 
-		String code = ast.codeGeneration();
+		/*String code = ast.codeGeneration();
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter("prova.asm"));
 			out.write(code);
@@ -147,7 +147,7 @@ public class Main {
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		} */
 
 	}
 }

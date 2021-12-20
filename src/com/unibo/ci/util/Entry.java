@@ -5,7 +5,7 @@ import com.unibo.ci.ast.types.TypeFunction;
 public abstract class Entry<T> {
 
     final int nestLevel;
-    T type;
+    protected T type;
     final String id;
     final int offset;
 
