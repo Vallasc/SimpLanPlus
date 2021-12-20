@@ -185,18 +185,17 @@ public class CallStmt extends Exp {
 
         sigma_secondo.forEach((id, effect_list) -> {
             // calcoliamo effettivamente par
-            System.out.println("DEBUG effect list è lungo " + effect_list.size());
             ETypes tmp = effect_list.size() == 1 ? effect_list.get(0)
                     : effect_list
                             .stream()
                             .reduce((a, b) -> {
-                                return b == null ? a : EffectHelper.par(a, b);
+                                return EffectHelper.par(a, b);
                             }).get();
 
             // controlliamo gli errori
             if (tmp != null && tmp == ETypes.T) {
                 errors.add(new EffectError(row, column,
-                        "Aliasing error: pointer " + "[" + this.id + "]" + " could be deleted twice."));
+                        "Aliasing error: pointer " + "[" + id + "]" + " could be deleted twice."));
             }
 
             // update

@@ -7,8 +7,8 @@
             delete x ; 
         else { 
             x^ = x^ - 1; 
-            g(x,y); 
-            //delete x ;
+            g(x,y);
+            delete x; 
         } 
     }
 
