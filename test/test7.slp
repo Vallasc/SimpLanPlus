@@ -2,13 +2,23 @@
     ^int u = new int;
     void f(^int x, int n){ 
         if (n == 0) { 
-            print(x^) ; 
-            delete x ; 
-        } else { 
-            ^int y = new int; 
+        
+        	 ^int y = new int; 
             y^ = x^ * n ; 
+<<<<<<< HEAD
             f(y,n-1) ;
             //delete x;
+=======
+            f(y,n-1) ; 
+        
+             
+        } else { 
+            
+    		print(x^) ; 
+            delete x ;
+        
+           
+>>>>>>> 03c7394e0bb926fd2633c8a653e8b7d9578e05b4
         }	
     }
     u^ = 1 ;

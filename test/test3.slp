@@ -1,9 +1,16 @@
 {
     void f(^int x, ^int y){ //BUGGETTINO?
         delete x; 
+<<<<<<< HEAD
+=======
+        
+        //delete y; 
+>>>>>>> 03c7394e0bb926fd2633c8a653e8b7d9578e05b4
     } 
 
-    ^int x = new int; 
-
-    f(x,x) ;
+    ^int a = new int; 
+	//par [ D, \BOT ]
+	//par [ D, RW ]
+    f(a, a);
+    
 }

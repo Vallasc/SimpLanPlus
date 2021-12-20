@@ -26,10 +26,13 @@ public class EffectHelper {
 	}
 
 	public static ETypes par(ETypes a, ETypes b) {
-		if (a == ETypes.BOT || b == ETypes.BOT) {
-			return ETypes.BOT;
+		if (a == ETypes.BOT )
+			return b;
+					
+		else if (b == ETypes.BOT) {
+			return a;
 		}
-		if (a == b && a == ETypes.RW) {
+		else if (a == b && a == ETypes.RW) {
 			return ETypes.RW;
 		}
 		return ETypes.T;
@@ -38,9 +41,15 @@ public class EffectHelper {
 
 	public static void maxModifyEnv(SigmaEnv e, SigmaEnv tempE) {
 		e.getAllIDs().entrySet().stream().filter(id -> !id.getValue().isNotFunction())
-				.forEach(en -> e.lookup(en.getKey()).updateEffectType(
-						
-						EffectHelper.max(e.lookup(en.getKey()).etype, tempE.lookup(en.getKey()).etype)));
+				.forEach(en -> { 
+
+					System.out.println("L'effetto di " + en.getKey() + " è " + e.lookup(en.getKey()).getEtype());
+					System.out.println("L'effetto di " + en.getKey() + " in tmpeE " + tempE.lookup(en.getKey()).getEtype());
+					e.lookup(en.getKey()).updateEffectType(	
+						EffectHelper.max(e.lookup(en.getKey()).getEtype(), tempE.lookup(en.getKey()).getEtype()));
+					System.out.println("L'effetto di " + en.getKey() + " dopo l'update è " + e.lookup(en.getKey()).getEtype());
+				});
+				
 	}
 
 }

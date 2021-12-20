@@ -181,6 +181,7 @@ public class CallStmt extends Exp {
                 sigma_secondo.put(((VarExp) par).getVarId().getId(), valEffectList);
 
             }
+            position++;
         }
 
         sigma_secondo.forEach((id, effect_list) -> {

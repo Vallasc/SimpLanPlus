@@ -6,8 +6,6 @@ import com.unibo.ci.util.EffectHelper.ETypes;
 
 public class EEntry extends Entry<ETypes> {
 
-  ETypes etype;
-
   private List<EEntry> funEffects;
   
   SigmaEnv sigma0;
@@ -15,7 +13,6 @@ public class EEntry extends Entry<ETypes> {
 
   public EEntry(String id, ETypes type, int nestLevel, int offset) {
     super(id, type, nestLevel, offset);
-    this.etype = type;
   }
 
   public String toPrint(String indent) {
