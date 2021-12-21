@@ -5,10 +5,6 @@
         
         	 ^int y = new int; 
             y^ = x^ * n ; 
-<<<<<<< HEAD
-            f(y,n-1) ;
-            //delete x;
-=======
             f(y,n-1) ; 
         
              
@@ -18,7 +14,6 @@
             delete x ;
         
            
->>>>>>> 03c7394e0bb926fd2633c8a653e8b7d9578e05b4
         }	
     }
     u^ = 1 ;

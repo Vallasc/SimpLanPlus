@@ -1,11 +1,6 @@
 {
     void f(^int x, ^int y){ //BUGGETTINO?
         delete x; 
-<<<<<<< HEAD
-=======
-        
-        //delete y; 
->>>>>>> 03c7394e0bb926fd2633c8a653e8b7d9578e05b4
     } 
 
     ^int a = new int; 
