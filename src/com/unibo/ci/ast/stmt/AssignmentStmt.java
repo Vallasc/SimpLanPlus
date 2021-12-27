@@ -85,7 +85,8 @@ public class AssignmentStmt extends Statement {
 		ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
 		// create a warning if an uninitialized pointer is assigned to another pointer
-		if (exp instanceof VarExp && exp.typeCheck() instanceof TypePointer) {
+		if (exp instanceof VarExp && exp.typeCheck() instanceof TypePointer) { 
+			//TODO bug: se ho ad es. x = y + 3 ; e y non è init, exp però non è istanza di VarExp, ma di Sum, e quindi non entra nell'if 
 			EEntry _exp = env.lookup(((VarExp) exp).getId());
 			if (_exp != null && _exp.getEtype() == ETypes.BOT) {
 				WarningsStorage.add(

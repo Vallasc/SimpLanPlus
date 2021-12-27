@@ -2,18 +2,14 @@
     ^int u = new int;
     void f(^int x, int n){ 
         if (n == 0) { 
-        
-        	 ^int y = new int; 
-            y^ = x^ * n ; 
-            f(y,n-1) ; 
-        
-             
-        } else { 
             
     		print(x^) ; 
             delete x ;
+        } else { 
         
-           
+           ^int y = new int; 
+            y^ = x^ * n ; 
+            f(y,n-1) ; 
         }	
     }
     u^ = 1 ;
