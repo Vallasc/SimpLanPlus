@@ -90,6 +90,11 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     }
 
     @Override
+    public Node visitPrintchar(SimpLanPlusParser.PrintcharContext ctx) {
+        return new PrintcharStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (Exp) visit(ctx.exp()));
+    }
+
+    @Override
     public Statement visitRet(SimpLanPlusParser.RetContext ctx) {
         if (ctx.exp() != null)
             return new ReturnStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (Exp) visit(ctx.exp()));

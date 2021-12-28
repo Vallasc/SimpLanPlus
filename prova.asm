@@ -8,6 +8,7 @@ sw $fp 0($fp) ;save the old value
 li $a0 3
 print $a0
 li $a0 128521
+printchar $a0
 halt
 ;END BLOCK
 ; END BLOCK

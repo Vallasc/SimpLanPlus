@@ -159,7 +159,7 @@ public class SVM {
 						System.out.println(registers.get(arg1));
 						break;
 					case "printchar":
-						System.out.println((char) registers.get(arg1).intValue());
+						System.out.println(Character.toChars(registers.get(arg1).intValue()));
 						break;
 					case "beq":
 						if (registers.get(arg1) == registers.get(arg2))

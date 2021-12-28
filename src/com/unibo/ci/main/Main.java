@@ -49,7 +49,7 @@ public class Main {
 			LOGGER.severe("File " + fileName + " not exist 😡");
 			return;
 		}
-
+		System.out.println(Character.toChars(128512));
 		SimpLanPlusLexer lexer = new SimpLanPlusLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		SimpLanPlusParser parser = new SimpLanPlusParser(tokens);
