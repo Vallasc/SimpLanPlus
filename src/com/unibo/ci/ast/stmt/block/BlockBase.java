@@ -158,13 +158,16 @@ public class BlockBase extends Block {
 		if (!isMain) {
 			out += "mv $fp $sp" + (debug ? " ;frame pointer above the new declarations\n" : "\n");
 			out += "addi $fp $fp " + varDecs.size()
-					+ (debug ? " ;frame pointer before decs (n =: " + varDecs.size() + ")\n" : "\n");
+					+ (debug ? " ;frame pointer before decs (n = " + varDecs.size() + ")\n" : "\n");
 		}
 
 		// Generate statements
-		for (Statement s : statements)
+		for (Statement s : statements) {
 			out += s.codeGeneration();
-
+			if (s.codeGeneration() == "null") {
+				s.toPrint("");
+			}
+		}
 		if (isMain)
 			out += "halt\n";
 
@@ -183,8 +186,13 @@ public class BlockBase extends Block {
 		}
 
 		// Function declaration at the end, they need the space for ra
-		for (DecFun f : funDecs)
+		for (DecFun f : funDecs) {
 			out += f.codeGeneration();
+			if (f.codeGeneration() == "null") {
+				f.toPrint(" ");
+			}
+
+		}
 		out += "; END BLOCK\n";
 
 		return out;
