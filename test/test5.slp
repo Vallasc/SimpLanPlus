@@ -6,7 +6,7 @@
         if (y==0){
         	x^ = x^ - 1; 
 	      	g(x,y);
-	      	//delete x;
+	      	delete x;
         } else { 
             delete x;
     	  
