@@ -7,7 +7,9 @@ import java.util.List;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
+import com.unibo.ci.ast.exp.DerExp;
 import com.unibo.ci.ast.exp.Exp;
+import com.unibo.ci.ast.exp.LhsExp;
 import com.unibo.ci.ast.exp.VarExp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
@@ -165,20 +167,20 @@ public class CallStmt extends Exp {
                           // attuali e formali
         for (Exp par : parlist) {
             if (par.typeCheck() instanceof TypePointer) {
-
+            	
                 String formal_parameter = ((TypeFunction) entry.getType()).getArguments().get(position).getId();
                 // System.out.println("DEBUG: cerco \n " + formal_parameter + " \n nell'ambiente
                 // " + sigma_1.toPrint(""));
                 ETypes tmp = EffectHelper.seq(
-                        env.lookup(((VarExp) par).getVarId().getId() /* parametri attuali */).getEtype(),
+                        env.lookup(((LhsExp) par).getVarId().getId() /* parametri attuali */).getEtype(),
                         sigma_1.lookup(
                                 formal_parameter/* partametri formali */)
                                 .getEtype());
 
-                String var_id = ((VarExp) par).getVarId().getId();
+                String var_id = ((LhsExp) par).getVarId().getId();
                 ArrayList<ETypes> valEffectList = sigma_secondo.getOrDefault(var_id, new ArrayList<ETypes>());
                 valEffectList.add(tmp);
-                sigma_secondo.put(((VarExp) par).getVarId().getId(), valEffectList);
+                sigma_secondo.put(((LhsExp) par).getVarId().getId(), valEffectList);
 
             }
             position++;
