@@ -7,6 +7,7 @@ block	    : '{' declaration* statement* '}';
 statement   : assignment ';'
             | deletion ';'
             | print ';'
+            | printchar ';'
             | ret ';'
             | ite
             | call ';'
@@ -33,6 +34,8 @@ lhs         : ID | lhs '^' ;
 deletion    : 'delete' ID;
 
 print	    : 'print' exp;
+
+printchar	: 'printchar' exp;
 
 ret	    : 'return' (exp)?;
 

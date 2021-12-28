@@ -77,6 +77,12 @@ public interface SimpLanPlusVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrint(SimpLanPlusParser.PrintContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SimpLanPlusParser#printchar}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintchar(SimpLanPlusParser.PrintcharContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SimpLanPlusParser#ret}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

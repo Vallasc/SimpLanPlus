@@ -118,6 +118,16 @@ public interface SimpLanPlusListener extends ParseTreeListener {
 	 */
 	void exitPrint(SimpLanPlusParser.PrintContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SimpLanPlusParser#printchar}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintchar(SimpLanPlusParser.PrintcharContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpLanPlusParser#printchar}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintchar(SimpLanPlusParser.PrintcharContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SimpLanPlusParser#ret}.
 	 * @param ctx the parse tree
 	 */
