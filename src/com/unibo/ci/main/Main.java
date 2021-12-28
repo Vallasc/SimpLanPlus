@@ -35,7 +35,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		String fileName = "";
+		String fileName = "./test/test6.slp";
 		if (args.length != 1)
 			LOGGER.info("WOOOOO INSERISCI IN FILE SORGENTE WOOOOOO");
 		else
@@ -106,49 +106,48 @@ public class Main {
 		WarningsStorage.printAll();
 		WarningsStorage.clear();
 
-		// String code = ast.codeGeneration();
-		// try {
-		// BufferedWriter out = new BufferedWriter(new FileWriter("prova.asm"));
-		// out.write(code);
-		// out.close();
-		// } catch (IOException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
+		String code = ast.codeGeneration();
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("prova.asm"));
+			out.write(code);
+			out.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
-		// try {
-		// FileInputStream isASM = new FileInputStream("prova.asm");
-		// ANTLRInputStream inputASM = new ANTLRInputStream(isASM);
-		// SVMLexer lexerASM = new SVMLexer(inputASM);
-		// CommonTokenStream tokensASM = new CommonTokenStream(lexerASM);
-		// SVMParser parserASM = new SVMParser(tokensASM);
+		try {
+			FileInputStream isASM = new FileInputStream("prova.asm");
+			ANTLRInputStream inputASM = new ANTLRInputStream(isASM);
+			SVMLexer lexerASM = new SVMLexer(inputASM);
+			CommonTokenStream tokensASM = new CommonTokenStream(lexerASM);
+			SVMParser parserASM = new SVMParser(tokensASM);
 
-		// // parserASM.assembly();
+			// parserASM.assembly();
 
-		// SVMVisitorImpl visitorSVM = new SVMVisitorImpl();
-		// visitorSVM.visit(parserASM.assembly());
+			SVMVisitorImpl visitorSVM = new SVMVisitorImpl();
+			visitorSVM.visit(parserASM.assembly());
 
-		// System.out.println("You had: " + lexerASM.errorCount() + " lexical errors and
-		// "
-		// + parserASM.getNumberOfSyntaxErrors() + " syntax errors.");
-		// if (lexerASM.errorCount() > 0 || parserASM.getNumberOfSyntaxErrors() > 0)
-		// System.exit(1);
+			System.out.println("You had: " + lexerASM.errorCount() + " lexical errors and "
+					+ parserASM.getNumberOfSyntaxErrors() + " syntax errors.");
+			if (lexerASM.errorCount() > 0 || parserASM.getNumberOfSyntaxErrors() > 0)
+				System.exit(1);
 
-		// System.out.println("Starting Virtual Machine...");
+			System.out.println("Starting Virtual Machine...");
 
-		// SVM vm = new SVM(100, visitorSVM.getCode());
-		// try {
-		// vm.run();
-		// } catch (MemoryAccessException e) {
-		// System.out.println(e.getMessage());
-		// }
-		// } catch (FileNotFoundException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// } catch (IOException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
+			SVM vm = new SVM(100, visitorSVM.getCode());
+			try {
+				vm.run();
+			} catch (MemoryAccessException e) {
+				System.out.println(e.getMessage());
+			}
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 	}
 }
