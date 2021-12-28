@@ -19,7 +19,8 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
     public BlockBase visitBlock(SimpLanPlusParser.BlockContext ctx) {
         List<Statement> statements = ctx.statement().stream().map(this::visitStatement).collect(Collectors.toList());
         List<Dec> declarations = ctx.declaration().stream().map(this::visitDeclaration).collect(Collectors.toList());
-        BlockBase block = new BlockBase(declarations, statements, ctx.start.getLine(), ctx.start.getCharPositionInLine());
+        BlockBase block = new BlockBase(declarations, statements, ctx.start.getLine(),
+                ctx.start.getCharPositionInLine());
         block.setMain(blockNL++ == 0);
         return block;
     }
@@ -44,7 +45,8 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Arg visitArg(SimpLanPlusParser.ArgContext ctx) {
-        return new Arg(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.ID().getText(), (Type) visit(ctx.type()) );
+        return new Arg(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.ID().getText(),
+                (Type) visit(ctx.type()));
     }
 
     @Override
@@ -72,9 +74,9 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public LhsExp visitLhs(SimpLanPlusParser.LhsContext ctx) {
-        return ctx.lhs() != null ?
-            new DerExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (LhsExp) visit(ctx.lhs())) : 
-            new VarExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.ID().getText());
+        return ctx.lhs() != null
+                ? new DerExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (LhsExp) visit(ctx.lhs()))
+                : new VarExp(ctx.start.getLine(), ctx.start.getCharPositionInLine(), ctx.ID().getText());
     }
 
     @Override
@@ -84,14 +86,14 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public Node visitPrint(SimpLanPlusParser.PrintContext ctx) {
-        return visitChildren(ctx);
+        return new PrintStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (Exp) visit(ctx.exp()));
     }
 
     @Override
     public Statement visitRet(SimpLanPlusParser.RetContext ctx) {
-        if(ctx.exp() != null)
+        if (ctx.exp() != null)
             return new ReturnStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), (Exp) visit(ctx.exp()));
-        else 
+        else
             return new ReturnStmt(ctx.start.getLine(), ctx.start.getCharPositionInLine(), null);
 
     }

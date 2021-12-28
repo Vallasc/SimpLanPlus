@@ -1,13 +1,7 @@
 package com.unibo.ci.util;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-
-import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.ast.types.TypeFunction;
 
 public abstract class Environment<T> implements Cloneable {
 

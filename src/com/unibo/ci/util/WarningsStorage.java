@@ -21,12 +21,9 @@ public class WarningsStorage {
     }
 
     public static void clear() {
-    }
+        // TODO Auto-generated method stub
+        warningList.clear();
 
-	public static void clear() {
-		// TODO Auto-generated method stub
-		warningList.clear();
-		
-	}
+    }
 
 }
