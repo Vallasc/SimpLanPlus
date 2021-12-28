@@ -152,8 +152,9 @@ public class BlockBase extends Block {
 		}
 
 		// Generate code for declarations
-		for (DecVar d : varDecs)
+		for (DecVar d : varDecs){
 			out += d.codeGeneration();
+		}
 
 		if (!isMain) {
 			out += "mv $fp $sp" + (debug ? " ;frame pointer above the new declarations\n" : "\n");
@@ -164,9 +165,6 @@ public class BlockBase extends Block {
 		// Generate statements
 		for (Statement s : statements) {
 			out += s.codeGeneration();
-			if (s.codeGeneration() == "null") {
-				s.toPrint("");
-			}
 		}
 		if (isMain)
 			out += "halt\n";
@@ -188,10 +186,6 @@ public class BlockBase extends Block {
 		// Function declaration at the end, they need the space for ra
 		for (DecFun f : funDecs) {
 			out += f.codeGeneration();
-			if (f.codeGeneration() == "null") {
-				f.toPrint(" ");
-			}
-
 		}
 		out += "; END BLOCK\n";
 

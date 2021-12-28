@@ -39,6 +39,7 @@ instruction:
 	| 'jr' REGISTER													# jr
 	| 'del' REGISTER									            # del
 	| 'print' REGISTER												# print
+	| 'printchar' REGISTER											# printchar
 	| 'halt'														# halt
 	;
 

@@ -23,7 +23,6 @@ public class PrintStmt extends Statement {
     @Override
     public String toPrint(String indent) {
         return indent + "Stmt: print\n" + expToPrint.toPrint(indent);
-
     }
 
     @Override
@@ -36,8 +35,7 @@ public class PrintStmt extends Statement {
 
     @Override
     public String codeGeneration() {
-        // TODO Auto-generated method stub
-        return null;
+        return expToPrint.codeGeneration() + "print $a0\n";
     }
 
     @Override
