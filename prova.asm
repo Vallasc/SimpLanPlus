@@ -11,7 +11,7 @@ li $a0 1
 push $a0
 ;END DECVAR
 mv $fp $sp ;frame pointer above the new declarations
-addi $fp $fp 1 ;frame pointer before decs (n =: 1)
+addi $fp $fp 1 ;frame pointer before decs (n = 1)
 ;BEGIN CALL FUN [f]
 push $fp
 push $sp
@@ -69,7 +69,7 @@ subi $sp $sp 1; ra
 mv $al $fp
 push $al ;it's equal to the old $fp
 mv $fp $sp ;frame pointer above the new declarations
-addi $fp $fp 0 ;frame pointer before decs (n =: 0)
+addi $fp $fp 0 ;frame pointer before decs (n = 0)
 null;END BLOCK
 addi $sp $sp 0 ;pop var declarations
 pop ;pop $alpop ;pop consistency ralw $cl 0($sp)
