@@ -1,4 +1,10 @@
 {
-    int hss = true;
-    return hss == 3;
+    void test(int x, ^int y){}
+    int a; 
+    ^^int b;
+    test(a, b^); //BUGGETTINO?
+    /*
+    	Exception in thread "main" java.lang.ClassCastException: com.unibo.ci.ast.exp.DerExp cannot be cast to com.unibo.ci.ast.exp.VarExp
+				at com.unibo.ci.ast.stmt.CallStmt.AnalyzeEffect(CallStmt.java:173)
+    */
 }

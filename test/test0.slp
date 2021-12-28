@@ -1,5 +1,5 @@
 {
-/*    
+
     int a = 0;
     int b;
     ^int c = new int;
@@ -12,13 +12,13 @@
 
     c^ = a;
     d^ = c;
-    //delete d;
-
+    // delete d;
+	x^ = y^ + 3; //test warning 
     e = c;
     
-    delete e;
-	delete d; 
-	d = e;
+    // delete e;
+	// delete d; 
+	d^ = e;
 
     // BUGGETTINO?
     b = c^ + a + 4;
@@ -26,7 +26,7 @@
     d^ = c;
 	
 	y = x;
-*/
+/*
     ^int a;
     
     {
@@ -37,8 +37,9 @@
         delete a;
         return ;
     }
-
+	
     delete a;
 
     return;
+    */
 }

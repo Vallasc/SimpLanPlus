@@ -3,31 +3,14 @@
     int y;
 
     void g(^int x, int y){ 
-<<<<<<< HEAD
-        if (y==0) 
-            delete x ; 
-        else { 
-            x^ = x^ - 1; 
-            g(x,y);
-            delete x; 
-=======
-        
-        
-        if (y==0) {
-	    	delete x ;
-	    	   
+        if (y==0){
+        	x^ = x^ - 1; 
+	      	g(x,y);
+	      	//delete x;
         } else { 
-			  	     
-			
-			x^ = x^ - 1; 
-            g(x,y); 
-            x^ = 0;
-            //delete x; 
->>>>>>> 03c7394e0bb926fd2633c8a653e8b7d9578e05b4
+            delete x;
+    	  
         } 
-        
-        //x^ = 1;
-        
     }
 
     x^ = 1;
