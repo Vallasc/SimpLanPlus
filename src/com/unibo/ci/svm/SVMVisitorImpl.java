@@ -192,7 +192,7 @@ public class SVMVisitorImpl extends SVMBaseVisitor<Void> {
 
     @Override
     public Void visitPrintchar(SVMParser.PrintcharContext ctx) {
-        code.add(new Instruction("print", ctx.REGISTER().getText(), 0, null, null));
+        code.add(new Instruction("printchar", ctx.REGISTER().getText(), 0, null, null));
         return null;
     }
 

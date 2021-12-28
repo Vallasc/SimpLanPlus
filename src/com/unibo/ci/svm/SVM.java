@@ -158,6 +158,9 @@ public class SVM {
 					case "print":
 						System.out.println(registers.get(arg1));
 						break;
+					case "printchar":
+						System.out.println((char) registers.get(arg1).intValue());
+						break;
 					case "beq":
 						if (registers.get(arg1) == registers.get(arg2))
 							ip = Integer.parseInt(arg3);
