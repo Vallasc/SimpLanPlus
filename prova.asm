@@ -4,12 +4,14 @@ push $cl
 subi $sp $sp 1; ra 
 mv $al $fp
 push $al ;it's equal to the old $fp
-;BEGIN DECVAR y
-addi $sp $sp 1 ;allocates space on the stack for arg [y]
-addi $sp $sp -1
+;BEGIN DECVAR x
+addi $sp $sp 1 ;allocates space on the stack for arg [x]
+li $a0 1
+
+push $a0
 ;END DECVAR
 mv $fp $sp ;frame pointer above the new declarations
-addi $fp $fp 1 ;frame pointer before decs (n =: 1)
+addi $fp $fp 1 ;frame pointer before decs (n = 1)
 ;BEGIN CALL FUN [f]
 push $fp
 push $sp
@@ -19,7 +21,7 @@ sw $t1 0($cl)
 addi $sp $sp -1
 mv $al $fp
 push $al
-li $a0 11
+li $a0 54
 push $a0 ;pushing 
 mv $fp $sp
 addi $fp $fp 1
@@ -34,13 +36,12 @@ b endf
 f:
 sw $ra -1($cl)
 ;BEGIN BLOCK
-push $fp ;push old fp
-push $cl
+push $sp
 subi $sp $sp 1; ra 
 mv $al $fp
 push $al ;it's equal to the old $fp
-mv $fp $sp ;frame pointer above the new declarations
-addi $fp $fp 0 ;frame pointer before decs (n =: 0)
+mv $fp $sp ;bring up the frame pointer
+sw $fp 0($fp) ;save the old value
 ;BEGIN ITE 
 ;BEGIN 
 ;BEGIN ID 
@@ -68,35 +69,8 @@ subi $sp $sp 1; ra
 mv $al $fp
 push $al ;it's equal to the old $fp
 mv $fp $sp ;frame pointer above the new declarations
-addi $fp $fp 0 ;frame pointer before decs (n =: 0)
-;BEGIN CALL FUN [f]
-push $fp
-push $sp
-mv $cl $sp
-addi $t1 $cl 2
-sw $t1 0($cl)
-addi $sp $sp -1
-lw $al 0($fp)
-lw $al 0($al)
-lw $al 0($al)
-push $al
-;BEGIN 
-;BEGIN ID 
-mv $al $fp 
-lw $al 0($al)
-	 lw $a0 -1($al)
-;END ID
-push $a0 ;push on the stack e1
-li $a0 1
-lw $t1 0($sp) ;$t1 = e1, $a0 = e2
-pop ;pop e1 from the stack
-sub $a0 $t1 $a0
-;END 
-push $a0 ;pushing 
-mv $fp $sp
-addi $fp $fp 1
-jal f;END DELETE
-;END BLOCK
+addi $fp $fp 0 ;frame pointer before decs (n = 0)
+null;END BLOCK
 addi $sp $sp 0 ;pop var declarations
 pop ;pop $alpop ;pop consistency ralw $cl 0($sp)
 pop
@@ -105,23 +79,10 @@ lw $fp 0($sp) ;restore old $fppop ;pop old $fp
 	 b endif2
 	then1:
 ; THAN
-;BEGIN BLOCK
-push $sp
-subi $sp $sp 1; ra 
-mv $al $fp
-push $al ;it's equal to the old $fp
-mv $fp $sp ;bring up the frame pointer
-sw $fp 0($fp) ;save the old value
+nullendif2 :
+;END ITE
 halt
 ;END BLOCK
-; END BLOCK
-endif2 :
-;END ITE
-;END BLOCK
-addi $sp $sp 0 ;pop var declarations
-pop ;pop $alpop ;pop consistency ralw $cl 0($sp)
-pop
-lw $fp 0($sp) ;restore old $fppop ;pop old $fp
 ; END BLOCK
 endf:
 lw $ra -1($cl)
