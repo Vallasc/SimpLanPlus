@@ -167,7 +167,6 @@ public class BlockBase extends Block {
 			out += s.codeGeneration();
 		}
 		if (isMain){
-			out += (debug ? ";END BLOCK\n" : "");
 			out += "halt\n";
 		}
 

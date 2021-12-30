@@ -1,3 +1,8 @@
 {
-    int a;
+^^int a;
+int b = 3;
+a = new ^int;
+a^ = new int;
+a^^ = 4;
+print(a^^ + b);
 }

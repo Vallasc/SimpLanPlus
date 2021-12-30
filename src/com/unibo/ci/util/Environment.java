@@ -7,8 +7,7 @@ public abstract class Environment<T> implements Cloneable {
 
 	LinkedList<LinkedHashMap<String, T>> table;
 	int nestingLevel;
-	int offset; // TODO VEDERE COME FUNZIONA OFFSET
-
+	
 	public Environment() {
 		this.table = new LinkedList<LinkedHashMap<String, T>>();
 	}

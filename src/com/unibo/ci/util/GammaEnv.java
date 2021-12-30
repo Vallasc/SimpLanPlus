@@ -15,6 +15,7 @@ import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
 
 public class GammaEnv extends Environment<STentry> {
+	private int offset;
 
 	public GammaEnv() {
 		super();
@@ -29,11 +30,21 @@ public class GammaEnv extends Environment<STentry> {
 	// Extends the symbol table with a new scope
 	public void newScope() {
 		super.newScope();
+		offset = 0;
 	}
 
 	// Remove the last scope
 	public void exitScope() {
 		super.exitScope();
+		if(this.nestingLevel >= 0) {
+			int maxOffset = 0; //offset is a negative value
+			HashMap<String, STentry> entry = table.get(nestingLevel);
+			for(String key : entry.keySet()) {
+				if(maxOffset > entry.get(key).getOffset())
+					maxOffset = entry.get(key).getOffset();
+			}
+			offset = maxOffset;	
+		}
 	}
 
 	// If there is no clash of names, adds id ⟼ t to st
@@ -43,6 +54,7 @@ public class GammaEnv extends Environment<STentry> {
 		if (value != null)
 			throw new DuplicateEntryException();
 		table.getLast().put(id, new STentry(id, type, nestingLevel, offset));
+		offset--; 
 	}
 
 	// Looks for the entry of id in symbol/effect table, if there is any
@@ -65,15 +77,6 @@ public class GammaEnv extends Environment<STentry> {
 		return null;
 	}
 
-	/*
-	 * public STentry lookupFunction() { for (int i = symTable.size(); i-- > 0;) {
-	 * ListIterator<STentry> iterator = new
-	 * ArrayList<STentry>(symTable.get(i).values())
-	 * .listIterator(symTable.get(i).size()); while (iterator.hasPrevious()) {
-	 * STentry entry = iterator.previous(); if (entry.getType() instanceof
-	 * TypeFunction) return entry; } } return null; }
-	 */
-
 	public String toPrint(String indent) {
 		StringBuilder sb = new StringBuilder(indent + "Symbol table:\n");
 		sb.append(indent + "---------------------------\n");
@@ -85,23 +88,5 @@ public class GammaEnv extends Environment<STentry> {
 		});
 		return sb.toString();
 	}
-
-	/*
-	 * public void setSymTable(LinkedList<HashMap<String, STentry>> symTable) {
-	 * this.symTable = symTable; }
-	 * 
-	 * public int getNestingLevel() { return nestingLevel; }
-	 * 
-	 * public void setNestingLevel(int nestingLevel) { this.nestingLevel =
-	 * nestingLevel; }
-	 * 
-	 * public int getOffset() { return offset; }
-	 * 
-	 * public void setOffset(int offset) { this.offset = offset; }
-	 */
-
-	/*
-	 * public class DuplicateSTEntryException extends Exception { }
-	 */
 
 }

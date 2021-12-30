@@ -17,6 +17,7 @@ public class VarExp extends LhsExp {
     private final String id;
     private STentry stEntry;
     private int nestingLevel;
+    private boolean assFlag = false;
 
     public VarExp(int row, int column, String id) {
         super(row, column);
@@ -57,8 +58,11 @@ public class VarExp extends LhsExp {
         }
 
         int offset = stEntry.getOffset() - 1;
-        out += "\t lw $a0 " + offset + "($al)\n";
-
+        if(assFlag){
+            out += "addi $a0 $al " + offset + "\n";
+        } else {
+            out += "lw $a0 " + offset + "($al)\n";
+        }
         out += (debug ? ";END ID\n" : "");
         return out;
     }
@@ -78,6 +82,11 @@ public class VarExp extends LhsExp {
 
     public STentry getSTentry() {
         return stEntry;
+    }
+
+    
+    public void setAssFlag(boolean flag) {
+        this.assFlag = flag;
     }
 
     @Override

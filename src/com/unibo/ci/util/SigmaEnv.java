@@ -1,20 +1,16 @@
 package com.unibo.ci.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Map;
 
-import com.unibo.ci.ast.types.TypeFunction;
 
 public class SigmaEnv extends Environment<EEntry> {
 
 	public SigmaEnv() {
 		super();
 		nestingLevel = -1;
-		offset = 0;
 	}
 
 	public LinkedList<LinkedHashMap<String, EEntry>> getTable() {
@@ -33,13 +29,11 @@ public class SigmaEnv extends Environment<EEntry> {
 
 	// If there is no clash of names, adds id ⟼ t to st
 	public void addDeclaration(String id, EffectHelper.ETypes type) {
-		// TODO servono nestingLevel e offset?
-		table.getLast().put(id, new EEntry(id, type, nestingLevel, offset));
+		table.getLast().put(id, new EEntry(id, type, nestingLevel));
 	}
 
 	public void addDeclaration(String id, SigmaEnv env0, SigmaEnv env1) { // per le funzioni
-		// TODO servono nestingLevel e offset?
-		table.getLast().put(id, new EEntry(id, null, -1, 0));
+		table.getLast().put(id, new EEntry(id, null, -1));
 		table.getLast().get(id).sigma0 = env0;
 		table.getLast().get(id).sigma1 = env1;
 	}
@@ -74,7 +68,6 @@ public class SigmaEnv extends Environment<EEntry> {
 	public SigmaEnv clone() {
 		SigmaEnv toReturn = new SigmaEnv();
 		toReturn.table = (LinkedList<LinkedHashMap<String, EEntry>>) table.clone();
-		toReturn.offset = offset;
 		toReturn.nestingLevel = nestingLevel;
 		return toReturn;
 	}

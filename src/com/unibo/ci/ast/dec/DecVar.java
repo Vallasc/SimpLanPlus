@@ -84,7 +84,6 @@ public class DecVar extends Dec {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
         String out = (debug ? ";BEGIN DECVAR " + this.id + "\n" : "");
-        out += "addi $sp $sp 1" + (debug ? " ;allocates space on the stack for arg [" + id + "]\n" : "\n");
 
         if (exp == null)
             out += "addi $sp $sp -1\n";

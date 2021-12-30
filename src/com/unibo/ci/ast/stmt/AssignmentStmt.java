@@ -35,6 +35,7 @@ public class AssignmentStmt extends Statement {
 	public AssignmentStmt(int row, int column, LhsExp left, Exp exp) {
 		super(row, column);
 		this.left = left;
+		this.left.getVarId().setAssFlag(true);
 		this.exp = exp;
 	}
 
@@ -107,37 +108,4 @@ public class AssignmentStmt extends Statement {
 		return toRet;
 	}
 	
-	/*private ArrayList<Warning> checkUninitVars(Exp _exp, SigmaEnv env) {
-		ArrayList <Warning> warnings = new ArrayList<Warning>();
-		
-		if (_exp instanceof BaseExp)	
-			_exp = ((BaseExp) _exp).getChild();
-		
-		
-		if ((_exp instanceof BinExp)) {
-			System.out.println(_exp.toPrint(""));
-			if (_exp instanceof BaseExp) {
-				warnings.addAll(checkUninitVars(((BaseExp)_exp).getChild(), env));
-				return warnings;
-			}
-			warnings.addAll(checkUninitVars( 
-					((BinExp)_exp).getLeft(), 
-					env));
-			warnings.addAll(checkUninitVars(
-					((BinExp)_exp).getRight(),
-					env
-					));
-		} else {
-			
-			EEntry eentry = env.lookup(((VarExp) _exp).getId());
-			if (eentry != null && eentry.getEtype() == ETypes.BOT) {
-				warnings.add(
-						new Warning(row, column, "uninitialized variable " + "[" + eentry.getId() + "]" + " assigned\n"));
-			}
-			
-		} 
-		return warnings;
-
-	}*/
-
 }
