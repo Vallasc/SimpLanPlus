@@ -6,9 +6,12 @@ import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.errors.Warning;
+import com.unibo.ci.ast.exp.BaseExp;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.exp.LhsExp;
+import com.unibo.ci.ast.exp.NotExp;
 import com.unibo.ci.ast.exp.VarExp;
+import com.unibo.ci.ast.exp.bin_exp.BinExp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.ast.types.TypeVoid;
@@ -85,14 +88,9 @@ public class AssignmentStmt extends Statement {
 		ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
 		// create a warning if an uninitialized pointer is assigned to another pointer
-		if (exp instanceof VarExp && exp.typeCheck() instanceof TypePointer) { 
-			//TODO bug: se ho ad es. x = y + 3 ; e y non è init, exp però non è istanza di VarExp, ma di Sum, e quindi non entra nell'if 
-			EEntry _exp = env.lookup(((VarExp) exp).getId());
-			if (_exp != null && _exp.getEtype() == ETypes.BOT) {
-				WarningsStorage.add(
-						new Warning(row, column, "uninitialized pointer " + "[" + _exp.getId() + "]" + " assigned\n"));
-			}
-		}
+		/*checkUninitVars(exp, env).forEach( warning -> {
+			WarningsStorage.add(warning);
+		});*/
 
 		toRet.addAll(exp.AnalyzeEffect(env));
 
@@ -108,5 +106,38 @@ public class AssignmentStmt extends Statement {
 		}
 		return toRet;
 	}
+	
+	/*private ArrayList<Warning> checkUninitVars(Exp _exp, SigmaEnv env) {
+		ArrayList <Warning> warnings = new ArrayList<Warning>();
+		
+		if (_exp instanceof BaseExp)	
+			_exp = ((BaseExp) _exp).getChild();
+		
+		
+		if ((_exp instanceof BinExp)) {
+			System.out.println(_exp.toPrint(""));
+			if (_exp instanceof BaseExp) {
+				warnings.addAll(checkUninitVars(((BaseExp)_exp).getChild(), env));
+				return warnings;
+			}
+			warnings.addAll(checkUninitVars( 
+					((BinExp)_exp).getLeft(), 
+					env));
+			warnings.addAll(checkUninitVars(
+					((BinExp)_exp).getRight(),
+					env
+					));
+		} else {
+			
+			EEntry eentry = env.lookup(((VarExp) _exp).getId());
+			if (eentry != null && eentry.getEtype() == ETypes.BOT) {
+				warnings.add(
+						new Warning(row, column, "uninitialized variable " + "[" + eentry.getId() + "]" + " assigned\n"));
+			}
+			
+		} 
+		return warnings;
+
+	}*/
 
 }

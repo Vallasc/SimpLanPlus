@@ -32,11 +32,16 @@ public class NotExp extends Exp {
     @Override
     public TypeBool typeCheck() {
         Type childType = child.typeCheck();
+        if(childType == null) {
+        	return null;
+        }
         if (!(childType instanceof TypeBool)) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column,
-                    "expecting type [" + (new TypeBool()).getTypeName() + "] found [" + childType.getTypeName() + "]"));
-        }
-        return (TypeBool) childType;
+                    "expecting type [" + (new TypeBool()).getTypeName() 
+                    + "] found [" + childType.getTypeName() + "]"));
+            return null;
+        } else 
+        	return (TypeBool) childType;
     }
 
     @Override
@@ -48,5 +53,9 @@ public class NotExp extends Exp {
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         return child.AnalyzeEffect(env);
     }
+
+	public Exp getChild() {
+		return child;
+	}
 
 }
