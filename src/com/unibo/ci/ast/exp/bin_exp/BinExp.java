@@ -34,4 +34,14 @@ public abstract class BinExp extends Exp {
         return toRet;
     }
 
+	public Exp getRight() {
+		return right;
+	}
+
+	public Exp getLeft() {
+		return left;
+	}
+    
+    
+
 }
