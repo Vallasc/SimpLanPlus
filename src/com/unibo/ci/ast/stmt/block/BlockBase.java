@@ -166,10 +166,11 @@ public class BlockBase extends Block {
 		for (Statement s : statements) {
 			out += s.codeGeneration();
 		}
-		if (isMain)
+		if (isMain){
+			out += (debug ? ";END BLOCK\n" : "");
 			out += "halt\n";
+		}
 
-		out += (debug ? ";END BLOCK\n" : "");
 
 		if (!isMain) {
 			// Pop all the declarations
