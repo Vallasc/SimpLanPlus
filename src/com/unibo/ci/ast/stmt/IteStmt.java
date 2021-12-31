@@ -143,7 +143,7 @@ public class IteStmt extends Statement implements Cloneable {
         }
 
         analyzeBlockEffect(env, thenStmt, toRet);
-        env.toPrint("indent").toString();
+        // env.toPrint("indent").toString();
 
         if (tempE != null) {
             EffectHelper.maxModifyEnv(env, tempE);

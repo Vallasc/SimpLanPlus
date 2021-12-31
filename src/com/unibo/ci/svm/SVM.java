@@ -47,9 +47,9 @@ public class SVM {
 	}
 
 	public void run() throws MemoryAccessException {
-		code.forEach( instr -> {
-			instr.printInstruction();
-		});
+		// code.forEach( instr -> {
+		// instr.printInstruction();
+		// });
 		while (true) {
 			if (registers.get("$hp") + 1 >= registers.get("$sp")) {
 				throw new MemoryAccessException();
@@ -84,10 +84,11 @@ public class SVM {
 							address = memory[registers.get(arg2) + offset].getData();
 
 						} catch (IndexOutOfBoundsException | NotInitializedVariableException e) {
-							System.out.println(registers.get(arg2) + offset);
-							System.out.println("MEMORIA");
-							for (int i = 0; i < memSize; i++)
-								System.out.println(i + ": " + memory[i].toString());
+							// System.out.println(registers.get(arg2) + offset);
+							e.printStackTrace();
+
+							// for (int i = 0; i < memSize; i++)
+							// System.out.println(i + ": " + memory[i].toString());
 							throw new MemoryAccessException();
 						}
 						registers.put(arg1, address); // lw $r1 offset($r2)
