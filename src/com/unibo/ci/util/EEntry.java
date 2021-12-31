@@ -26,7 +26,7 @@ public class EEntry extends Entry<ETypes> {
 
   @Override
   public boolean isNotFunction() {
-	  return sigma0 != null;
+	  return sigma0 == null;
   }
 
   public SigmaEnv getSigma0() {

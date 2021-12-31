@@ -97,22 +97,22 @@ public class DecFun extends Dec {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
         String labelFun = id;
-        String skip = "end" + labelFun;
-        typeFun.setLabelEndFun(skip);
+        String skip = "ended" + labelFun;
+        typeFun.setLabelEndFun("end" + labelFun);
 
         String out = (debug ? ";BEGIN DECFUN " + id + "\n" : "");
         out += "b " + skip + "\n";
         out += labelFun + ":\n";
         out += "sw $ra -1($cl)\n";
         out += block.codeGeneration();
-        out += skip + ":\n";
+        out += "end" + labelFun + ":\n";
         out += "lw $ra -1($cl)\n";
         out += "lw $fp 1($cl)\n";
         out += "lw $sp 0($cl) \n";
         out += "addi $cl $fp 2\n";
         out += "jr $ra\n";
-        out += skip + ":\n";
         out += (debug ? ";END DECFUN " + id + "\n" : "");
+        out += skip + ":\n";
         return out;
     }
 
@@ -166,7 +166,7 @@ public class DecFun extends Dec {
     private boolean equal_envs(SigmaEnv env_0, SigmaEnv env_1) {
         boolean is_equal = true;
         for (String id : env_0.getAllIDs().keySet()) {
-            if (!env_0.lookup(id).isNotFunction())
+            if (env_0.lookup(id) != null && env_0.lookup(id).isNotFunction()) //id non è una funzione
                 continue;
 
             if (env_1.lookup(id) != null)

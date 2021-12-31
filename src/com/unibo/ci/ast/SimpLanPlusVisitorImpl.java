@@ -17,11 +17,12 @@ public class SimpLanPlusVisitorImpl extends SimpLanPlusBaseVisitor<Node> {
 
     @Override
     public BlockBase visitBlock(SimpLanPlusParser.BlockContext ctx) {
+        blockNL++;
         List<Statement> statements = ctx.statement().stream().map(this::visitStatement).collect(Collectors.toList());
         List<Dec> declarations = ctx.declaration().stream().map(this::visitDeclaration).collect(Collectors.toList());
         BlockBase block = new BlockBase(declarations, statements, ctx.start.getLine(),
                 ctx.start.getCharPositionInLine());
-        block.setMain(blockNL++ == 0);
+        block.setMain(blockNL-- == 1);
         return block;
     }
 

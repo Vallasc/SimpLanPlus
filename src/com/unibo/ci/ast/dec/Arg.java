@@ -39,7 +39,7 @@ public class Arg extends Node {
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         try {
-            env.addDeclaration(id, type);
+            env.addDeclarationPar(id, type);
         } catch (DuplicateEntryException e) {
             errors.add(new SemanticError(row, column, "Already declared [" + id + "]"));
         }

@@ -57,6 +57,15 @@ public class GammaEnv extends Environment<STentry> {
 		offset--; 
 	}
 
+	public void addDeclarationPar(String id, Type type) throws DuplicateEntryException {
+		STentry value = table.getLast().get(id);
+		// There is already an entry
+		if (value != null)
+			throw new DuplicateEntryException();
+		table.getLast().put(id, new STentry(id, type, nestingLevel-1, offset));
+		offset--; 
+	}
+
 	// Looks for the entry of id in symbol/effect table, if there is any
 	public STentry lookup(String id) {
 		return super.lookup(id);

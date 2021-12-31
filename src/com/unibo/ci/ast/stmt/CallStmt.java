@@ -12,8 +12,11 @@ import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.exp.LhsExp;
 import com.unibo.ci.ast.exp.VarExp;
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.types.TypeFunction;
+import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.ast.types.TypePointer;
+import com.unibo.ci.util.EEntry;
 import com.unibo.ci.util.EffectHelper;
 import com.unibo.ci.util.EffectHelper.ETypes;
 import com.unibo.ci.util.GammaEnv;
@@ -171,22 +174,28 @@ public class CallStmt extends Exp {
                 String formal_parameter = ((TypeFunction) entry.getType()).getArguments().get(position).getId();
                 // System.out.println("DEBUG: cerco \n " + formal_parameter + " \n nell'ambiente
                 // " + sigma_1.toPrint(""));
+                ETypes a = env.lookup(((LhsExp) par).getVarId().getId() /* parametri attuali */).getEtype();
+                ETypes b = sigma_1.lookup( formal_parameter/* partametri formali */).getEtype();
+                if (b == null){
+                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
+                }
                 ETypes tmp = EffectHelper.seq(
-                        env.lookup(((LhsExp) par).getVarId().getId() /* parametri attuali */).getEtype(),
-                        sigma_1.lookup(
-                                formal_parameter/* partametri formali */)
-                                .getEtype());
+                        a, b
+                        );
 
                 String var_id = ((LhsExp) par).getVarId().getId();
                 ArrayList<ETypes> valEffectList = sigma_secondo.getOrDefault(var_id, new ArrayList<ETypes>());
                 valEffectList.add(tmp);
                 sigma_secondo.put(((LhsExp) par).getVarId().getId(), valEffectList);
 
+            } else {
+                errors.addAll(par.AnalyzeEffect(env));
             }
             position++;
         }
 
         sigma_secondo.forEach((id, effect_list) -> {
+            
             // calcoliamo effettivamente par
             ETypes tmp = effect_list.size() == 1 ? effect_list.get(0)
                     : effect_list
@@ -194,13 +203,14 @@ public class CallStmt extends Exp {
                             .reduce((a, b) -> {
                                 return EffectHelper.par(a, b);
                             }).get();
-
+            
             // controlliamo gli errori
-            if (tmp != null && tmp == ETypes.T) {
+            if (tmp != null && tmp == ETypes.T && effect_list.size() > 1) {
                 errors.add(new EffectError(row, column,
-                        "Aliasing error: pointer " + "[" + id + "]" + " could be deleted twice."));
+                        "Possible aliasing error on variable "+ "[" + id + "] ?"));
+                        // "Aliasing error: pointer " + "[" + id + "]" + " could be deleted twice."));
             }
-
+            
             // update
             env.lookup(id).updateEffectType(tmp);
 
