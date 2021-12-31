@@ -22,7 +22,8 @@ public class EffectHelper {
 	}
 
 	public static ETypes max(ETypes a, ETypes b) {
-		return a.ordinal() > b.ordinal() ? a : b;
+		return a.ordinal() 
+		> b.ordinal() ? a : b;
 	}
 
 	public static ETypes par(ETypes a, ETypes b) {
@@ -40,7 +41,7 @@ public class EffectHelper {
 	}
 
 	public static void maxModifyEnv(SigmaEnv e, SigmaEnv tempE) {
-		e.getAllIDs().entrySet().stream().filter(id -> !id.getValue().isNotFunction())
+		e.getAllIDs().entrySet().stream().filter(id -> id.getValue().isNotFunction())
 				.forEach(en -> { 
 
 					System.out.println("L'effetto di " + en.getKey() + " è " + e.lookup(en.getKey()).getEtype());
