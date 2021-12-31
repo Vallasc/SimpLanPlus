@@ -57,7 +57,6 @@ public class BlockBase extends Block {
 
 	public ArrayList<SemanticError> checkSemanticsInjectArgs(GammaEnv env, List<Arg> args) {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-
 		env.newScope();
 		args.forEach(arg -> {
 			errors.addAll(arg.checkSemantics(env));

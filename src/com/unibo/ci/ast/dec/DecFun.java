@@ -97,22 +97,22 @@ public class DecFun extends Dec {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
         String labelFun = id;
-        String skip = "end" + labelFun;
-        typeFun.setLabelEndFun(skip);
+        String skip = "ended" + labelFun;
+        typeFun.setLabelEndFun("end" + labelFun);
 
         String out = (debug ? ";BEGIN DECFUN " + id + "\n" : "");
         out += "b " + skip + "\n";
         out += labelFun + ":\n";
         out += "sw $ra -1($cl)\n";
         out += block.codeGeneration();
-        out += skip + ":\n";
+        out += "end" + labelFun + ":\n";
         out += "lw $ra -1($cl)\n";
         out += "lw $fp 1($cl)\n";
         out += "lw $sp 0($cl) \n";
         out += "addi $cl $fp 2\n";
         out += "jr $ra\n";
-        out += skip + ":\n";
         out += (debug ? ";END DECFUN " + id + "\n" : "");
+        out += skip + ":\n";
         return out;
     }
 
