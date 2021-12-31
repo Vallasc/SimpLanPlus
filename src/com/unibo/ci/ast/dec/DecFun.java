@@ -166,7 +166,7 @@ public class DecFun extends Dec {
     private boolean equal_envs(SigmaEnv env_0, SigmaEnv env_1) {
         boolean is_equal = true;
         for (String id : env_0.getAllIDs().keySet()) {
-            if (!env_0.lookup(id).isNotFunction())
+            if (env_0.lookup(id) != null && env_0.lookup(id).isNotFunction()) //id non è una funzione
                 continue;
 
             if (env_1.lookup(id) != null)

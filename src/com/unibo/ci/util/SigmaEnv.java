@@ -40,7 +40,15 @@ public class SigmaEnv extends Environment<EEntry> {
 
 	// Looks for the entry of id in symbol/effect table, if there is any
 	public EEntry lookup(String id) {
-		return super.lookup(id);
+		for (int i = table.size(); i-- > 0;) {
+			EEntry entry = table.get(i).get(id);
+			
+			if (entry != null) {
+				
+				return entry; // .getType();
+			}
+		}
+		return null;
 	}
 
 	@Override
