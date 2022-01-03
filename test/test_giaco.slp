@@ -1,18 +1,18 @@
 {
-	/*void x(int a, int b){
-        int y(int a){
-            print(a);
-            return a;
+	int x(int a){
+        {
+            int double(int b){
+                return b*2;
+            }
+
+            {
+                int double(int b){
+                    return b*3;
+                }
+
+                return double(a);
+            }
         }
-		print(y(a) + b);
-        return;
-	}*/
-    ^int a;
-    void x(^int a, int b){
-        print(a^ + b);
-        return;
-    }
-    a = new int;
-    a^ = 4;
-	x(a, 5);
+	}
+	print x(4);
 }

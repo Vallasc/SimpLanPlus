@@ -52,8 +52,6 @@ public class VarExp extends LhsExp {
 
         String out = (debug ? ";BEGIN ID " + "\n" : "");
         out += "mv $al $fp \n";
-        System.err.println(nestingLevel);
-        System.err.println(stEntry.getNestinglevel());
   
         for (int i = 0; i < nestingLevel - stEntry.getNestinglevel(); i++) {
             out += "lw $al 0($al)\n";
