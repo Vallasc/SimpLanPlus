@@ -84,8 +84,8 @@ public class DeleteStmt extends Statement {
     @Override
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 
-    	//System.out.println(env.toPrint("*"));
-    	
+        // System.out.println(env.toPrint("*"));
+
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
         env.lookup(id).updateEffectType(EffectHelper.seq(env.lookup(id).getEtype(), EffectHelper.ETypes.D));
