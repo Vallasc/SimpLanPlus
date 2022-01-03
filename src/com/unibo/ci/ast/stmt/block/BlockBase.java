@@ -19,8 +19,10 @@ import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
+import com.unibo.ci.util.STentry;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
+import com.unibo.ci.ast.types.TypeFunction;
 
 /**
  * Example: { }
@@ -30,6 +32,7 @@ public class BlockBase extends Block {
 	private final List<Statement> statements;
 
 	private boolean isMain = false;
+	private STentry functionStEntry = null;
 
 	public BlockBase(List<Dec> declarations, List<Statement> statements, int row, int column) {
 		super(row, column);
@@ -47,9 +50,12 @@ public class BlockBase extends Block {
 			errors.addAll(dec.checkSemantics(env));
 		});
 		statements.forEach(stmt -> {
+			if(stmt instanceof BlockBase){
+				((BlockBase) stmt).setFunctionType(functionStEntry);
+			}
 			errors.addAll(stmt.checkSemantics(env));
 		});
-		// System.out.println(env.toPrint(""));
+
 		env.exitScope();
 
 		return errors;
@@ -64,7 +70,11 @@ public class BlockBase extends Block {
 		declarations.forEach(dec -> {
 			errors.addAll(dec.checkSemantics(env));
 		});
+		functionStEntry = env.lookupFunction();
 		statements.forEach(stmt -> {
+			if(stmt instanceof BlockBase){
+				((BlockBase) stmt).setFunctionType(functionStEntry);
+			}
 			errors.addAll(stmt.checkSemantics(env));
 		});
 		env.exitScope();
@@ -93,7 +103,6 @@ public class BlockBase extends Block {
 		ArrayList<Type> stmtReturn = new ArrayList<Type>();
 		statements.forEach(stmt -> {
 			Type type = stmt.typeCheck();
-			// System.out.println("DEBUG blockbase: type " + type);
 			if (type != null && (stmt instanceof IteStmt || stmt instanceof ReturnStmt || stmt instanceof BlockBase)) {
 				stmtReturn.add(type);
 			}
@@ -101,7 +110,6 @@ public class BlockBase extends Block {
 
 		Type returnType = stmtReturn.stream()
 				.reduce(null, (accumulator, element) -> {
-					// System.out.println("DEBUG blockbase stream: element" + element);
 					if (element == null) {
 						return accumulator;
 					}
@@ -164,23 +172,29 @@ public class BlockBase extends Block {
 		// Generate statements
 		for (Statement s : statements) {
 			out += s.codeGeneration();
+			if(functionStEntry != null)
+
+			if(s instanceof ReturnStmt && functionStEntry != null){
+				out += codeGenEnd(varDecs.size());
+				out += "b " + ((TypeFunction) functionStEntry.getType()).getLabelEndFun() + "\n";
+			}
 		}
 		if (isMain){
 			out += "halt\n";
 		}
 
-
-		if (!isMain) {
+		// End block
+		/*if (!isMain) {
 			// Pop all the declarations
 			out += "addi $sp $sp " + varDecs.size() + (debug ? " ;pop var declarations\n" : "\n"); // Pop var
 																									// declarations.
-			out += "pop" + (debug ? " ;pop $al" : "\n");
-			out += "pop" + (debug ? " ;pop consistency ra" : "\n");
+			out += "pop" + (debug ? " ;pop $al\n" : "\n");
+			out += "pop" + (debug ? " ;pop consistency ra\n" : "\n");
 			out += "lw $cl 0($sp)\n";
 			out += "pop\n";
-			out += "lw $fp 0($sp)" + (debug ? " ;restore old $fp" : "\n");
+			out += "lw $fp 0($sp)" + (debug ? " ;restore old $fp\n" : "\n");
 			out += "pop" + (debug ? " ;pop old $fp\n" : "\n");
-		}
+		}*/
 
 		// Function declaration at the end, they need the space for ra
 		for (DecFun f : funDecs) {
@@ -188,6 +202,20 @@ public class BlockBase extends Block {
 		}
 		out += "; END BLOCK\n";
 
+		return out;
+	}
+
+	public String codeGenEnd(int varDecSize){
+		boolean debug = GlobalConfig.PRINT_COMMENTS;
+		// Pop all the declarations
+		String out = "addi $sp $sp " + varDecSize + (debug ? " ;pop var declarations\n" : "\n"); // Pop var
+		// declarations.
+		out += "pop" + (debug ? " ;pop $al\n" : "\n");
+		out += "pop" + (debug ? " ;pop consistency ra\n" : "\n");
+		out += "lw $cl 0($sp)\n";
+		out += "pop\n";
+		out += "lw $fp 0($sp)" + (debug ? " ;restore old $fp\n" : "\n");
+		out += "pop" + (debug ? " ;pop old $fp\n" : "\n");
 		return out;
 	}
 
@@ -222,5 +250,9 @@ public class BlockBase extends Block {
 
 	public void setMain(boolean isMain) {
 		this.isMain = isMain;
+	}
+
+	public void setFunctionType(STentry functionStEntry){
+		this.functionStEntry = functionStEntry;
 	}
 }

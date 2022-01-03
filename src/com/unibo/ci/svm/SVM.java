@@ -47,9 +47,6 @@ public class SVM {
 	}
 
 	public void run() throws MemoryAccessException {
-		code.forEach( instr -> {
-			instr.printInstruction();
-		});
 		while (true) {
 			if (registers.get("$hp") + 1 >= registers.get("$sp")) {
 				throw new MemoryAccessException();

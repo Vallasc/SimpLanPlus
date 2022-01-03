@@ -20,6 +20,7 @@ import com.unibo.ci.util.TypeErrorsStorage;
 public class ReturnStmt extends Statement {
     private Exp exp;
     private STentry functionStEntry;
+    private int nestingLevel = -1;
 
     public ReturnStmt(int row, int column, Exp exp) {
         super(row, column);
@@ -33,6 +34,7 @@ public class ReturnStmt extends Statement {
 
     @Override
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
+        this.nestingLevel = env.getNestingLevel();
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
         functionStEntry = env.lookupFunction();
         if (exp != null)
@@ -63,11 +65,11 @@ public class ReturnStmt extends Statement {
     @Override
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
-
         String out = (debug ? ";BEGIN RETURN " + "\n" : "");
         if (exp != null)
             out += exp.codeGeneration();
-        out += "b " + ((TypeFunction) functionStEntry.getType()).getLabelEndFun() + "\n";
+
+        //out += "b " + ((TypeFunction) functionStEntry.getType()).getLabelEndFun() + "\n";
 
         out += (debug ? ";END RETURN\n" : "");
         return out;

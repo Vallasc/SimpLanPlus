@@ -24,6 +24,11 @@ public class DecFun extends Dec {
     private final BlockBase block;
     private final TypeFunction typeFun;
 
+    // Code gen
+    private String labelFun;
+    private String labelSkip;
+    private String labelEndFun;
+
     public DecFun(int row, int column, Type type, String id, List<Arg> args, BlockBase block) {
         super(row, column, type, id);
         this.id = id;
@@ -31,6 +36,11 @@ public class DecFun extends Dec {
         this.args = args;
         this.block = block;
         this.typeFun = new TypeFunction(row, column, id, args.size(), type, args);
+
+        this.labelFun = id;
+        this.labelSkip = "ended" + labelFun;
+        this.labelEndFun = "end" + labelFun;
+        typeFun.setLabelEndFun(labelEndFun);
     }
 
     @Override
@@ -54,9 +64,6 @@ public class DecFun extends Dec {
         try {
             // Aggiungi tipo funzione
             env.addDeclaration(id, typeFun);
-            // TODO quanta memoria occupa la decfun? solo il numero deli argomenti?
-            // (args.size())
-
             // Nota: type dovrebbe essere T_1, ..., T_n -> T
 
         } catch (DuplicateEntryException e) {
@@ -76,10 +83,6 @@ public class DecFun extends Dec {
         }
 
         Type blockType = this.block.typeCheck();
-        // System.out.println("DEBUG: il tipo del blocco nella funzione " + id + " è " +
-        // blockType);
-        // System.out.println("DEBUG: il tipo della funzione " + id + " è " +
-        // this.type);
         if ((blockType == null && !(this.type instanceof TypeVoid))
                 || (blockType != null && !this.type.equals(blockType))) {
             // Errore! Tipo del blocco e tipo di ritorno della funzione incompatibili
@@ -96,12 +99,8 @@ public class DecFun extends Dec {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String labelFun = id;
-        String skip = "ended" + labelFun;
-        typeFun.setLabelEndFun("end" + labelFun);
-
         String out = (debug ? ";BEGIN DECFUN " + id + "\n" : "");
-        out += "b " + skip + "\n";
+        out += "b " + labelSkip + "\n";
         out += labelFun + ":\n";
         out += "sw $ra -1($cl)\n";
         out += block.codeGeneration();
@@ -112,7 +111,7 @@ public class DecFun extends Dec {
         out += "addi $cl $fp 2\n";
         out += "jr $ra\n";
         out += (debug ? ";END DECFUN " + id + "\n" : "");
-        out += skip + ":\n";
+        out += labelSkip + ":\n";
         return out;
     }
 

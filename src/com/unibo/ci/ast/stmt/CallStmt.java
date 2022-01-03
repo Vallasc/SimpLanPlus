@@ -172,16 +172,9 @@ public class CallStmt extends Exp {
             if (par.typeCheck() instanceof TypePointer) {
             	
                 String formal_parameter = ((TypeFunction) entry.getType()).getArguments().get(position).getId();
-                // System.out.println("DEBUG: cerco \n " + formal_parameter + " \n nell'ambiente
-                // " + sigma_1.toPrint(""));
                 ETypes a = env.lookup(((LhsExp) par).getVarId().getId() /* parametri attuali */).getEtype();
                 ETypes b = sigma_1.lookup( formal_parameter/* partametri formali */).getEtype();
-                if (b == null){
-                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAH");
-                }
-                ETypes tmp = EffectHelper.seq(
-                        a, b
-                        );
+                ETypes tmp = EffectHelper.seq(a, b);
 
                 String var_id = ((LhsExp) par).getVarId().getId();
                 ArrayList<ETypes> valEffectList = sigma_secondo.getOrDefault(var_id, new ArrayList<ETypes>());
