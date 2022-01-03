@@ -33,7 +33,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		String fileName = "./test/prova.slp";
+		String fileName = "./test/test1.slp";
 		if (args.length != 1)
 			LOGGER.info("WOOOOO INSERISCI IN FILE SORGENTE WOOOOOO");
 		else

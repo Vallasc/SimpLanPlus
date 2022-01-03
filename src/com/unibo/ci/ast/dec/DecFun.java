@@ -14,6 +14,7 @@ import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.TypeFunction;
+import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.ast.errors.TypeError;
 
@@ -80,6 +81,12 @@ public class DecFun extends Dec {
         // blockType);
         // System.out.println("DEBUG: il tipo della funzione " + id + " è " +
         // this.type);
+        if(typeFun.getReturnType() instanceof TypePointer){
+            TypeErrorsStorage.add(new TypeError(super.row, super.column,
+                    "Functions must not return pointer type"));
+            return null;
+        }
+           
         if ((blockType == null && !(this.type instanceof TypeVoid))
                 || (blockType != null && !this.type.equals(blockType))) {
             // Errore! Tipo del blocco e tipo di ritorno della funzione incompatibili
@@ -125,6 +132,7 @@ public class DecFun extends Dec {
         env_1.newScope();
 
         args.forEach(arg -> {
+            
             env_0.addDeclaration(arg.getId(), ETypes.BOT);
             env_1.addDeclaration(arg.getId(), ETypes.BOT);
         });

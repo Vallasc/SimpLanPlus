@@ -60,9 +60,12 @@ public class GammaEnv extends Environment<STentry> {
 	public void addDeclarationPar(String id, Type type) throws DuplicateEntryException {
 		STentry value = table.getLast().get(id);
 		// There is already an entry
-		if (value != null)
+		if (value != null){
 			throw new DuplicateEntryException();
-		table.getLast().put(id, new STentry(id, type, nestingLevel-1, offset));
+		}
+		STentry newEntry = new STentry(id, type, nestingLevel-1, offset);
+		newEntry.setIsPar(true);
+		table.getLast().put(id, newEntry);
 		offset--; 
 	}
 

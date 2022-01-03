@@ -96,10 +96,9 @@ public class VarExp extends LhsExp {
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
-        if (env.lookup(id).getEtype() == EffectHelper.ETypes.BOT) {
+        if (!stEntry.getIsPar() && env.lookup(id).getEtype() == EffectHelper.ETypes.BOT) {
         	WarningsStorage.add(new Warning(row, column, "uninitialized variable " + "[" + id + "]" + "\n"));
         }
-        
         env.lookup(id).updateEffectType(
                 EffectHelper.seq(
                         env.lookup(id).getEtype(),

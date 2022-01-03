@@ -48,6 +48,7 @@ public class BlockBase extends Block {
 		});
 		statements.forEach(stmt -> {
 			errors.addAll(stmt.checkSemantics(env));
+			
 		});
 		// System.out.println(env.toPrint(""));
 		env.exitScope();

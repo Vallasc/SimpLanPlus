@@ -14,7 +14,7 @@ public class test {
 		if (args.length == 0) {
 			File testFolder = new File(testpath);
 			for (String filename : testFolder.list()) {
-				if (filename.endsWith(".slp") && filename.startsWith("test_warning")) {
+				if (filename.endsWith(".slp") && filename.startsWith("test")) {
 					System.out.println(filename);
 					Main.main(new String[] { testpath.concat(filename) });
 				}
