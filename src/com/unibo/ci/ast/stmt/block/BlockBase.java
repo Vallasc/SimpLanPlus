@@ -54,6 +54,7 @@ public class BlockBase extends Block {
 				((BlockBase) stmt).setFunctionType(functionStEntry);
 			}
 			errors.addAll(stmt.checkSemantics(env));
+			
 		});
 
 		env.exitScope();

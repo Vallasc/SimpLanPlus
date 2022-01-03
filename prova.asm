@@ -89,13 +89,21 @@ push $cl
 subi $sp $sp 1; ra 
 mv $al $fp
 push $al ;it's equal to the old $fp
+;BEGIN DECVAR a
+li $t1 -1
+sw $t1 0($hp) 
+
+push $a0
+;END DECVAR
+;BEGIN DECVAR b
+addi $sp $sp -1
+;END DECVAR
 mv $fp $sp ;frame pointer above the new declarations
 addi $fp $fp 0 ;frame pointer before decs (n = 0)
 ;BEGIN RETURN 
 ;BEGIN 
 ;BEGIN ID 
 mv $al $fp 
-lw $al 0($al)
 lw $a0 -1($al)
 ;END ID
 push $a0 ;push on the stack e1
