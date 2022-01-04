@@ -3,6 +3,8 @@
     ^^int x ;
     ^int boh = new int;
     
+    
+
     ^int y = new int ;
     y^ = 0 ;
     x = new ^int ;

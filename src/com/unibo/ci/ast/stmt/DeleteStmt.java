@@ -87,7 +87,6 @@ public class DeleteStmt extends Statement {
         // System.out.println(env.toPrint("*"));
 
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
-
         env.lookup(id).updateEffectType(EffectHelper.seq(env.lookup(id).getEtype(), EffectHelper.ETypes.D));
 
         if (env.lookup(id).getEtype().equals(EffectHelper.ETypes.T)) {

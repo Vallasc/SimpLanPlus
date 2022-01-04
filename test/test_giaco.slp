@@ -1,7 +1,9 @@
 {
+    
+
 	int x(int a){
         {
-            int double(int b){
+            int double(int b, int c){
                 return b*2;
             }
 
@@ -14,5 +16,7 @@
             }
         }
 	}
+
+    
 	print x(4);
 }
