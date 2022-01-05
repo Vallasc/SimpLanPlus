@@ -32,7 +32,8 @@ public class BlockBase extends Block {
 	private final List<Statement> statements;
 
 	private boolean isMain = false;
-	private STentry functionStEntry = null;
+	private boolean isFunctionBlock = false;
+	private TypeFunction typeFunction = null;
 
 	public BlockBase(List<Dec> declarations, List<Statement> statements, int row, int column) {
 		super(row, column);
@@ -49,7 +50,9 @@ public class BlockBase extends Block {
 		declarations.forEach(dec -> {
 			errors.addAll(dec.checkSemantics(env));
 		});
-		functionStEntry = env.lookupFunction();
+		STentry functionStEntry = env.lookupFunction();
+		if(functionStEntry != null)
+			this.typeFunction = (TypeFunction) functionStEntry.getType();
 		statements.forEach(stmt -> {
 			errors.addAll(stmt.checkSemantics(env));
 		});
@@ -60,6 +63,7 @@ public class BlockBase extends Block {
 	}
 
 	public ArrayList<SemanticError> checkSemanticsInjectArgs(GammaEnv env, List<Arg> args) {
+		this.isFunctionBlock = true;
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 		env.newScope();
 		args.forEach(arg -> {
@@ -68,12 +72,13 @@ public class BlockBase extends Block {
 		declarations.forEach(dec -> {
 			errors.addAll(dec.checkSemantics(env));
 		});
-		functionStEntry = env.lookupFunction();
+		STentry functionStEntry = env.lookupFunction();
+		if(functionStEntry != null)
+			this.typeFunction = (TypeFunction) functionStEntry.getType();
 		statements.forEach(stmt -> {
 			errors.addAll(stmt.checkSemantics(env));
 		});
 		env.exitScope();
-
 		return errors;
 	}
 
@@ -163,15 +168,19 @@ public class BlockBase extends Block {
 			out += "addi $fp $fp " + varDecs.size() + (debug ? " ;frame pointer before decs (n = " + varDecs.size() + ")\n" : "\n");
 		}
 
+		boolean flagReturn = false;
 		// Generate statements
 		for (Statement s : statements) {
 			out += s.codeGeneration();
-			if(functionStEntry != null)
-
-			if(s instanceof ReturnStmt && functionStEntry != null){
+			if(s instanceof ReturnStmt && typeFunction != null){
 				out += codeGenEnd(varDecs.size());
-				out += "b " + ((TypeFunction) functionStEntry.getType()).getLabelEndFun() + "\n";
+				out += "b " + typeFunction.getLabelEndFun() + "\n";
+				flagReturn = true;
 			}
+		}
+		if(!flagReturn && isFunctionBlock){
+			out += codeGenEnd(varDecs.size());
+			out += "b " + typeFunction.getLabelEndFun() + "\n";
 		}
 		if (isMain){
 			out += "halt\n";
@@ -244,6 +253,10 @@ public class BlockBase extends Block {
 
 	public void setMain(boolean isMain) {
 		this.isMain = isMain;
+	}
+
+	public void setTypeFunction(TypeFunction typeFunction) {
+		this.typeFunction = typeFunction;
 	}
 
 }

@@ -75,6 +75,7 @@ public class DecFun extends Dec {
             // return semanticErrors;
         }
         semanticErrors.addAll(block.checkSemanticsInjectArgs(env, args));
+        block.setTypeFunction(typeFun);
         return semanticErrors;
     }
 
