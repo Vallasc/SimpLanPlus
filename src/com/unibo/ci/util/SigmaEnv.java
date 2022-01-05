@@ -40,10 +40,22 @@ public class SigmaEnv extends Environment<EEntry> {
 
 	// Looks for the entry of id in symbol/effect table, if there is any
 	public EEntry lookup(String id) {
+		// return super.lookup(id);
+		for (int i = table.size(); i-- > 0;) {
+			EEntry entry = table.get(i).get(id);
+			if (entry != null) {
+
+				return entry; // .getType();
+			}
+		}
+		return null;
+	}
+
+	public EEntry lookupFunction(String id) {
 		for (int i = table.size(); i-- > 0;) {
 			EEntry entry = table.get(i).get(id);
 			
-			if (entry != null) {
+			if (entry != null && !entry.isNotFunction()) {
 				
 				return entry; // .getType();
 			}
@@ -75,7 +87,17 @@ public class SigmaEnv extends Environment<EEntry> {
 	@Override
 	public SigmaEnv clone() {
 		SigmaEnv toReturn = new SigmaEnv();
-		toReturn.table = (LinkedList<LinkedHashMap<String, EEntry>>) table.clone();
+		table.forEach( hashmap -> {
+			toReturn.table.add(new LinkedHashMap<String, EEntry>());
+			hashmap.forEach( (id, entry) -> {
+				if (entry.isNotFunction())
+					toReturn.addDeclaration(id, entry.getEtype());
+				else{
+					toReturn.addDeclaration(id, entry.getSigma0().clone(), entry.getSigma1().clone());
+				}
+			});
+		});
+		// toReturn.table = (LinkedList<LinkedHashMap<String, EEntry>>) table.clone();
 		toReturn.nestingLevel = nestingLevel;
 		return toReturn;
 	}

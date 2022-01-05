@@ -120,7 +120,8 @@ public class CallStmt extends Exp {
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-        entry = env.lookup(id);
+        // entry = env.lookup(id);
+        entry = env.lookupFunction(id);
         nestingLevel = env.getNestingLevel();
 
         if (entry == null) {
@@ -153,7 +154,7 @@ public class CallStmt extends Exp {
         ArrayList<EffectError> errors = new ArrayList<EffectError>();
 
         // SigmaEnv sigma_0 = env.lookup(id).getSigma0();
-        SigmaEnv sigma_1 = env.lookup(id).getSigma1();
+        SigmaEnv sigma_1 = env.lookupFunction(id).getSigma1();
 
         // sigma secondo associa ad un nome di variabile (parametro attuale della
         // funzione) un effetto, servirà per fare il par
@@ -193,10 +194,10 @@ public class CallStmt extends Exp {
                             }).get();
             
             // controlliamo gli errori
-            if (tmp != null && tmp == ETypes.T && effect_list.size() > 1) {
+            if (tmp != null && tmp == ETypes.T /* && effect_list.size() > 1 */ ) {
                 errors.add(new EffectError(row, column,
-                        "Possible aliasing error on variable "+ "[" + id + "] ?"));
-                        // "Aliasing error: pointer [" + id + "] could be deleted twice."));
+                        "Possible aliasing error or using a deleted variable "+ "[" + id + "]"));
+                        // "Aliasing error: pointer " + "[" + id + "]" + " could be deleted twice."));
             }
             
             // update

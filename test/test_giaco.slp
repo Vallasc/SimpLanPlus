@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     /*int double(int b){
         print(b*3);
         return b*2;
@@ -16,14 +17,33 @@
     //d = double( x(5) );
     //double( x(5) );
     //print(d);
+=======
+    
+
+	int x(int a){
+        {
+            int double(int b, int c){
+                return b*2;
+            }
+>>>>>>> d54c84499b28ec9193a4eaa3121956aa51a4ba57
 
     int a(){
         return 3;
     }
 
+<<<<<<< HEAD
     int b(int c){
         return c *2;
     }
 
     print( b(a()) );
+=======
+                return double(a);
+            }
+        }
+	}
+
+    
+	print x(4);
+>>>>>>> d54c84499b28ec9193a4eaa3121956aa51a4ba57
 }

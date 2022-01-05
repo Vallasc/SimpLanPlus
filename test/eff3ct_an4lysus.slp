@@ -1,20 +1,33 @@
 { 
 
-	void pippo(^int x, int n){
-		if (n==0){
-			//delete x;
-			return;
-		}
-		else {
-			^int y;
-			pippo(y, n-1);
-			delete x;
-		}
-	}
-		
-	^int alfa ;
+	^int alfa = new int;
+	^int beta = new int;
+	^int gamma = new int;
+
 	
-	pippo(alfa, 4);
+
+	int pippo(^int test, int n){
+		
+		^int bravo = new int;
+
+		int num(^int b){
+			delete b;
+			return 0;
+		}
+
+		if (n == 0){
+			delete test;
+		} else {
+			delete test;
+			pippo(test, n-1);
+			
+		}
+		
+		bravo^ = 5;
+		num(bravo);
+
+		return bravo^;
+	}
 	
 }    
 	

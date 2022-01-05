@@ -89,6 +89,17 @@ public class GammaEnv extends Environment<STentry> {
 		return null;
 	}
 
+	public STentry lookupFunction(String id){
+		for (int i = table.size(); i-- > 0;) {
+			STentry entry = table.get(i).get(id);
+			if (entry != null && entry.getType() instanceof TypeFunction) {
+
+				return entry; // .getType();
+			}
+		}
+		return null;
+	}
+
 	public String toPrint(String indent) {
 		StringBuilder sb = new StringBuilder(indent + "Symbol table:\n");
 		sb.append(indent + "---------------------------\n");

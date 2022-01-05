@@ -132,17 +132,19 @@ public class IteStmt extends Statement implements Cloneable {
 
         toRet.addAll(exp.AnalyzeEffect(env));
 
-        analyzeBlockEffect(env, thenStmt, toRet);
+        SigmaEnv tempE = env.clone();
 
-        SigmaEnv tempE = null;
+        analyzeBlockEffect(env, thenStmt, toRet);
 
         if (elseStmt != null) {
 
-            tempE = (SigmaEnv) env.clone();
+            // tempE = (SigmaEnv) env.clone();
             analyzeBlockEffect(tempE, elseStmt, toRet);
+        } else {
+            tempE = null;
         }
 
-        analyzeBlockEffect(env, thenStmt, toRet);
+        // analyzeBlockEffect(env, thenStmt, toRet);
         // env.toPrint("indent").toString();
 
         if (tempE != null) {
