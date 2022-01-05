@@ -1,0 +1,21 @@
+{
+    ^int x = new int ;
+    int y;
+
+    void g(^int x, int y){ 
+        if (y==0){
+        	x^ = x^ - 1; 
+	      	g(x,y);
+	      	delete x;
+        } else { 
+            delete x;
+    	  
+        } 
+    }
+
+    x^ = 1;
+    y = 1;
+    
+    g(x, y);
+
+}

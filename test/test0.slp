@@ -1,45 +1,13 @@
 {
-
-    int a = 0;
-    int b;
-    ^int c = new int;
-    ^^int d = new ^int;
-    ^int e;
-
-	^int x;
-    ^int y;
-    
-
-    c^ = a;
-    d^ = c;
-    // delete d;
-	x^ = y^ + 3; //test warning 
-    e = c;
-    
-    // delete e;
-	// delete d; 
-	d^ = e;
-
-    // BUGGETTINO?
-    b = c^ + a + 4;
-    
-    d^ = c;
-	
-	y = x;
-/*
-    ^int a;
-    
-    {
-        
-        ^int a;
-        ^int b;
-    
-        delete a;
-        return ;
-    }
-	
-    delete a;
-
-    return;
-    */
+    ^^int x;
+    bool y = true;
+    x = new ^int;
+    x^ = new int;
+    if(y)
+        x^^ = 1;
+    else
+        x^^ = 0;
+    print(x^^);
 }
+
+// OK print 1

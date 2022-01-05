@@ -1,12 +1,15 @@
 {
-    int x = 1; // BUGGETTINO?
-    
-    void f(int y){ 
-        if (y == 0) 
-            print(x); 
-        else  
-            f(y-1) ; 
-    } 
-    
-    f(54) ;
+    void h(^int x, ^int y){ 
+        if (y^==0){
+            delete x;
+        } else { 
+            x^ = x^ - 1; 
+            h(y,x);
+        }
+    }
+    ^int a = new int;
+	^int b = new int;
+    a^ = 1;
+    b^ = 4;
+	h(b, a);
 }

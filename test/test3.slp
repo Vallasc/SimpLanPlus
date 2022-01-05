@@ -1,11 +1,7 @@
 {
-    void f(^int x, ^int y){ //BUGGETTINO?
-        delete x; 
-    } 
-
-    ^int a = new int; 
-	//par [ D, \BOT ]
-	//par [ D, RW ]
-    f(a, a);
-    
+    ^int y;
+	int x = y^ + 3;
 }
+
+// Runtime error 
+// SEVERE: Invalid memory access

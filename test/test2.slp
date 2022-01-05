@@ -1,15 +1,9 @@
-{
-    void f(int a){
-        if(a == 0){
+ {
+ 	^int x = new int;
+  	int y;
+ 	x^ = 1 ; 
+ 	delete x ;
+ 	y = x^ ;
+ }
 
-        }else{
-
-            f(a-1);
-        }
-        
-    }
-
-    int y;
-    
-    f(11);
-}
+ // SEVERE: EFFECT ERROR [6, 6]: Cannot use variable [x]: the variable was deleted
