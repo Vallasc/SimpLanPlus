@@ -60,6 +60,7 @@ public class DerExp extends LhsExp {
             out = id.codeGeneration();
         }
 
+        out += " lw $a0 0($a0)\n";
         LhsExp pointer = child;
         while (pointer instanceof DerExp) { // dereference pointer
             out += " lw $a0 0($a0)\n";
