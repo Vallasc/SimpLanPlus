@@ -65,13 +65,13 @@ public class ReturnStmt extends Statement {
     @Override
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
-        String out = (debug ? ";BEGIN RETURN " + "\n" : "");
+        String out = (debug ? ";BEGIN RETURN \n" : "\n");
         if (exp != null)
             out += exp.codeGeneration();
 
         //out += "b " + ((TypeFunction) functionStEntry.getType()).getLabelEndFun() + "\n";
 
-        out += (debug ? ";END RETURN\n" : "");
+        out += (debug ? ";END RETURN \n" : "\n");
         return out;
     }
 

@@ -49,12 +49,9 @@ public class BlockBase extends Block {
 		declarations.forEach(dec -> {
 			errors.addAll(dec.checkSemantics(env));
 		});
+		functionStEntry = env.lookupFunction();
 		statements.forEach(stmt -> {
-			if(stmt instanceof BlockBase){
-				((BlockBase) stmt).setFunctionType(functionStEntry);
-			}
 			errors.addAll(stmt.checkSemantics(env));
-			
 		});
 
 		env.exitScope();
@@ -73,9 +70,6 @@ public class BlockBase extends Block {
 		});
 		functionStEntry = env.lookupFunction();
 		statements.forEach(stmt -> {
-			if(stmt instanceof BlockBase){
-				((BlockBase) stmt).setFunctionType(functionStEntry);
-			}
 			errors.addAll(stmt.checkSemantics(env));
 		});
 		env.exitScope();
@@ -129,7 +123,7 @@ public class BlockBase extends Block {
 	public String codeGeneration() {
 		boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-		String out = (debug ? ";BEGIN BLOCK\n" : "");
+		String out = (debug ? ";BEGIN BLOCK\n" : "\n");
 
 		// New scope
 		if (isMain) {
@@ -166,8 +160,7 @@ public class BlockBase extends Block {
 
 		if (!isMain) {
 			out += "mv $fp $sp" + (debug ? " ;frame pointer above the new declarations\n" : "\n");
-			out += "addi $fp $fp " + varDecs.size()
-					+ (debug ? " ;frame pointer before decs (n = " + varDecs.size() + ")\n" : "\n");
+			out += "addi $fp $fp " + varDecs.size() + (debug ? " ;frame pointer before decs (n = " + varDecs.size() + ")\n" : "\n");
 		}
 
 		// Generate statements
@@ -201,7 +194,7 @@ public class BlockBase extends Block {
 		for (DecFun f : funDecs) {
 			out += f.codeGeneration();
 		}
-		out += "; END BLOCK\n";
+		out += ";END BLOCK\n";
 
 		return out;
 	}
@@ -253,7 +246,4 @@ public class BlockBase extends Block {
 		this.isMain = isMain;
 	}
 
-	public void setFunctionType(STentry functionStEntry){
-		this.functionStEntry = functionStEntry;
-	}
 }

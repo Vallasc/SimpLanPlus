@@ -35,8 +35,8 @@ public class Instruction {
 		return arg3;
 	}
 
-	public void printInstruction() {
-		System.out.println(instr + " " + arg1 + " " + offset + "(" + arg2 + ")" + " " + arg3);
+	public String toString() {
+		return instr + " " + arg1 + " " + offset + "(" + arg2 + ") " + arg3;
 	}
 
 }

@@ -31,7 +31,7 @@ public class GreaterThanExp extends BinExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN " + "\n" : "");
+        String out = (debug ? ";BEGIN GREATER THAN\n" : "\n");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ;push on the stack e1\n" : "\n");
         out += right.codeGeneration();
@@ -41,15 +41,15 @@ public class GreaterThanExp extends BinExp {
         String trueBranchLabel = LabelManager.getInstance().newLabel("greaterTrueBranch");
         String endCheckLabel = "end" + trueBranchLabel;
 
-        out += "\t " + "bleq $t1 $a0 " + trueBranchLabel + "\n";
+        out += "bleq $t1 $a0 " + trueBranchLabel + "\n";
         // False branch
-        out += "\t " + "li $a0 1\n";
-        out += "\t " + "b " + endCheckLabel + "\n";
-        out += "\t " + trueBranchLabel + ":\n";
-        out += "\t " + "li $a0 0\n";
-        out += "\t " + endCheckLabel + ":\n";
+        out += "li $a0 1\n";
+        out += "b " + endCheckLabel + "\n";
+        out += trueBranchLabel + ":\n";
+        out += "li $a0 0\n";
+        out += endCheckLabel + ":\n";
 
-        out += (debug ? ";END \n" : "");
+        out += (debug ? ";END GREATER THAN\n" : "\n");
         return out;
     }
 

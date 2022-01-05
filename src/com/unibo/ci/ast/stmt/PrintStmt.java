@@ -35,7 +35,7 @@ public class PrintStmt extends Statement {
 
     @Override
     public String codeGeneration() {
-        return expToPrint.codeGeneration() + "print $a0\n";
+        return expToPrint.codeGeneration() + "print $a0\n";// + "halt\n";
     }
 
     @Override

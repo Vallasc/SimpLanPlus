@@ -7,10 +7,10 @@ import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeVoid;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
+import com.unibo.ci.util.STentry;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.util.EffectHelper;
@@ -21,6 +21,7 @@ import com.unibo.ci.ast.errors.EffectError;
 public class DecVar extends Dec {
     private final Exp exp;
     private final String id;
+    private STentry stEntry;
 
     public DecVar(int row, int column, Type type, String id, Exp exp) {
         super(row, column, type, id);
@@ -42,7 +43,7 @@ public class DecVar extends Dec {
             errors.addAll(exp.checkSemantics(env));
         try {
             env.addDeclaration(id, type);
-
+            stEntry = env.lookup(id);
         } catch (DuplicateEntryException e) {
             // Aggiungere anche la riga e la colonna nel messaggio di errore
             errors.add(new SemanticError(row, column, "Already declared [" + id + "]"));
@@ -70,27 +71,35 @@ public class DecVar extends Dec {
         return new TypeVoid();
     }
 
-    /*
-     * public Type typeCheck2() { Type typeLeft = left.typeCheck(); Type typeExp =
-     * exp.typeCheck(); if(typeExp == null) return null;
-     * 
-     * if(!typeLeft.equals(typeExp)){ TypeErrorsStorage.add(new TypeError(super.row,
-     * super.column, "cannot assign [" + typeExp.getTypeName() + "] to [" +
-     * typeLeft.getTypeName() + "]")); return null; } return new TypeVoid(); }
-     */
-
     @Override
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DECVAR " + this.id + "\n" : "");
+        String out = (debug ? ";BEGIN DECVAR [" + id + "]\n" : "\n");
 
-        if (exp == null)
+        /*if (exp == null){
             out += "addi $sp $sp -1\n";
-        else
-            out += exp.codeGeneration() + "\n" + "push $a0\n";
+        } else {
+            out += exp.codeGeneration();
+            out += "push $a0\n";
+        }*/
 
-        out += (debug ? ";END DECVAR\n" : "");
+        out += "addi $sp $sp -1\n";
+
+        if(exp != null){
+            out += "mv $fp $sp\n";
+            int offset = (stEntry.getOffset() * (- 1)) + 1;
+            out += "addi $fp $fp "+ offset + "\n";
+            out += exp.codeGeneration();
+            out += "push $a0\n";
+            out += "mv $al $fp\n";
+            out += "addi $a0 $al " + (offset * -1) + "\n";
+            out += "lw $t1 0($sp)\n";
+            out += "pop\n";
+            out += "sw $t1 0($a0)\n";
+        }
+
+        out += (debug ? ";END DECVAR [" + this.id + "]\n" : "\n");
         return out;
     }
 

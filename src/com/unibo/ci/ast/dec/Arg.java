@@ -55,10 +55,10 @@ public class Arg extends Node {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN ARG" + 	this.toPrint("") + "\n" : "");        
+        String out = (debug ? ";BEGIN ARG " + id + "\n" : "\n");        
 		out += "addi $sp $sp 1" + (debug ? " ;allocates space on the stack for arg [" + id + "]\n" : "\n");
         
-        out += (debug ? ";END ARG\n" : "");
+        out += (debug ? ";END ARG " + id + "\n" : "\n");
         return out;
     }
 

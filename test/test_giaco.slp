@@ -1,18 +1,29 @@
 {
-	int x(int a){
-        {
-            int double(int b){
-                return b*2;
-            }
-
-            {
-                int double(int b){
-                    return b*3;
-                }
-
-                return double(a);
-            }
+    /*int double(int b){
+        print(b*3);
+        return b*2;
+    }
+    int x(int a){
+        if(a == 0){
+            return 0;
+        } else {
+            int z1 = x(a - 1) + 1;
+            print(z1);
+            return z1;
         }
-	}
-	print x(4);
+    }*/
+    //int d;
+    //d = double( x(5) );
+    //double( x(5) );
+    //print(d);
+
+    int a(){
+        return 3;
+    }
+
+    int b(int c){
+        return c *2;
+    }
+
+    print( b(a()) );
 }

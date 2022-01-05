@@ -43,7 +43,6 @@ public abstract class Environment<T> implements Cloneable {
 		for (int i = table.size(); i-- > 0;) {
 			T entry = table.get(i).get(id);
 			if (entry != null) {
-
 				return entry; // .getType();
 			}
 		}

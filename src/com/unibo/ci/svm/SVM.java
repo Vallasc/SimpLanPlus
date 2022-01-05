@@ -83,9 +83,12 @@ public class SVM {
 						} catch (IndexOutOfBoundsException | NotInitializedVariableException e) {
 							// System.out.println(registers.get(arg2) + offset);
 							e.printStackTrace();
-
-							// for (int i = 0; i < memSize; i++)
-							// System.out.println(i + ": " + memory[i].toString());
+							System.err.println("Instruction: " + bytecode.toString());
+							System.err.println("IP: " + ip);
+							System.err.println("SP: " + registers.get("$sp"));
+							System.err.println("FP: " + registers.get("$fp"));
+							System.err.println("CL: " + registers.get("$cl"));
+							printMemory();
 							throw new MemoryAccessException();
 						}
 						registers.put(arg1, address); // lw $r1 offset($r2)
@@ -99,20 +102,12 @@ public class SVM {
 																// it's essentially needed for pointer initialization
 						} else
 							memory[registers.get(arg2) + offset].setData(registers.get(arg1));
-
-						/*
-						 * if(arg1.equals("$ra") && arg2.equals("$cl")){
-						 * System.out.println("SW RA: " + registers.get(arg1) + " cl " +
-						 * registers.get(arg2) + " offset: " + offset);
-						 * }
-						 */
 						break;
 					case "li":
 						registers.put(arg1, Integer.parseInt(arg2));
 						break;
 					case "mv":
 						registers.put(arg1, registers.get(arg2));
-						// System.out.print("get al: " +registers.get(arg2));
 						break;
 					case "add":
 						registers.put(arg1, registers.get(arg2) + registers.get(arg3));
@@ -154,7 +149,7 @@ public class SVM {
 						registers.put(arg1, registers.get(arg2) == 1 ? 0 : 1);
 						break;
 					case "del":
-						memory[registers.get(arg1)].freeCell();// wait how do we mark a cell as free?
+						memory[registers.get(arg1)].freeCell();
 						break;
 					case "print":
 						System.out.println(registers.get(arg1));
@@ -174,21 +169,14 @@ public class SVM {
 						ip = Integer.parseInt(arg1);
 						break;
 					case "jal":
-						registers.put("$ra", ip); // save the next instruction in $ra
-						// System.out.println("previous ip " + ip +" next ip " +arg1);
+						registers.put("$ra", ip);
 						ip = Integer.parseInt(arg1);
 						break;
 					case "jr":
-						// System.out.println("jr: " + registers.get(arg1));
 						ip = registers.get(arg1);
 						break;
 					case "halt":
-						/*
-						 * System.out.println("MEMORIA");
-						 * for(int i =0 ; i< memSize; i++ )
-						 * System.out.println(i+ ": "+ memory[i].toString());
-						 */
-
+						//printMemory();
 						return;
 					default:
 						System.err.println("Unrecognized instruction: " + bytecode.getInstruction());
@@ -196,6 +184,12 @@ public class SVM {
 				}
 			}
 		}
+	}
+
+	void printMemory(){
+		System.out.println("Memory");
+		for(int i =0 ; i< memSize; i++ )
+			System.out.println(i+ ": "+ memory[i].toString());
 	}
 
 	public class MemoryAccessException extends Exception {

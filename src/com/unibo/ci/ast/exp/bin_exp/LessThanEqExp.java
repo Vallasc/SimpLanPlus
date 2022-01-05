@@ -27,7 +27,7 @@ public class LessThanEqExp extends BinExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN " + "\n" : "");
+        String out = (debug ? ";BEGIN LESS THAN EQUAL\n" : "\n");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ;push on the stack e1\n" : "\n");
         out += right.codeGeneration();
@@ -36,7 +36,7 @@ public class LessThanEqExp extends BinExp {
 
         String trueBranchLabel = LabelManager.getInstance().newLabel("lesseqTrueBranch");
         String endCheckLabel = "end" + trueBranchLabel;
-        out += "\t " + "bleq $t1 $a0" + trueBranchLabel + "\n";
+        out += "bleq $t1 $a0" + trueBranchLabel + "\n";
         // False branch
         out += "li $a0 0\n";
         out += "b " + endCheckLabel + "\n";
@@ -44,7 +44,7 @@ public class LessThanEqExp extends BinExp {
         out += "li $a0 1\n";
         out += endCheckLabel + ":\n";
 
-        out += (debug ? ";END \n" : "");
+        out += (debug ? ";END LESS THAN EQUAL\n" : "\n");
         return out;
     }
 

@@ -24,7 +24,7 @@ public class SubExp extends BinExp {
     @Override
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
-        String out = (debug ? ";BEGIN " + "\n" : "");
+        String out = (debug ? ";BEGIN SUB\n" : "\n");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ;push on the stack e1\n" : "\n");
         out += right.codeGeneration();
@@ -33,7 +33,7 @@ public class SubExp extends BinExp {
 
         out += "sub $a0 $t1 $a0\n";
 
-        out += (debug ? ";END \n" : "");
+        out += (debug ? ";END SUB\n" : "\n");
         return out;
     }
 

@@ -102,7 +102,7 @@ public class IteStmt extends Statement implements Cloneable {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN ITE " + "\n" : "");
+        String out = (debug ? ";BEGIN ITE \n" : "\n");
 
         String then = LabelManager.getInstance().newLabel("then");
         String end = LabelManager.getInstance().newLabel("endif");
@@ -111,15 +111,15 @@ public class IteStmt extends Statement implements Cloneable {
         out += "beq $a0 $t1 " + then + "\n";
 
         if (elseStmt != null) {
-            out += (debug ? ";ELSE\n" : "");
+            out += (debug ? ";ELSE\n" : "\n");
             out += elseStmt.codeGeneration();
         }
-        out += "\t b " + end + "\n" + "\t" + then + ":\n";
-        out += "; THAN\n";
+        out += "b " + end + "\n" + then + ":\n";
+        out += ";THAN\n";
         out += thenStmt.codeGeneration();
 
         out += end + " :\n";
-        out += (debug ? ";END ITE\n" : "");
+        out += (debug ? ";END ITE\n" : "\n");
         return out;
     }
 

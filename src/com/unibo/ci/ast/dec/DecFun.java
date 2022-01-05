@@ -11,6 +11,7 @@ import com.unibo.ci.util.EffectHelper.ETypes;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
+import com.unibo.ci.util.LabelManager;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.TypeFunction;
@@ -38,9 +39,10 @@ public class DecFun extends Dec {
         this.block = block;
         this.typeFun = new TypeFunction(row, column, id, args.size(), type, args);
 
-        this.labelFun = id;
+        this.labelFun = LabelManager.getInstance().newLabel(id);
         this.labelSkip = "ended" + labelFun;
         this.labelEndFun = "end" + labelFun;
+        typeFun.setLabelStartFun(labelFun);
         typeFun.setLabelEndFun(labelEndFun);
     }
 
@@ -110,7 +112,7 @@ public class DecFun extends Dec {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DECFUN " + id + "\n" : "");
+        String out = (debug ? ";BEGIN DECFUN [" + id + "]\n" : "\n");
         out += "b " + labelSkip + "\n";
         out += labelFun + ":\n";
         out += "sw $ra -1($cl)\n";
@@ -121,7 +123,7 @@ public class DecFun extends Dec {
         out += "lw $sp 0($cl) \n";
         out += "addi $cl $fp 2\n";
         out += "jr $ra\n";
-        out += (debug ? ";END DECFUN " + id + "\n" : "");
+        out += (debug ? ";END DECFUN [" + id + "]\n" : "\n");
         out += labelSkip + ":\n";
         return out;
     }

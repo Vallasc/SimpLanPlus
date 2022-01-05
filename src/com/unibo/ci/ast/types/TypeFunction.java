@@ -9,6 +9,7 @@ public class TypeFunction extends Type{
 	private Type returnType;
 	private List<Arg> arguments;
 	private String labelEndFun = null;
+	private String labelStartFun = null;
 	
 	public TypeFunction(int row, int column, String typeName, int dimension, Type returnType, List<Arg> arguments) {
 		super(row, column, "FUNCTION", dimension);
@@ -30,6 +31,14 @@ public class TypeFunction extends Type{
 
 	public String getLabelEndFun(){
 		return labelEndFun;
+	}
+
+	public void setLabelStartFun(String label){
+		labelStartFun = label;
+	}
+
+	public String getLabelStartFun(){
+		return labelStartFun;
 	}
 
     @Override

@@ -48,7 +48,7 @@ public class DerExp extends LhsExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DER " + "\n" : "");
+        String out = (debug ? ";BEGIN DER \n" : "\n");
         VarExp id = getVarId();
         if (assignment) {
             out += "mv $al $fp\n";
@@ -66,7 +66,7 @@ public class DerExp extends LhsExp {
             pointer = ((DerExp) pointer).child;
         }
 
-        out += (debug ? ";END DER\n" : "");
+        out += (debug ? ";END DER\n" : "\n");
         return out;
     }
 

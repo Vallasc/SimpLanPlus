@@ -7,16 +7,11 @@ import java.util.List;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
-import com.unibo.ci.ast.exp.DerExp;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.exp.LhsExp;
-import com.unibo.ci.ast.exp.VarExp;
 import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.ast.types.TypeFunction;
-import com.unibo.ci.ast.types.TypeInt;
 import com.unibo.ci.ast.types.TypePointer;
-import com.unibo.ci.util.EEntry;
 import com.unibo.ci.util.EffectHelper;
 import com.unibo.ci.util.EffectHelper.ETypes;
 import com.unibo.ci.util.GammaEnv;
@@ -41,7 +36,7 @@ public class CallStmt extends Exp {
 
     @Override
     public String toPrint(String indent) {
-        StringBuilder sb = new StringBuilder(indent + "\t" + "Params:\n");
+        StringBuilder sb = new StringBuilder(indent + "\tParams:\n");
         parlist.forEach(par -> {
             sb.append(par.toPrint(indent + "\t\t"));
         });
@@ -89,7 +84,7 @@ public class CallStmt extends Exp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN CALL FUN [" + id + "]\n" : "");
+        String out = (debug ? ";BEGIN CALL FUN [" + id + "]\n" : "\n");
         out += "push $fp\n";
         out += "push $sp\n";
         out += "mv $cl $sp\n";
@@ -111,13 +106,13 @@ public class CallStmt extends Exp {
 
         out += "push $al\n";
         for (Exp p : parlist) {
-            out += p.codeGeneration() + "push $a0" + (debug ? " ;pushing " + "\n" : "\n");
+            out += p.codeGeneration() + "push $a0" + (debug ? " ;pushing \n" : "\n");
         }
         out += "mv $fp $sp\n";
         out += "addi $fp $fp " + parlist.size() + "\n";
-        out += "jal " + id; // decfun saves ra firstly
+        out += "jal " + typeFun.getLabelStartFun() + "\n"; // decfun saves ra firstly
 
-        out += (debug ? ";END DELETE\n" : "");
+        out += (debug ? ";END CALL FUN [" + id + "]\n" : "\n");
         return out;
     }
 
@@ -201,7 +196,7 @@ public class CallStmt extends Exp {
             if (tmp != null && tmp == ETypes.T && effect_list.size() > 1) {
                 errors.add(new EffectError(row, column,
                         "Possible aliasing error on variable "+ "[" + id + "] ?"));
-                        // "Aliasing error: pointer " + "[" + id + "]" + " could be deleted twice."));
+                        // "Aliasing error: pointer [" + id + "] could be deleted twice."));
             }
             
             // update

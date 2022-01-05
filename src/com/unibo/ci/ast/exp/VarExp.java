@@ -50,7 +50,7 @@ public class VarExp extends LhsExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN ID " + "\n" : "");
+        String out = (debug ? ";BEGIN ID [" + id + "]\n" : "\n");
         out += "mv $al $fp \n";
   
         for (int i = 0; i < nestingLevel - stEntry.getNestinglevel(); i++) {
@@ -63,7 +63,7 @@ public class VarExp extends LhsExp {
         } else {
             out += "lw $a0 " + offset + "($al)\n";
         }
-        out += (debug ? ";END ID\n" : "");
+        out += (debug ? ";END ID [" + id + "]\n" : "\n");
         return out;
     }
 
@@ -95,7 +95,7 @@ public class VarExp extends LhsExp {
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
         if (!stEntry.getIsPar() && env.lookup(id).getEtype() == EffectHelper.ETypes.BOT) {
-        	WarningsStorage.add(new Warning(row, column, "uninitialized variable " + "[" + id + "]" + "\n"));
+        	WarningsStorage.add(new Warning(row, column, "uninitialized variable [" + id + "]\n"));
         }
         env.lookup(id).updateEffectType(
                 EffectHelper.seq(
