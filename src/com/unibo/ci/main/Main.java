@@ -4,12 +4,14 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Formatter;
+import java.util.logging.LogManager;
+import java.util.logging.LogRecord;
 
 import com.unibo.ci.ast.*;
 import com.unibo.ci.ast.errors.EffectError;
@@ -28,26 +30,60 @@ import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.util.WarningsStorage;
 
 public class Main {
-	private final static Logger LOGGER = Logger.getLogger(Main.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Main.class.getCanonicalName());
 	private static SyntaxErrorListener parserErrorsListener;
 
 	public static void main(String[] args) {
+		LogManager.getLogManager().reset();
+		ConsoleHandler handler = new ConsoleHandler();
+		Formatter formatter = new LoggerFormatter();  
+		handler.setFormatter(formatter); 
+		LOGGER.addHandler(handler);
 
-		String fileName = "./test/eff3ct_an4lysus.slp";
-		if (args.length != 1)
-			LOGGER.info("WOOOOO INSERISCI IN FILE SORGENTE WOOOOOO");
-		else
-			fileName = args[0];
+		if(args.length < 1){
+			LOGGER.severe("Missing input file");
 
-		ANTLRInputStream input;
-		try {
-			FileInputStream is = new FileInputStream(fileName);
-			input = new ANTLRInputStream(is);
-		} catch (IOException e) {
-			LOGGER.severe("File " + fileName + " not exist 😡");
-			return;
+			System.exit(1);
+		} else {
+			GlobalConfig.INPUT_FILENAME = args[0];
 		}
-		SimpLanPlusLexer lexer = new SimpLanPlusLexer(input);
+		for(int i=0; i<args.length; i++){
+			switch(args[i]){
+				case "--help":
+				case "-h":
+					System.out.println("SimpLanPlus compiler");
+					System.out.println("INSERIRE COMANDO TODO");
+					System.out.println("\t--ast, -a\t\tPrint abstract syntax three");
+					System.out.println("\t--comments, -c\t\tPrint comments on assembly code");
+					System.out.println("\t--out, -o\t\tSpecify out filename (default out)");
+					break;
+				case "--ast":
+				case "-a":
+					GlobalConfig.PRINT_AST = true;
+					break;
+				case "--comments":
+				case "-c":
+					GlobalConfig.PRINT_COMMENTS = true;
+					break;
+				case "--mem":
+				case "-m":
+					GlobalConfig.SHOW_MEM = true;
+					break;
+				case "--out":
+				case "-o":
+					if((i+1) < args.length)
+						GlobalConfig.OUT_FILENAME = args[++i];
+					break;
+			}
+		}
+		CharStream codePointCharStream = null;
+		try {
+			codePointCharStream = CharStreams.fromFileName(GlobalConfig.INPUT_FILENAME);
+		} catch (IOException e) {
+			LOGGER.severe("File " + GlobalConfig.INPUT_FILENAME + " not exist 😡");
+			System.exit(1);
+		}
+		SimpLanPlusLexer lexer = new SimpLanPlusLexer(codePointCharStream);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		SimpLanPlusParser parser = new SimpLanPlusParser(tokens);
 
@@ -55,7 +91,7 @@ public class Main {
 		parserErrorsListener = new SyntaxErrorListener(LOGGER);
 		parser.addErrorListener(parserErrorsListener);
 		// Tell the parser to build the AST
-		// parser.setBuildParseTree(true);
+		parser.setBuildParseTree(true);
 
 		ParseTree tree = parser.block(); // begin parsing at rule 'block'
 
@@ -75,7 +111,7 @@ public class Main {
 		ArrayList<SemanticError> semanticErrors = ast.checkSemantics(env);
 		if (semanticErrors.size() > 0) {
 			semanticErrors.forEach(semnErr -> {
-				LOGGER.info("Semantic error " + semnErr.row + ", " + semnErr.col + ": " + semnErr.desc);
+				LOGGER.severe("SEMANTIC ERROR [" + semnErr.row + ", " + semnErr.col + "]: " + semnErr.desc);
 			});
 			return;
 		}
@@ -84,7 +120,7 @@ public class Main {
 		ast.typeCheck();
 		if (TypeErrorsStorage.getErrorList().size() > 0) {
 			TypeErrorsStorage.getErrorList().forEach(typeErr -> {
-				LOGGER.info("Type error " + typeErr.row + ", " + typeErr.col + ": " + typeErr.desc);
+				LOGGER.severe("TYPE ERROR [" + typeErr.row + ", " + typeErr.col + "]: " + typeErr.desc);
 			});
 			return;
 		}
@@ -95,7 +131,7 @@ public class Main {
 		ArrayList<EffectError> effectsErrors = ast.AnalyzeEffect(effects_env);
 		if (effectsErrors.size() > 0) {
 			effectsErrors.forEach(effectErr -> {
-				LOGGER.info("Effect error " + effectErr.row + ", " + effectErr.col + ": " + effectErr.desc);
+				LOGGER.severe("EFFECT ERROR [" + effectErr.row + ", " + effectErr.col + "]: " + effectErr.desc);
 			});
 			return;
 		}
@@ -103,48 +139,50 @@ public class Main {
 		WarningsStorage.printAll();
 		WarningsStorage.clear();
 
-		String code = ast.codeGeneration();
+		String generatedCode = ast.codeGeneration();
 		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter("prova.asm"));
-			out.write(code);
+			BufferedWriter out = new BufferedWriter(new FileWriter(GlobalConfig.OUT_FILENAME));
+			out.write(generatedCode);
 			out.close();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.severe("Error writing file [" + GlobalConfig.OUT_FILENAME + "] 😡");
 		}
 
+		SVMLexer lexerASM = new SVMLexer(CharStreams.fromString(generatedCode));
+		CommonTokenStream tokensASM = new CommonTokenStream(lexerASM);
+		SVMParser parserASM = new SVMParser(tokensASM);
+
+		SVMVisitorImpl visitorSVM = new SVMVisitorImpl();
+		visitorSVM.visit(parserASM.assembly());
+
+		if (lexerASM.errorCount() > 0 || parserASM.getNumberOfSyntaxErrors() > 0){
+			LOGGER.info("Syntax errors: " + parserASM.getNumberOfSyntaxErrors());
+			LOGGER.info("Lexical errors: " + lexerASM.errorCount());
+			System.exit(1);
+		}
+
+		LOGGER.info("Starting SVM");
+
+		SVM vm = new SVM(500, visitorSVM.getCode());
 		try {
-			FileInputStream isASM = new FileInputStream("prova.asm");
-			ANTLRInputStream inputASM = new ANTLRInputStream(isASM);
-			SVMLexer lexerASM = new SVMLexer(inputASM);
-			CommonTokenStream tokensASM = new CommonTokenStream(lexerASM);
-			SVMParser parserASM = new SVMParser(tokensASM);
-
-			// parserASM.assembly();
-
-			SVMVisitorImpl visitorSVM = new SVMVisitorImpl();
-			visitorSVM.visit(parserASM.assembly());
-
-			System.out.println("You had: " + lexerASM.errorCount() + " lexical errors and "
-					+ parserASM.getNumberOfSyntaxErrors() + " syntax errors.");
-			if (lexerASM.errorCount() > 0 || parserASM.getNumberOfSyntaxErrors() > 0)
-				System.exit(1);
-
-			System.out.println("Starting Virtual Machine...");
-
-			SVM vm = new SVM(200, visitorSVM.getCode());
-			try {
-				vm.run();
-			} catch (MemoryAccessException e) {
-				System.out.println(e.getMessage());
-			}
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			vm.run();
+		} catch (MemoryAccessException e) {
+			LOGGER.severe("Invalid memory access");
 		}
 
 	}
+}
+
+
+class LoggerFormatter extends Formatter {
+ 
+    @Override
+    public String format(LogRecord record) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(record.getLevel() + ": ");
+        builder.append(formatMessage(record));
+        builder.append(System.lineSeparator());
+        return builder.toString();
+    }
+	 
 }
