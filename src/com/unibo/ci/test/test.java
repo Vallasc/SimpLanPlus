@@ -1,6 +1,8 @@
 package com.unibo.ci.test;
 
 import com.unibo.ci.main.Main;
+import com.unibo.ci.util.GlobalConfig;
+
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -15,21 +17,16 @@ public class test {
 			File testFolder = new File(testpath);
 			for (String filename : testFolder.list()) {
 				if (filename.endsWith(".slp") && filename.startsWith("test")) {
-					System.out.println(filename);
+					System.out.println("Test: " + filename);
+					System.out.println("---------------------------------------");
 					Main.main(new String[] { testpath.concat(filename) });
+					System.out.println("---------------------------------------\n");
 				}
 			}
 		} else {
-
-			Main.main(new String[] { testpath + "test" + args[1] + ".slp" });
+			GlobalConfig.PRINT_COMMENTS = true;
+			GlobalConfig.SHOW_MEM = true;
+			Main.main(new String[] { testpath + "test" + args[0] + ".slp" });
 		}
-
-		/*
-		 * for (int i = 0; i <= 8; i++){
-		 * System.out.println("Test " + i);
-		 * Main.main(new String[]{"test/test" + i + ".slp"});
-		 * System.out.println("Fine Test " + i + "\n");
-		 * }
-		 */
 	}
 }

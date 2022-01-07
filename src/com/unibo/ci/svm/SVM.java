@@ -2,10 +2,12 @@ package com.unibo.ci.svm;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
-import com.unibo.ci.svm.MemoryCell.NotInitializedVariableException;
+import com.unibo.ci.util.GlobalConfig;
 
 public class SVM {
+	private final static Logger LOGGER = Logger.getLogger(SVM.class.getCanonicalName());
 	private final int memSize; // Max size of the memory (heap + stack)
 
 	private final List<Instruction> code;
@@ -49,8 +51,16 @@ public class SVM {
 	public void run() throws MemoryAccessException {
 		while (true) {
 			if (registers.get("$hp") + 1 >= registers.get("$sp")) {
+				if(GlobalConfig.SHOW_MEM){
+					LOGGER.severe("Accessing a not initialized memory cell");
+					System.err.println("IP: " + ip);
+					System.err.println("SP: " + registers.get("$sp"));
+					System.err.println("FP: " + registers.get("$fp"));
+					System.err.println("CL: " + registers.get("$cl"));
+					System.err.println("HP: " + registers.get("$hp"));
+					printMemory();
+				}
 				throw new MemoryAccessException();
-
 			} else {
 				Instruction bytecode = code.get(ip); // fetch
 				ip++;
@@ -82,13 +92,16 @@ public class SVM {
 
 						} catch (IndexOutOfBoundsException | NotInitializedVariableException e) {
 							// System.out.println(registers.get(arg2) + offset);
-							e.printStackTrace();
-							System.err.println("Instruction: " + bytecode.toString());
-							System.err.println("IP: " + ip);
-							System.err.println("SP: " + registers.get("$sp"));
-							System.err.println("FP: " + registers.get("$fp"));
-							System.err.println("CL: " + registers.get("$cl"));
-							printMemory();
+							if(GlobalConfig.SHOW_MEM){
+								LOGGER.severe("Accessing a not initialized memory cell");
+								System.err.println("Instruction: " + bytecode.toString());
+								System.err.println("IP: " + ip);
+								System.err.println("SP: " + registers.get("$sp"));
+								System.err.println("FP: " + registers.get("$fp"));
+								System.err.println("CL: " + registers.get("$cl"));
+								System.err.println("HP: " + registers.get("$hp"));
+								printMemory();
+							}
 							throw new MemoryAccessException();
 						}
 						registers.put(arg1, address); // lw $r1 offset($r2)
@@ -237,6 +250,6 @@ class MemoryCell {
 		return "| " + (data != null && data >= 0 ? " " : "") + data + "\t|";
 	}
 
-	public class NotInitializedVariableException extends Exception {
-	}
 }
+
+class NotInitializedVariableException extends Exception {}
