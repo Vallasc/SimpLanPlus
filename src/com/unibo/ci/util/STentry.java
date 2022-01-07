@@ -5,6 +5,7 @@ import com.unibo.ci.ast.types.TypeFunction;
 
 public class STentry extends Entry<Type> {
     private boolean isPar;
+    private boolean initFlag;
 
     public STentry(String id, Type type, int nestLevel, int offset) {
         super(id, type, nestLevel, offset);
@@ -25,11 +26,19 @@ public class STentry extends Entry<Type> {
         return type instanceof TypeFunction ? true : false;
     }
 
-    public boolean getIsPar(){
+    public boolean getIsPar() {
         return this.isPar;
     }
 
-    public void setIsPar(boolean isPar){
+    public void setIsPar(boolean isPar) {
         this.isPar = isPar;
+    }
+
+    public boolean isInitFlag() {
+        return initFlag;
+    }
+
+    public void setInitFlag(boolean initFlag) {
+        this.initFlag = initFlag;
     }
 }
