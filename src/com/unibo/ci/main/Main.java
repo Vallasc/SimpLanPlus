@@ -136,6 +136,7 @@ public class Main {
 			});
 			return;
 		}
+		WarningsStorage warnings = new WarningsStorage(LOGGER);
 		WarningsStorage.printAll();
 		WarningsStorage.clear();
 

@@ -7,8 +7,12 @@ import com.unibo.ci.ast.errors.Error;
 import com.unibo.ci.ast.errors.Warning;
 
 public class WarningsStorage {
-    private final static Logger LOGGER = Logger.getLogger(WarningsStorage.class.getCanonicalName());
+    private static Logger LOGGER = Logger.getLogger(WarningsStorage.class.getCanonicalName());
     private final static LinkedList<Warning> warningList = new LinkedList<>();
+
+    public WarningsStorage(Logger logger) {
+        LOGGER = logger;
+    }
 
     public static void add(Warning warning) {
         warningList.add(warning);
