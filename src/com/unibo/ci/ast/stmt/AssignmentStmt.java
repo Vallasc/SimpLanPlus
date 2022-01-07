@@ -49,6 +49,9 @@ public class AssignmentStmt extends Statement {
 	public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 		errors.addAll(left.checkSemantics(env));
+		if (env.lookup(left.getVarId().getId()).getType() instanceof TypePointer) {
+			env.lookup(left.getVarId().getId()).setInitFlag(true);
+		}
 		errors.addAll(exp.checkSemantics(env));
 		return errors;
 	}
@@ -89,9 +92,11 @@ public class AssignmentStmt extends Statement {
 		ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
 		// create a warning if an uninitialized pointer is assigned to another pointer
-		/*checkUninitVars(exp, env).forEach( warning -> {
-			WarningsStorage.add(warning);
-		});*/
+		/*
+		 * checkUninitVars(exp, env).forEach( warning -> {
+		 * WarningsStorage.add(warning);
+		 * });
+		 */
 
 		toRet.addAll(exp.AnalyzeEffect(env));
 
@@ -107,5 +112,5 @@ public class AssignmentStmt extends Statement {
 		}
 		return toRet;
 	}
-	
+
 }
