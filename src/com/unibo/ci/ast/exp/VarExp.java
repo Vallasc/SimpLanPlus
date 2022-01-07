@@ -6,6 +6,7 @@ import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.Warning;
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.EffectHelper;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
@@ -52,13 +53,13 @@ public class VarExp extends LhsExp {
 
         String out = (debug ? ";BEGIN ID [" + id + "]\n" : "\n");
         out += "mv $al $fp \n";
-  
+
         for (int i = 0; i < nestingLevel - stEntry.getNestinglevel(); i++) {
             out += "lw $al 0($al)\n";
         }
 
         int offset = stEntry.getOffset() - 1;
-        if(assFlag){
+        if (assFlag) {
             out += "addi $a0 $al " + offset + "\n";
         } else {
             out += "lw $a0 " + offset + "($al)\n";
@@ -84,18 +85,18 @@ public class VarExp extends LhsExp {
         return stEntry;
     }
 
-    
     public void setAssFlag(boolean flag) {
         this.assFlag = flag;
     }
-
 
     @Override
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
-        if (!stEntry.getIsPar() && env.lookup(id).getEtype() == EffectHelper.ETypes.BOT) {
-        	WarningsStorage.add(new Warning(row, column, "uninitialized variable [" + id + "]\n"));
+        if ((!stEntry.getIsPar() && env.lookup(id).getEtype() == EffectHelper.ETypes.BOT)
+                || (!stEntry.getIsPar() && stEntry.getType() instanceof TypePointer && !stEntry.isInitFlag())) {
+
+            WarningsStorage.add(new Warning(row, column, "uninitialized variable [" + id + "]\n"));
         }
         env.lookup(id).updateEffectType(
                 EffectHelper.seq(
@@ -104,11 +105,9 @@ public class VarExp extends LhsExp {
         if (env.lookup(id).getEtype() == EffectHelper.ETypes.T) {
             toRet.add(new EffectError(row, column, "Cannot use variable [" + id + "]: the variable was deleted"));
         }
-        
+
         return toRet;
 
     }
-    
-    
 
 }
