@@ -4,7 +4,6 @@ import com.unibo.ci.main.Main;
 import com.unibo.ci.util.GlobalConfig;
 
 import java.io.File;
-import java.io.FilenameFilter;
 
 public class test {
 
@@ -24,9 +23,9 @@ public class test {
 				}
 			}
 		} else {
-			GlobalConfig.PRINT_COMMENTS = true;
+			//GlobalConfig.PRINT_COMMENTS = true;
 			//GlobalConfig.SHOW_MEM = true;
-			GlobalConfig.SHOW_DEBUG = true;
+			//GlobalConfig.SHOW_DEBUG = true;
 			Main.main(new String[] { testpath + "test" + args[0] + ".slp" });
 		}
 	}
