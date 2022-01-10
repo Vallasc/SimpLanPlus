@@ -9,7 +9,9 @@
     }
     ^int a = new int;
 	^int b = new int;
-    a^ = 1;
+    a^ = 5;
     b^ = 4;
 	h(b, a);
 }
+
+// OK

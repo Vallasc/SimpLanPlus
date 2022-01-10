@@ -1,0 +1,20 @@
+{
+    void g(^int x, int y){ 
+        if (y==0) 
+            delete x; 
+        else { 
+            x^ = x^ - 1; 
+            g(x,y) ; 
+            delete x ;
+        } 
+    }
+
+    ^int a = new int;
+	int b = 4;
+    a^ = 5;
+	g(a, b);
+}
+
+// SEVERE: EFFECT ERROR [7, 12]: Possible aliasing error or using a deleted variable [x]
+// SEVERE: EFFECT ERROR [8, 12]: Cannot delete variable x: the variable has already been deleted
+// SEVERE: EFFECT ERROR [15, 1]: Possible aliasing error or using a deleted variable [a]
