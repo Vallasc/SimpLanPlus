@@ -1,0 +1,17 @@
+{
+	void f(int m, int n){
+		if (m>n) { 
+			print(m+n);
+		}
+		else { 
+			int x = 1; 
+			f(m+1,n+1); 
+		}
+	}
+	f(5,4); 
+	//f(4, 5); // loop until end of memory
+}
+
+// f(5,4)   OK 
+//f(4,5)  Error: Out of memory
+
