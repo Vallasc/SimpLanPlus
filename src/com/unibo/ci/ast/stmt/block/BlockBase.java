@@ -139,12 +139,14 @@ public class BlockBase extends Block {
 		}
 
 		// Pushing ra so the stack is always consistent
-		out += "subi $sp $sp 1; ra \n";
+		//out += "subi $sp $sp 1; ra \n";
+		out += "li $t1 0\n";
+		out += "push $t1\n";
 
 		out += "mv $al $fp\n";
 		out += "push $al" + (debug ? " ;it's equal to the old $fp\n" : "\n");
 		if (isMain) {
-			out += "mv $fp $sp" + (debug ? " ;bring up the frame pointer\n" : "\n");
+			out += "subi $fp $fp 2" + (debug ? " ;bring up the frame pointer\n" : "\n");
 			out += "sw $fp 0($fp)" + (debug ? " ;save the old value\n" : "\n");
 		}
 
@@ -185,7 +187,7 @@ public class BlockBase extends Block {
 		if (isMain){
 			out += "halt\n";
 		}
-
+		out += codeGenEnd(varDecs.size());
 		// End block
 		/*if (!isMain) {
 			// Pop all the declarations

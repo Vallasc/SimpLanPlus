@@ -69,6 +69,10 @@ public class Main {
 				case "-m":
 					GlobalConfig.SHOW_MEM = true;
 					break;
+				case "--debug":
+				case "-d":
+					GlobalConfig.SHOW_DEBUG = true;
+					break;
 				case "--out":
 				case "-o":
 					if ((i + 1) < args.length)
@@ -164,7 +168,7 @@ public class Main {
 
 		LOGGER.info("Starting SVM");
 
-		SVM vm = new SVM(500, visitorSVM.getCode());
+		SVM vm = new SVM(300, visitorSVM.getCode());
 		try {
 			vm.run();
 		} catch (MemoryAccessException e) {

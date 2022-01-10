@@ -53,11 +53,6 @@ public class SVM {
 			if (registers.get("$hp") + 1 >= registers.get("$sp")) {
 				if(GlobalConfig.SHOW_MEM){
 					LOGGER.severe("Accessing a not initialized memory cell");
-					System.err.println("IP: " + ip);
-					System.err.println("SP: " + registers.get("$sp"));
-					System.err.println("FP: " + registers.get("$fp"));
-					System.err.println("CL: " + registers.get("$cl"));
-					System.err.println("HP: " + registers.get("$hp"));
 					printMemory();
 				}
 				throw new MemoryAccessException();
@@ -93,13 +88,7 @@ public class SVM {
 						} catch (IndexOutOfBoundsException | NotInitializedVariableException e) {
 							// System.out.println(registers.get(arg2) + offset);
 							if(GlobalConfig.SHOW_MEM){
-								LOGGER.severe("Accessing a not initialized memory cell");
 								System.err.println("Instruction: " + bytecode.toString());
-								System.err.println("IP: " + ip);
-								System.err.println("SP: " + registers.get("$sp"));
-								System.err.println("FP: " + registers.get("$fp"));
-								System.err.println("CL: " + registers.get("$cl"));
-								System.err.println("HP: " + registers.get("$hp"));
 								printMemory();
 							}
 							throw new MemoryAccessException();
@@ -190,17 +179,34 @@ public class SVM {
 						break;
 					case "halt":
 						//printMemory();
+						if(GlobalConfig.SHOW_MEM){
+							printMemory();
+						}
 						return;
 					default:
 						System.err.println("Unrecognized instruction: " + bytecode.getInstruction());
 						return;
+				}
+				if(GlobalConfig.SHOW_DEBUG){
+					System.err.println("\nInstruction: " + bytecode.toString());
+					printMemory();
 				}
 			}
 		}
 	}
 
 	void printMemory(){
-		System.out.println("Memory");
+		System.out.println("\n| Registers \t |");
+		System.err.print("| IP: " + ip + " | ");
+		System.err.print("| SP: " + registers.get("$sp") + " | ");
+		System.err.print("| CL: " + registers.get("$cl") + " | ");
+		System.err.print("| FP: " + registers.get("$fp") + " | ");
+		System.err.print("| RA: " + registers.get("$ra") + " | ");
+		System.err.print("| AL: " + registers.get("$al") + " | ");
+		System.err.print("| A0: " + registers.get("$a0") + " | ");
+		System.err.print("| T1: " + registers.get("$t1") + " | ");
+		System.err.println("| HP: " + registers.get("$hp") + " | ");
+		System.out.println("\n| Memory \t |");
 		for(int i =0 ; i< memSize; i++ )
 			System.out.println(i+ ": "+ memory[i].toString());
 	}
