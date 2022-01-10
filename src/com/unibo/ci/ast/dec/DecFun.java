@@ -135,7 +135,7 @@ public class DecFun extends Dec {
         // SigmaEnv env_0 = new SigmaEnv(), env_1 = new SigmaEnv();
         // SigmaEnv env_0 = env.clone(), env_1 = env.clone();
         SigmaEnv env_f = env.clone();
-        env_f.getTable().forEach( map -> map.entrySet().removeIf( entry -> entry.getValue().isNotFunction()));
+        //env_f.getTable().forEach( map -> map.entrySet().removeIf( entry -> entry.getValue().isNotFunction()));
         // SigmaEnv env_0 = env_f.clone(), env_1 = env_f.clone();
         SigmaEnv env_0 = env_f.clone(), env_1 = env_f.clone();
         env_0.newScope();
