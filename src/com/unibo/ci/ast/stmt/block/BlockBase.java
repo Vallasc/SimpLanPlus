@@ -188,19 +188,7 @@ public class BlockBase extends Block {
 			out += "halt\n";
 		}
 		out += codeGenEnd(varDecs.size());
-		// End block
-		/*if (!isMain) {
-			// Pop all the declarations
-			out += "addi $sp $sp " + varDecs.size() + (debug ? " ;pop var declarations\n" : "\n"); // Pop var
-																									// declarations.
-			out += "pop" + (debug ? " ;pop $al\n" : "\n");
-			out += "pop" + (debug ? " ;pop consistency ra\n" : "\n");
-			out += "lw $cl 0($sp)\n";
-			out += "pop\n";
-			out += "lw $fp 0($sp)" + (debug ? " ;restore old $fp\n" : "\n");
-			out += "pop" + (debug ? " ;pop old $fp\n" : "\n");
-		}*/
-
+		
 		// Function declaration at the end, they need the space for ra
 		for (DecFun f : funDecs) {
 			out += f.codeGeneration();
