@@ -99,6 +99,7 @@ public class DecVar extends Dec {
             out += exp.codeGeneration();
             out += "push $a0\n";
             out += "mv $al $fp\n";
+            out += "lw $al 0($al)\n";
             out += "addi $a0 $al " + (offset * -1) + "\n";
             out += "lw $t1 0($sp)\n";
             out += "pop\n";

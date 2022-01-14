@@ -54,7 +54,7 @@ public class VarExp extends LhsExp {
         String out = (debug ? ";BEGIN ID [" + id + "]\n" : "\n");
         out += "mv $al $fp \n";
 
-        for (int i = 0; i < nestingLevel - stEntry.getNestinglevel(); i++) {
+        for (int i = 0; i < nestingLevel - stEntry.getNestinglevel() + 1; i++) {
             out += "lw $al 0($al)\n";
         }
 
@@ -93,10 +93,10 @@ public class VarExp extends LhsExp {
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
-        if ((!stEntry.getIsPar() && env.lookup(id).getEtype() == EffectHelper.ETypes.BOT)
-                || (!stEntry.getIsPar() && stEntry.getType() instanceof TypePointer && !stEntry.isInitFlag())) {
-
-            WarningsStorage.add(new Warning(row, column, "uninitialized variable [" + id + "]"));
+        if (!stEntry.getIsPar() && 
+            (env.lookup(id).getEtype() == EffectHelper.ETypes.BOT || 
+                (!stEntry.isInitFlag() && stEntry.getType() instanceof TypePointer) ) ) {
+                WarningsStorage.add(new Warning(row, column, "uninitialized variable [" + id + "]"));
         }
         env.lookup(id).updateEffectType(
                 EffectHelper.seq(

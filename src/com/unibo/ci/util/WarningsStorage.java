@@ -1,18 +1,14 @@
 package com.unibo.ci.util;
 
 import java.util.LinkedList;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 
-import com.unibo.ci.ast.errors.Error;
 import com.unibo.ci.ast.errors.Warning;
 
 public class WarningsStorage {
-    private static Logger LOGGER = Logger.getLogger(WarningsStorage.class.getCanonicalName());
+    private final static Logger LOGGER = Logger.getLogger(WarningsStorage.class.getCanonicalName());
     private final static LinkedList<Warning> warningList = new LinkedList<>();
-
-    public WarningsStorage(Logger logger) {
-        LOGGER = logger;
-    }
 
     public static void add(Warning warning) {
         warningList.add(warning);
@@ -27,9 +23,11 @@ public class WarningsStorage {
     }
 
     public static void clear() {
-        // TODO Auto-generated method stub
         warningList.clear();
+    }
 
+    public static void setLggerHandler(ConsoleHandler handler) {
+        LOGGER.addHandler(handler);
     }
 
 }

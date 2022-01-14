@@ -52,7 +52,7 @@ public class DerExp extends LhsExp {
         VarExp id = getVarId();
         if (assignment) {
             out += "mv $al $fp\n";
-            for (int i = 0; i < (id.getNestingLevel() - id.getSTentry().getNestinglevel()); i++) {
+            for (int i = 0; i < (id.getNestingLevel() - id.getSTentry().getNestinglevel()) + 1; i++) {
                 out += "lw $al 0($al)\n";
             }
             out += " addi $a0 $al " + (id.getSTentry().getOffset() - 1) + "\n";

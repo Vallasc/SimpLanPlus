@@ -39,6 +39,7 @@ public class Main {
 		Formatter formatter = new LoggerFormatter();
 		handler.setFormatter(formatter);
 		LOGGER.addHandler(handler);
+		WarningsStorage.setLggerHandler(handler);
 
 		if (args.length < 1) {
 			LOGGER.severe("Missing input file");
@@ -134,15 +135,14 @@ public class Main {
 		/* Check Effects */
 		SigmaEnv effects_env = new SigmaEnv();
 		ArrayList<EffectError> effectsErrors = ast.AnalyzeEffect(effects_env);
+		WarningsStorage.printAll();
+		WarningsStorage.clear();
 		if (effectsErrors.size() > 0) {
 			effectsErrors.forEach(effectErr -> {
 				LOGGER.severe("EFFECT ERROR [" + effectErr.row + ", " + effectErr.col + "]: " + effectErr.desc);
 			});
 			return;
 		}
-		WarningsStorage warnings = new WarningsStorage(LOGGER);
-		WarningsStorage.printAll();
-		WarningsStorage.clear();
 
 		String generatedCode = ast.codeGeneration();
 		try {
