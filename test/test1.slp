@@ -6,4 +6,5 @@
     x^ = 6;
 }
 
-// SEVERE: EFFECT ERROR [4, 4]: Cannot use variable [x]: the variable was deleted
+// WARNING: ?? [4, 8]: uninitialized variable [x]
+// SEVERE: EFFECT ERROR [6, 4]: Cannot use variable [x]: the variable was deleted
