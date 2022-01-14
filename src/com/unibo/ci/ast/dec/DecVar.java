@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
+import com.unibo.ci.ast.exp.NewExp;
 import com.unibo.ci.ast.types.Type;
+import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
@@ -44,6 +46,10 @@ public class DecVar extends Dec {
         try {
             env.addDeclaration(id, type);
             stEntry = env.lookup(id);
+
+            if (env.lookup(id).getType() instanceof TypePointer && exp instanceof NewExp) {
+                env.lookup(id).setInitFlag(true);
+            }
         } catch (DuplicateEntryException e) {
             // Aggiungere anche la riga e la colonna nel messaggio di errore
             errors.add(new SemanticError(row, column, "Already declared [" + id + "]"));

@@ -96,7 +96,7 @@ public class VarExp extends LhsExp {
         if ((!stEntry.getIsPar() && env.lookup(id).getEtype() == EffectHelper.ETypes.BOT)
                 || (!stEntry.getIsPar() && stEntry.getType() instanceof TypePointer && !stEntry.isInitFlag())) {
 
-            WarningsStorage.add(new Warning(row, column, "uninitialized variable [" + id + "]\n"));
+            WarningsStorage.add(new Warning(row, column, "uninitialized variable [" + id + "]"));
         }
         env.lookup(id).updateEffectType(
                 EffectHelper.seq(
