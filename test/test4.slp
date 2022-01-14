@@ -5,6 +5,8 @@
     x = new ^int; 
     x^ = y; 
     print x^^;
+    x^^ = 50;
+    print y^;
 }
 
-// OK print 134
+// OK print 134, 50
