@@ -19,7 +19,7 @@ public class WarningsStorage {
     }
 
     public static void printAll() {
-        warningList.forEach(e -> LOGGER.warning("⚠️ Warning in [" + e.row + ", " + e.col + "]: " + e.desc));
+        warningList.forEach(e -> LOGGER.warning("⚠️ [" + e.row + ", " + e.col + "]: " + e.desc));
     }
 
     public static LinkedList<Warning> getWarningList() {
