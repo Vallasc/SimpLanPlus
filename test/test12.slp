@@ -1,10 +1,12 @@
 {
 	void f(int m, int n, int p, int q){
-        if(n == 2){
-            int m;
-            m = m + 2;
-        } 
+        /*if(n == 2){
+            ^int e;
+            e = new int;
+            e^ = m + 2;
+        } */
         print m;
+        print 999;
 	}
     f(1,2,3,4);
 }
