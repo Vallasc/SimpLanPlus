@@ -83,27 +83,11 @@ public class DecVar extends Dec {
 
         String out = (debug ? ";BEGIN DECVAR [" + id + "]\n" : "\n");
 
-        /*if (exp == null){
+        if (exp == null){
             out += "addi $sp $sp -1\n";
         } else {
             out += exp.codeGeneration();
             out += "push $a0\n";
-        }*/
-
-        out += "addi $sp $sp -1\n";
-
-        if(exp != null){
-            out += "mv $fp $sp\n";
-            int offset = (stEntry.getOffset() * (- 1)) + 1;
-            out += "addi $fp $fp "+ offset + "\n";
-            out += exp.codeGeneration();
-            out += "push $a0\n";
-            out += "mv $al $fp\n";
-            out += "lw $al 0($al)\n";
-            out += "addi $a0 $al " + (offset * -1) + "\n";
-            out += "lw $t1 0($sp)\n";
-            out += "pop\n";
-            out += "sw $t1 0($a0)\n";
         }
 
         out += (debug ? ";END DECVAR [" + this.id + "]\n" : "\n");
