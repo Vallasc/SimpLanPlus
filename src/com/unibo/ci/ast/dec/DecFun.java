@@ -105,8 +105,6 @@ public class DecFun extends Dec {
         }
 
         return typeFun;
-        // TODO quanta memoria occupa la decfun? solo il numero deli argomenti?
-        // (args.size())
     }
 
     @Override
