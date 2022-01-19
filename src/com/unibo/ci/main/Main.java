@@ -49,7 +49,7 @@ public class Main {
 			GlobalConfig.INPUT_FILENAME = args[0];
 		}
 		for (int i = 0; i < args.length; i++) {
-			switch (args[i]) {
+			switch (args[i]) { // TODO add memsize
 				case "--help":
 				case "-h":
 					System.out.println("SimpLanPlus compiler");
@@ -168,7 +168,7 @@ public class Main {
 
 		LOGGER.info("Starting SVM");
 
-		SVM vm = new SVM(300, visitorSVM.getCode());
+		SVM vm = new SVM(GlobalConfig.MEM_SIZE, visitorSVM.getCode());
 		try {
 			vm.run();
 		} catch (MemoryAccessException e) {
