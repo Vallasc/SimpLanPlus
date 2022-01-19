@@ -36,7 +36,7 @@ public class AssignmentStmt extends Statement {
 	public AssignmentStmt(int row, int column, LhsExp left, Exp exp) {
 		super(row, column);
 		this.left = left;
-		this.left.getVarId().setAssFlag(true);
+		this.left.getVarId().setAssignment(true);
 		this.exp = exp;
 	}
 
