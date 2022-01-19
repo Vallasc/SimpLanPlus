@@ -1,0 +1,24 @@
+{
+    int aa = 59; //-3
+    int bb = 64;
+	int f(int a, int b){ //-2
+        int x;  //-1
+        int y;
+        {
+            x = 222;  //0
+            y = 333;
+            print(x);
+            print(y);
+            print(a);
+            print(aa);
+        }
+        print(bb);
+        return 88;
+	}
+    int x;
+    {
+        x = 110;
+    }
+    print(x);
+    print(f(111, 112));
+}
