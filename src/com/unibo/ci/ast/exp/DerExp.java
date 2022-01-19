@@ -20,6 +20,11 @@ public class DerExp extends LhsExp {
         this.child = child;
     }
 
+    public void setAssignment(boolean assignment) {
+        this.assignment = assignment;
+        this.child.setAssignment(assignment);
+    }
+
     @Override
     public String toPrint(String indent) {
         return indent + "Exp: Der\n" + child.toPrint(indent + "\t");
@@ -50,20 +55,12 @@ public class DerExp extends LhsExp {
 
         String out = (debug ? ";BEGIN DER \n" : "\n");
         VarExp id = getVarId();
-        if (assignment) {
-            out += "mv $al $fp\n";
-            for (int i = 0; i < (id.getNestingLevel() - id.getSTentry().getNestinglevel()) + 1; i++) {
-                out += "lw $al 0($al)\n";
-            }
-            out += " addi $a0 $al " + (id.getSTentry().getOffset() - 1) + "\n";
-        } else {
-            out = id.codeGeneration();
-        }
+        out += id.codeGeneration();
 
-        out += " lw $a0 0($a0)\n";
         LhsExp pointer = child;
+        out += "lw $a0 0($a0)\n";
         while (pointer instanceof DerExp) { // dereference pointer
-            out += " lw $a0 0($a0)\n";
+            out += "lw $a0 0($a0)\n";
             pointer = ((DerExp) pointer).child;
         }
 
