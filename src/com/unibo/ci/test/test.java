@@ -23,12 +23,10 @@ public class test {
 				}
 			}
 		} else {
-
 			GlobalConfig.PRINT_COMMENTS = true;
 			// GlobalConfig.SHOW_MEM = true;
 			GlobalConfig.MEM_SIZE = 200;
 			// GlobalConfig.SHOW_DEBUG = true;
-
 			Main.main(new String[] { testpath + "test" + args[0] + ".slp" });
 		}
 	}

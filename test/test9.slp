@@ -1,9 +1,6 @@
 {
-    int z;
-    ^int u = new int;
     void f(^int x, int n){
         if (n == 0) {
-
             print(x^); 
         } else { 
             ^int y = new int;  
