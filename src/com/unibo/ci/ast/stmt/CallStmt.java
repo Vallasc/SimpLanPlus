@@ -162,10 +162,10 @@ public class CallStmt extends Exp {
                           // attuali e formali
         for (Exp par : parlist) {
             if (par.typeCheck() instanceof TypePointer) {
-            	
+
                 String formal_parameter = ((TypeFunction) entry.getType()).getArguments().get(position).getId();
                 ETypes a = env.lookup(((LhsExp) par).getVarId().getId() /* parametri attuali */).getEtype();
-                ETypes b = sigma_1.lookup( formal_parameter/* partametri formali */).getEtype();
+                ETypes b = sigma_1.lookup(formal_parameter/* partametri formali */).getEtype();
                 ETypes tmp = EffectHelper.seq(a, b);
 
                 String var_id = ((LhsExp) par).getVarId().getId();
@@ -180,7 +180,7 @@ public class CallStmt extends Exp {
         }
 
         sigma_secondo.forEach((id, effect_list) -> {
-            
+
             // calcoliamo effettivamente par
             ETypes tmp = effect_list.size() == 1 ? effect_list.get(0)
                     : effect_list
@@ -188,17 +188,16 @@ public class CallStmt extends Exp {
                             .reduce((a, b) -> {
                                 return EffectHelper.par(a, b);
                             }).get();
-            
+
             // controlliamo gli errori
             if (tmp != null && tmp == ETypes.T /* && effect_list.size() > 1 */ ) {
                 errors.add(new EffectError(row, column,
-                        "Possible aliasing error or using a deleted variable "+ "[" + id + "]"));
-                        // "Aliasing error: pointer " + "[" + id + "]" + " could be deleted twice."));
+                        "Possible aliasing error or using a deleted variable " + "[" + id + "]"));
+                // "Aliasing error: pointer " + "[" + id + "]" + " could be deleted twice."));
             }
-            
+
             // update
             env.lookup(id).updateEffectType(tmp);
-
         });
 
         return errors;
