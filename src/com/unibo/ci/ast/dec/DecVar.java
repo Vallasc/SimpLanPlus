@@ -12,18 +12,15 @@ import com.unibo.ci.ast.types.TypeVoid;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
-import com.unibo.ci.util.STentry;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.util.EffectHelper;
-import com.unibo.ci.util.EEntry;
 import com.unibo.ci.util.EffectHelper.ETypes;
 import com.unibo.ci.ast.errors.EffectError;
 
 public class DecVar extends Dec {
     private final Exp exp;
     private final String id;
-    private STentry stEntry;
 
     public DecVar(int row, int column, Type type, String id, Exp exp) {
         super(row, column, type, id);
@@ -45,7 +42,6 @@ public class DecVar extends Dec {
             errors.addAll(exp.checkSemantics(env));
         try {
             env.addDeclaration(id, type);
-            stEntry = env.lookup(id);
 
             if (env.lookup(id).getType() instanceof TypePointer && exp instanceof NewExp) {
                 env.lookup(id).setInitFlag(true);
@@ -81,7 +77,7 @@ public class DecVar extends Dec {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DECVAR [" + id + "]\n" : "\n");
+        String out = (debug ? ";BEGIN DECVAR [" + id + "]\n" : "");
 
         if (exp == null){
             out += "addi $sp $sp -1\n";
@@ -90,7 +86,7 @@ public class DecVar extends Dec {
             out += "push $a0\n";
         }
 
-        out += (debug ? ";END DECVAR [" + this.id + "]\n" : "\n");
+        out += (debug ? ";END DECVAR [" + this.id + "]\n" : "");
         return out;
     }
 
@@ -105,7 +101,6 @@ public class DecVar extends Dec {
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 
         ArrayList<EffectError> errors = new ArrayList<EffectError>();
-        EEntry entry = env.lookup(id);
 
         /*
          * ^^int xy; xy = ^int x; delete x; xy = x;

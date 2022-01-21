@@ -1,13 +1,8 @@
 package com.unibo.ci.ast.exp.bin_exp;
 
-import java.util.ArrayList;
-
-import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GlobalConfig;
-import com.unibo.ci.util.LabelManager;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.ast.types.TypeBool;
 
@@ -30,7 +25,7 @@ public class AndExp extends BinExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN AND\n" : "\n");
+        String out = (debug ? ";BEGIN AND\n" : "");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ; push on the stack e1\n" : "\n");
         out += right.codeGeneration();
@@ -39,7 +34,7 @@ public class AndExp extends BinExp {
 
         out += "and $a0 $t1 $a0\n";
 
-        out += (debug ? ";END AND\n" : "\n");
+        out += (debug ? ";END AND\n" : "");
         return out;
     }
 

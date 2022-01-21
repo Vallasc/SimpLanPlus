@@ -53,7 +53,7 @@ public class DerExp extends LhsExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DER \n" : "\n");
+        String out = (debug ? ";BEGIN DER \n" : "");
         VarExp id = getVarId();
         out += id.codeGeneration();
 
@@ -64,7 +64,7 @@ public class DerExp extends LhsExp {
             pointer = ((DerExp) pointer).child;
         }
 
-        out += (debug ? ";END DER\n" : "\n");
+        out += (debug ? ";END DER\n" : "");
         return out;
     }
 

@@ -25,7 +25,7 @@ public class SumExp extends BinExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN SUM\n" : "\n");
+        String out = (debug ? ";BEGIN SUM\n" : "");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ;push on the stack e1\n" : "\n");
         out += right.codeGeneration();
@@ -34,7 +34,7 @@ public class SumExp extends BinExp {
 
         out += "add $a0 $t1 $a0\n";
 
-        out += (debug ? ";END SUM\n" : "\n");
+        out += (debug ? ";END SUM\n" : "");
         return out;
     }
 

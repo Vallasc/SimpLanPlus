@@ -7,7 +7,6 @@ import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
-import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeBool;
 import com.unibo.ci.util.EffectHelper;
@@ -102,7 +101,7 @@ public class IteStmt extends Statement implements Cloneable {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN ITE \n" : "\n");
+        String out = (debug ? ";BEGIN ITE \n" : "");
 
         String then = LabelManager.getInstance().newLabel("then");
         String end = LabelManager.getInstance().newLabel("endif");
@@ -111,7 +110,7 @@ public class IteStmt extends Statement implements Cloneable {
         out += "beq $a0 $t1 " + then + "\n";
 
         if (elseStmt != null) {
-            out += (debug ? ";ELSE\n" : "\n");
+            out += (debug ? ";ELSE\n" : "");
             out += elseStmt.codeGeneration();
         }
         out += "b " + end + "\n" + then + ":\n";
@@ -119,16 +118,13 @@ public class IteStmt extends Statement implements Cloneable {
         out += thenStmt.codeGeneration();
 
         out += end + " :\n";
-        out += (debug ? ";END ITE\n" : "\n");
+        out += (debug ? ";END ITE\n" : "");
         return out;
     }
 
     @Override
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
-
-        // System.out.println("DEBUG: ambiente prima di ite_analyze_effect");
-        // env.toPrint("indent").toString();
 
         toRet.addAll(exp.AnalyzeEffect(env));
 
@@ -137,22 +133,14 @@ public class IteStmt extends Statement implements Cloneable {
         analyzeBlockEffect(env, thenStmt, toRet);
 
         if (elseStmt != null) {
-
-            // tempE = (SigmaEnv) env.clone();
             analyzeBlockEffect(tempE, elseStmt, toRet);
         } else {
             tempE = null;
         }
 
-        // analyzeBlockEffect(env, thenStmt, toRet);
-        // env.toPrint("indent").toString();
-
         if (tempE != null) {
             EffectHelper.maxModifyEnv(env, tempE);
         }
-
-        // System.out.println("DEBUG: ambiente dopo di ite_analyze_effect");
-        // env.toPrint("indent").toString();
 
         return toRet;
     }

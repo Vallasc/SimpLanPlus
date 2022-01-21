@@ -1,9 +1,6 @@
 package com.unibo.ci.ast.stmt;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.lang.model.util.Types;
 
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
@@ -12,14 +9,12 @@ import com.unibo.ci.ast.errors.Warning;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.EffectHelper;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.STentry;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.util.WarningsStorage;
-import com.unibo.ci.util.EffectHelper.ETypes;
 
 public class DeleteStmt extends Statement {
 
@@ -68,7 +63,7 @@ public class DeleteStmt extends Statement {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DELETE [" + id + "]\n" : "\n");
+        String out = (debug ? ";BEGIN DELETE [" + id + "]\n" : "");
         out += "mv $al $fp \n";
 
         for (int i = 0; i < nestingLevel - stEntry.getNestinglevel(); i++) {
@@ -79,7 +74,7 @@ public class DeleteStmt extends Statement {
         out += "lw $a0 " + offset + "($al)\n";
 
         out += "del $a0\n";
-        out += (debug ? ";END DELETE [" + id + "]\n" : "\n");
+        out += (debug ? ";END DELETE [" + id + "]\n" : "");
         return out;
     }
 

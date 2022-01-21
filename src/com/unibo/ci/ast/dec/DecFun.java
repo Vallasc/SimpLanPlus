@@ -13,11 +13,11 @@ import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.LabelManager;
 import com.unibo.ci.util.SigmaEnv;
-import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.TypeFunction;
 import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.TypeErrorsStorage;
 import com.unibo.ci.ast.errors.TypeError;
+import com.unibo.ci.ast.stmt.BlockBase;
 
 public class DecFun extends Dec {
     private final String id;
@@ -72,7 +72,6 @@ public class DecFun extends Dec {
         } catch (DuplicateEntryException e) {
             SemanticError error = new SemanticError(row, column, "Already declared [" + id + "]");
             semanticErrors.add(error);
-            // return semanticErrors;
         }
         semanticErrors.addAll(block.checkSemanticsInjectArgs(env, args));
         block.setTypeFunction(typeFun);
@@ -87,10 +86,6 @@ public class DecFun extends Dec {
         }
 
         Type blockType = this.block.typeCheck();
-        // System.out.println("DEBUG: il tipo del blocco nella funzione " + id + " è " +
-        // blockType);
-        // System.out.println("DEBUG: il tipo della funzione " + id + " è " +
-        // this.type);
         if(typeFun.getReturnType() instanceof TypePointer){
             TypeErrorsStorage.add(new TypeError(super.row, super.column,
                     "Functions must not return pointer type"));
@@ -111,7 +106,7 @@ public class DecFun extends Dec {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN DECFUN [" + id + "]\n" : "\n");
+        String out = (debug ? ";BEGIN DECFUN [" + id + "]\n" : "");
         out += "b " + labelSkip + "\n";
         out += labelFun + ":\n";
         out += "sw $ra -1($cl)\n";
@@ -122,7 +117,7 @@ public class DecFun extends Dec {
         out += "lw $sp 0($cl) \n";
         out += "addi $cl $fp 2\n";
         out += "jr $ra\n";
-        out += (debug ? ";END DECFUN [" + id + "]\n" : "\n");
+        out += (debug ? ";END DECFUN [" + id + "]\n" : "");
         out += labelSkip + ":\n";
         return out;
     }
@@ -130,11 +125,7 @@ public class DecFun extends Dec {
     @Override
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> errors = new ArrayList<EffectError>();
-        // SigmaEnv env_0 = new SigmaEnv(), env_1 = new SigmaEnv();
-        // SigmaEnv env_0 = env.clone(), env_1 = env.clone();
         SigmaEnv env_f = env.clone();
-        //env_f.getTable().forEach( map -> map.entrySet().removeIf( entry -> entry.getValue().isNotFunction()));
-        // SigmaEnv env_0 = env_f.clone(), env_1 = env_f.clone();
         SigmaEnv env_0 = env_f.clone(), env_1 = env_f.clone();
         env_0.newScope();
         env_1.newScope();
@@ -148,14 +139,6 @@ public class DecFun extends Dec {
         env_1.addDeclaration(id, env_0.clone(), env_1.clone());
         
         errors.addAll(AnalyzeEffect(env_0, env_1, env)); // env_0 e env_1 sono stati modificati
-        
-
-        // System.out.println("DEBUG: ho analizzato la funzione " + id + " che ha come
-        // sigma_0 e sigma_1 rispettivamente:");
-        // System.out.println(env_0.toPrint(""));
-        // System.out.println(env_1.toPrint(""));
-
-        // env_0.exitScope(); env_1.exitScope();
 
         return errors;
 
@@ -168,9 +151,7 @@ public class DecFun extends Dec {
 
 
         // ci salviamo env_1 per la chiamata ricorsiva
-        //env_0 = env_1.clone();
         // all'inizio env_1 e env_0 sono uguali, la valutazione degli s modifica env_1
-
         SigmaEnv e = env_0.clone();
     
         errors.addAll(block.AnalyzeEffectNoScope(e));

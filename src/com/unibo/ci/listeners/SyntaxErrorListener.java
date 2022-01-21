@@ -1,6 +1,5 @@
 package com.unibo.ci.listeners;
 
-import java.io.IOException;
 import java.util.BitSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -31,7 +31,7 @@ public class NotEqualExp extends BinExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN NOT EQUAL\n" : "\n");
+        String out = (debug ? ";BEGIN NOT EQUAL\n" : "");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ;push on the stack e1\n" : "\n");
         out += right.codeGeneration();
@@ -50,7 +50,7 @@ public class NotEqualExp extends BinExp {
         out += "li $a0 0 \n";
         out += endCheckLabel + ":\n";
 
-        out += (debug ? ";END NOT EQUAL\n" : "\n");
+        out += (debug ? ";END NOT EQUAL\n" : "");
         return out;
     }
 

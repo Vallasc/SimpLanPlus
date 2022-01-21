@@ -50,7 +50,7 @@ public class VarExp extends LhsExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN ID [" + id + "]\n" : "\n");
+        String out = (debug ? ";BEGIN ID [" + id + "]\n" : "");
         out += "mv $al $fp \n";
 
         int nl = nestingLevel - stEntry.getNestinglevel();
@@ -64,7 +64,7 @@ public class VarExp extends LhsExp {
         } else {
             out += "lw $a0 " + offset + "($al)\n";
         }
-        out += (debug ? ";END ID [" + id + "]\n" : "\n");
+        out += (debug ? ";END ID [" + id + "]\n" : "");
         return out;
     }
 

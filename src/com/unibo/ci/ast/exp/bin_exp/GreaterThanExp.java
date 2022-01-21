@@ -1,11 +1,7 @@
 package com.unibo.ci.ast.exp.bin_exp;
 
-import java.util.ArrayList;
-
-import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
 import com.unibo.ci.ast.exp.Exp;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.LabelManager;
 import com.unibo.ci.util.TypeErrorsStorage;
@@ -31,7 +27,7 @@ public class GreaterThanExp extends BinExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN GREATER THAN\n" : "\n");
+        String out = (debug ? ";BEGIN GREATER THAN\n" : "");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ;push on the stack e1\n" : "\n");
         out += right.codeGeneration();
@@ -49,7 +45,7 @@ public class GreaterThanExp extends BinExp {
         out += "li $a0 0\n";
         out += endCheckLabel + ":\n";
 
-        out += (debug ? ";END GREATER THAN\n" : "\n");
+        out += (debug ? ";END GREATER THAN\n" : "");
         return out;
     }
 

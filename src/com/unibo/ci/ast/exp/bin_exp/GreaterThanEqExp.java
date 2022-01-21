@@ -27,7 +27,7 @@ public class GreaterThanEqExp extends BinExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN GREATER THAN EQUAL\n" : "\n");
+        String out = (debug ? ";BEGIN GREATER THAN EQUAL\n" : "");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ;push on the stack e1\n" : "\n");
         out += right.codeGeneration();
@@ -53,7 +53,7 @@ public class GreaterThanEqExp extends BinExp {
         out += "li $a0 1\n"; // e1 == e2
         out += endEqualCheck + ":\n";
 
-        out += (debug ? ";END GREATER THAN EQUAL\n" : "\n");
+        out += (debug ? ";END GREATER THAN EQUAL\n" : "");
         return out;
     }
 

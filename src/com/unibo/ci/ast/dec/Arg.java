@@ -6,8 +6,6 @@ import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.util.EffectHelper;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.Environment.DuplicateEntryException;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
@@ -55,10 +53,10 @@ public class Arg extends Node {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN ARG " + id + "\n" : "\n");        
+        String out = (debug ? ";BEGIN ARG " + id + "\n" : "");        
 		out += "addi $sp $sp 1" + (debug ? " ;allocates space on the stack for arg [" + id + "]\n" : "\n");
         
-        out += (debug ? ";END ARG " + id + "\n" : "\n");
+        out += (debug ? ";END ARG " + id + "\n" : "");
         return out;
     }
 

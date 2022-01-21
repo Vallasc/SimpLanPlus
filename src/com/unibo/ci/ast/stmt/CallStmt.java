@@ -84,7 +84,7 @@ public class CallStmt extends Exp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN CALL FUN [" + id + "]\n" : "\n");
+        String out = (debug ? ";BEGIN CALL FUN [" + id + "]\n" : "");
         out += "push $fp\n";
         out += "push $sp\n";
         out += "mv $cl $sp\n";
@@ -109,7 +109,7 @@ public class CallStmt extends Exp {
         out += "addi $fp $fp " + parlist.size() + "\n";
         out += "jal " + typeFun.getLabelStartFun() + "\n"; // decfun saves ra firstly
 
-        out += (debug ? ";END CALL FUN [" + id + "]\n" : "\n");
+        out += (debug ? ";END CALL FUN [" + id + "]\n" : "");
         return out;
     }
 
@@ -117,7 +117,6 @@ public class CallStmt extends Exp {
     public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 
         ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
-        // entry = env.lookup(id);
         entry = env.lookupFunction(id);
         nestingLevel = env.getNestingLevel();
 

@@ -5,25 +5,17 @@ import java.util.ArrayList;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
-import com.unibo.ci.ast.errors.Warning;
-import com.unibo.ci.ast.exp.BaseExp;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.exp.LhsExp;
 import com.unibo.ci.ast.exp.NewExp;
-import com.unibo.ci.ast.exp.NotExp;
-import com.unibo.ci.ast.exp.VarExp;
-import com.unibo.ci.ast.exp.bin_exp.BinExp;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.ast.types.TypeVoid;
-import com.unibo.ci.util.EEntry;
 import com.unibo.ci.util.EffectHelper;
-import com.unibo.ci.util.EffectHelper.ETypes;
 import com.unibo.ci.util.GammaEnv;
 import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
-import com.unibo.ci.util.WarningsStorage;
 
 /**
  * Example: x = 3;

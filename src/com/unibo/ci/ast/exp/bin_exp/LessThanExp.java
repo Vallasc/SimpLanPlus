@@ -27,7 +27,7 @@ public class LessThanExp extends BinExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN LESS THAN\n" : "\n");
+        String out = (debug ? ";BEGIN LESS THAN\n" : "");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ;push on the stack e1\n" : "\n");
         out += right.codeGeneration();
@@ -53,7 +53,7 @@ public class LessThanExp extends BinExp {
         out += "li $a0 0\n";
         out += endEqualCheck + ":\n";
 
-        out += (debug ? ";END  LESS THAN\n" : "\n");
+        out += (debug ? ";END  LESS THAN\n" : "");
         return out;
     }
 

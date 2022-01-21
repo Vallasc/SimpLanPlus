@@ -4,7 +4,6 @@ public class EffectError extends Error{
 
 	public EffectError(int row, int col, String desc) {
 		super(row, col, desc);
-		// TODO Auto-generated constructor stub
 	}
 	
 	String print(){

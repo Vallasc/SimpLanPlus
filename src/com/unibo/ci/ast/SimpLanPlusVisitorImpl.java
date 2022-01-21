@@ -7,7 +7,6 @@ import com.unibo.ci.ast.dec.*;
 import com.unibo.ci.ast.exp.*;
 import com.unibo.ci.ast.exp.bin_exp.*;
 import com.unibo.ci.ast.stmt.*;
-import com.unibo.ci.ast.stmt.block.*;
 import com.unibo.ci.ast.types.*;
 import com.unibo.ci.parser.*;
 

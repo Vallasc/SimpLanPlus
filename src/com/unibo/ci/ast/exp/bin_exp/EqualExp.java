@@ -32,7 +32,7 @@ public class EqualExp extends BinExp {
     public String codeGeneration() {
         boolean debug = GlobalConfig.PRINT_COMMENTS;
 
-        String out = (debug ? ";BEGIN EQUAL\n" : "\n");
+        String out = (debug ? ";BEGIN EQUAL\n" : "");
         out += left.codeGeneration();
         out += "push $a0" + (debug ? " ; push on the stack e1\n" : "\n");
         out += right.codeGeneration();
@@ -50,7 +50,7 @@ public class EqualExp extends BinExp {
         out += "li $a0 1" + (debug ? " ;e1 != e2\n" : "\n");
         out += endCheckLabel + ":\n";
 
-        out += (debug ? ";END EQUAL\n" : "\n");
+        out += (debug ? ";END EQUAL\n" : "");
         return out;
     }
 

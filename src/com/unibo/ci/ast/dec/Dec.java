@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.unibo.ci.ast.Node;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.types.Type;
-import com.unibo.ci.util.Environment;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.EEntry;
 import com.unibo.ci.util.EffectHelper;
