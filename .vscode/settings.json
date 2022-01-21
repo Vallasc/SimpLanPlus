@@ -3,7 +3,6 @@
         "src"
     ],
     "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "antlr-4.9.2-complete.jar"
+        "lib/antlr-4.9.2-complete.jar"
     ]
 }
