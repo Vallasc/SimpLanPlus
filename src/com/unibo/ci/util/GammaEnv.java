@@ -63,7 +63,8 @@ public class GammaEnv extends Environment<STentry> {
 		if (value != null){
 			throw new DuplicateEntryException();
 		}
-		STentry newEntry = new STentry(id, type, nestingLevel-1, offset);
+		//STentry newEntry = new STentry(id, type, nestingLevel-1, offset);
+		STentry newEntry = new STentry(id, type, nestingLevel, offset);
 		newEntry.setIsPar(true);
 		table.getLast().put(id, newEntry);
 		offset--; 

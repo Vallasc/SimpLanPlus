@@ -18,7 +18,6 @@ public class VarExp extends LhsExp {
     private final String id;
     private STentry stEntry;
     private int nestingLevel;
-    private boolean assFlag = false;
 
     public VarExp(int row, int column, String id) {
         super(row, column);
@@ -54,12 +53,13 @@ public class VarExp extends LhsExp {
         String out = (debug ? ";BEGIN ID [" + id + "]\n" : "\n");
         out += "mv $al $fp \n";
 
-        for (int i = 0; i < nestingLevel - stEntry.getNestinglevel(); i++) {
+        int nl = nestingLevel - stEntry.getNestinglevel();
+        for (int i = 0; i < nl; i++) {
             out += "lw $al 0($al)\n";
         }
 
         int offset = stEntry.getOffset() - 1;
-        if (assFlag) {
+        if (assignment) {
             out += "addi $a0 $al " + offset + "\n";
         } else {
             out += "lw $a0 " + offset + "($al)\n";
@@ -85,18 +85,14 @@ public class VarExp extends LhsExp {
         return stEntry;
     }
 
-    public void setAssFlag(boolean flag) {
-        this.assFlag = flag;
-    }
-
     @Override
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
 
-        if ((!stEntry.getIsPar() && env.lookup(id).getEtype() == EffectHelper.ETypes.BOT)
-                || (!stEntry.getIsPar() && stEntry.getType() instanceof TypePointer && !stEntry.isInitFlag())) {
-
-            WarningsStorage.add(new Warning(row, column, "uninitialized variable [" + id + "]\n"));
+        if (!stEntry.getIsPar() && 
+            (env.lookup(id).getEtype() == EffectHelper.ETypes.BOT || 
+                (!stEntry.isInitFlag() && stEntry.getType() instanceof TypePointer) ) ) {
+                WarningsStorage.add(new Warning(row, column, "uninitialized variable [" + id + "]"));
         }
         env.lookup(id).updateEffectType(
                 EffectHelper.seq(

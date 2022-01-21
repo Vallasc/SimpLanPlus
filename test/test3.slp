@@ -1,7 +1,7 @@
 {
-    ^int y;
-	int x = y^ + 3;
+    int y;
+	int x = y + 3;
 }
 
-// Runtime error 
+// WARNING: ?? [3, 9]: uninitialized variable [y]
 // SEVERE: Invalid memory access

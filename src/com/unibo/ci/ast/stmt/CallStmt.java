@@ -96,10 +96,7 @@ public class CallStmt extends Exp {
 
         TypeFunction typeFun = ((TypeFunction) (entry.getType()));
 
-        if (typeFun.getLabelEndFun() == null || !(typeFun.getLabelEndFun().contains(id)))
-            out += "mv $al $fp\n";
-        else
-            out += "lw $al 0($fp)\n";
+        out += "mv $al $fp\n";
 
         for (int i = 0; i < nestingLevel - entry.getNestinglevel(); i++)
             out += "lw $al 0($al)\n";

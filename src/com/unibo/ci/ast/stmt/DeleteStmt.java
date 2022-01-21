@@ -8,6 +8,7 @@ import javax.lang.model.util.Types;
 import com.unibo.ci.ast.errors.EffectError;
 import com.unibo.ci.ast.errors.SemanticError;
 import com.unibo.ci.ast.errors.TypeError;
+import com.unibo.ci.ast.errors.Warning;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypePointer;
 import com.unibo.ci.util.EffectHelper;
@@ -17,6 +18,7 @@ import com.unibo.ci.util.GlobalConfig;
 import com.unibo.ci.util.STentry;
 import com.unibo.ci.util.SigmaEnv;
 import com.unibo.ci.util.TypeErrorsStorage;
+import com.unibo.ci.util.WarningsStorage;
 import com.unibo.ci.util.EffectHelper.ETypes;
 
 public class DeleteStmt extends Statement {
@@ -83,8 +85,10 @@ public class DeleteStmt extends Statement {
 
     @Override
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
-
-        // System.out.println(env.toPrint("*"));
+        if (!stEntry.getIsPar() && (env.lookup(id).getEtype() == EffectHelper.ETypes.BOT
+                                                                || !stEntry.isInitFlag()) ) {
+            WarningsStorage.add(new Warning(row, column, "uninitialized variable [" + id + "]"));
+        }
 
         ArrayList<EffectError> toRet = new ArrayList<EffectError>();
         env.lookup(id).updateEffectType(EffectHelper.seq(env.lookup(id).getEtype(), EffectHelper.ETypes.D));
@@ -94,20 +98,6 @@ public class DeleteStmt extends Statement {
                     "Cannot delete variable " + id + ": the variable has already been deleted"));
 
         }
-        
-        //System.out.println(env.toPrint("*"));
-        
-        /*
-         * 
-         * statement.forEach(stmt -> stmt.analyzeEffect())
-         * 
-         * DEBUG: analizzo statement com.unibo.ci.ast.stmt.IteStmt@27ddd392, 3, 8
-         * DEBUG: analizzo statement com.unibo.ci.ast.stmt.AssignmentStmt@19e1023e, 6,
-         * 12
-         * DEBUG: analizzo statement com.unibo.ci.ast.stmt.CallStmt@7cef4e59, 7, 12
-         * DEBUG: analizzo statement com.unibo.ci.ast.stmt.DeleteStmt@64b8f8f4, 8, 12
-         * DEBUG: analizzo statement com.unibo.ci.ast.stmt.DeleteStmt@2db0f6b2, 4, 12
-         */
 
         return toRet;
     }

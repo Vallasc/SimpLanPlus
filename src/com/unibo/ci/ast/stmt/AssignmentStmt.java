@@ -9,6 +9,7 @@ import com.unibo.ci.ast.errors.Warning;
 import com.unibo.ci.ast.exp.BaseExp;
 import com.unibo.ci.ast.exp.Exp;
 import com.unibo.ci.ast.exp.LhsExp;
+import com.unibo.ci.ast.exp.NewExp;
 import com.unibo.ci.ast.exp.NotExp;
 import com.unibo.ci.ast.exp.VarExp;
 import com.unibo.ci.ast.exp.bin_exp.BinExp;
@@ -35,7 +36,7 @@ public class AssignmentStmt extends Statement {
 	public AssignmentStmt(int row, int column, LhsExp left, Exp exp) {
 		super(row, column);
 		this.left = left;
-		this.left.getVarId().setAssFlag(true);
+		this.left.getVarId().setAssignment(true);
 		this.exp = exp;
 	}
 
@@ -49,10 +50,11 @@ public class AssignmentStmt extends Statement {
 	public ArrayList<SemanticError> checkSemantics(GammaEnv env) {
 		ArrayList<SemanticError> errors = new ArrayList<SemanticError>();
 		errors.addAll(left.checkSemantics(env));
-		if (env.lookup(left.getVarId().getId()).getType() instanceof TypePointer) {
+		errors.addAll(exp.checkSemantics(env));
+		if (env.lookup(left.getVarId().getId()).getType() instanceof TypePointer &&
+			exp instanceof NewExp) {
 			env.lookup(left.getVarId().getId()).setInitFlag(true);
 		}
-		errors.addAll(exp.checkSemantics(env));
 		return errors;
 	}
 
@@ -90,13 +92,6 @@ public class AssignmentStmt extends Statement {
 	@Override
 	public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
 		ArrayList<EffectError> toRet = new ArrayList<EffectError>();
-
-		// create a warning if an uninitialized pointer is assigned to another pointer
-		/*
-		 * checkUninitVars(exp, env).forEach( warning -> {
-		 * WarningsStorage.add(warning);
-		 * });
-		 */
 
 		toRet.addAll(exp.AnalyzeEffect(env));
 

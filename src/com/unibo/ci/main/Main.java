@@ -39,6 +39,7 @@ public class Main {
 		Formatter formatter = new LoggerFormatter();
 		handler.setFormatter(formatter);
 		LOGGER.addHandler(handler);
+		WarningsStorage.setLggerHandler(handler);
 
 		if (args.length < 1) {
 			LOGGER.severe("Missing input file");
@@ -48,7 +49,7 @@ public class Main {
 			GlobalConfig.INPUT_FILENAME = args[0];
 		}
 		for (int i = 0; i < args.length; i++) {
-			switch (args[i]) {
+			switch (args[i]) { // TODO add memsize
 				case "--help":
 				case "-h":
 					System.out.println("SimpLanPlus compiler");
@@ -134,15 +135,14 @@ public class Main {
 		/* Check Effects */
 		SigmaEnv effects_env = new SigmaEnv();
 		ArrayList<EffectError> effectsErrors = ast.AnalyzeEffect(effects_env);
+		WarningsStorage.printAll();
+		WarningsStorage.clear();
 		if (effectsErrors.size() > 0) {
 			effectsErrors.forEach(effectErr -> {
 				LOGGER.severe("EFFECT ERROR [" + effectErr.row + ", " + effectErr.col + "]: " + effectErr.desc);
 			});
 			return;
 		}
-		WarningsStorage warnings = new WarningsStorage(LOGGER);
-		WarningsStorage.printAll();
-		WarningsStorage.clear();
 
 		String generatedCode = ast.codeGeneration();
 		try {
@@ -168,7 +168,7 @@ public class Main {
 
 		LOGGER.info("Starting SVM");
 
-		SVM vm = new SVM(300, visitorSVM.getCode());
+		SVM vm = new SVM(GlobalConfig.MEM_SIZE, visitorSVM.getCode());
 		try {
 			vm.run();
 		} catch (MemoryAccessException e) {

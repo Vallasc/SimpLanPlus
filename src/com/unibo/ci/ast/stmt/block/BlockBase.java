@@ -69,6 +69,7 @@ public class BlockBase extends Block {
 		args.forEach(arg -> {
 			errors.addAll(arg.checkSemantics(env));
 		});
+		env.newScope();
 		declarations.forEach(dec -> {
 			errors.addAll(dec.checkSemantics(env));
 		});
@@ -78,6 +79,7 @@ public class BlockBase extends Block {
 		statements.forEach(stmt -> {
 			errors.addAll(stmt.checkSemantics(env));
 		});
+		env.exitScope();
 		env.exitScope();
 		return errors;
 	}
@@ -131,12 +133,9 @@ public class BlockBase extends Block {
 		String out = (debug ? ";BEGIN BLOCK\n" : "\n");
 
 		// New scope
-		if (isMain) {
-			out += "push $sp\n";
-		} else {
-			out += "push $fp" + (debug ? " ;push old fp\n" : "\n");
-			out += "push $cl\n";
-		}
+		out += "push $fp" + (debug ? " ;push old fp\n" : "\n");
+		out += "push $cl\n";
+
 
 		// Pushing ra so the stack is always consistent
 		//out += "subi $sp $sp 1; ra \n";
@@ -145,10 +144,6 @@ public class BlockBase extends Block {
 
 		out += "mv $al $fp\n";
 		out += "push $al" + (debug ? " ;it's equal to the old $fp\n" : "\n");
-		if (isMain) {
-			out += "subi $fp $fp 2" + (debug ? " ;bring up the frame pointer\n" : "\n");
-			out += "sw $fp 0($fp)" + (debug ? " ;save the old value\n" : "\n");
-		}
 
 		List<DecVar> varDecs = new ArrayList<>();
 		List<DecFun> funDecs = new ArrayList<>();
@@ -165,10 +160,8 @@ public class BlockBase extends Block {
 			out += d.codeGeneration();
 		}
 
-		if (!isMain) {
-			out += "mv $fp $sp" + (debug ? " ;frame pointer above the new declarations\n" : "\n");
-			out += "addi $fp $fp " + varDecs.size() + (debug ? " ;frame pointer before decs (n = " + varDecs.size() + ")\n" : "\n");
-		}
+		out += "mv $fp $sp" + (debug ? " ;frame pointer above the new declarations\n" : "\n");
+		out += "addi $fp $fp " + varDecs.size() + (debug ? " ;frame pointer before decs (n = " + varDecs.size() + ")\n" : "\n");
 
 		boolean flagReturn = false;
 		// Generate statements
@@ -183,24 +176,13 @@ public class BlockBase extends Block {
 		if(!flagReturn && isFunctionBlock){
 			out += codeGenEnd(varDecs.size());
 			out += "b " + typeFunction.getLabelEndFun() + "\n";
+		} else {
+			out += codeGenEnd(varDecs.size());
 		}
 		if (isMain){
 			out += "halt\n";
 		}
-		out += codeGenEnd(varDecs.size());
-		// End block
-		/*if (!isMain) {
-			// Pop all the declarations
-			out += "addi $sp $sp " + varDecs.size() + (debug ? " ;pop var declarations\n" : "\n"); // Pop var
-																									// declarations.
-			out += "pop" + (debug ? " ;pop $al\n" : "\n");
-			out += "pop" + (debug ? " ;pop consistency ra\n" : "\n");
-			out += "lw $cl 0($sp)\n";
-			out += "pop\n";
-			out += "lw $fp 0($sp)" + (debug ? " ;restore old $fp\n" : "\n");
-			out += "pop" + (debug ? " ;pop old $fp\n" : "\n");
-		}*/
-
+		
 		// Function declaration at the end, they need the space for ra
 		for (DecFun f : funDecs) {
 			out += f.codeGeneration();

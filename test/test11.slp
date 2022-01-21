@@ -1,0 +1,30 @@
+{
+	void f(^int m, ^int n, int p, int q){
+        int r;
+        if(n^ == 0){
+            r = m^ + q * 6;
+            q = 2;
+            n^ = 1;
+        } else {
+            r = m^ - p * 2;
+            p = 1;
+            n^ = 0;
+        }
+        printchar r;
+        if(r != 111)
+            f(m, n, p, q);
+	}
+
+    ^int a = new int;
+    ^int b = new int;
+    a^ = 99;
+    b^ = 1;
+    f(a, b, 0, 1);
+
+    // 99 - 0
+    // 99 + 6
+    // 99 - 2
+    // 99 + 12
+}
+
+// OK, print c i a o

@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public abstract class Environment<T> implements Cloneable {
 
 	LinkedList<LinkedHashMap<String, T>> table;
-	int nestingLevel;
+	protected int nestingLevel;
 	
 	public Environment() {
 		this.table = new LinkedList<LinkedHashMap<String, T>>();

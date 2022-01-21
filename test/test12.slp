@@ -1,0 +1,48 @@
+{
+	int f(int m, int n){
+        int z;
+        int w;
+        //int w = 66;
+        z = 55;
+        w = 66;
+        print m;
+        print z;
+        {
+            int x;
+            int y;
+            x = 33;
+            y = 44;
+            print(x);
+            print(y);
+            print(z);
+            print m;
+            print n;
+        }
+        {
+        }
+        if(n == 2){
+            //^int e = new int;
+            //^int e;
+            //e = new int;
+            //e^ = m + 2;
+            //x = 3;
+        }
+        print m;
+        print 999;
+        print w;
+        return 3;
+	}
+    f(1,2);
+
+    /*{
+        {
+            int x;
+            x = 3;
+        }
+    }*/
+}
+
+
+
+// fp cl 0 al
+//

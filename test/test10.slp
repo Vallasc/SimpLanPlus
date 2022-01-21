@@ -12,6 +12,6 @@
 	//f(4, 5); // loop until end of memory
 }
 
-// f(5,4)   OK 
+// f(5,4)   OK, 9
 //f(4,5)  Error: Out of memory
 
