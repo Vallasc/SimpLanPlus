@@ -15,7 +15,7 @@ public class Test {
 		if (args.length == 0) {
 			File testFolder = new File(testpath);
 			for (String filename : testFolder.list()) {
-				if (filename.endsWith(".slp") && filename.startsWith("test1")) {
+				if (filename.endsWith(".slp")) {
 					System.out.println("Test: " + filename);
 					System.out.println("---------------------------------------");
 					Main.main(new String[] { testpath.concat(filename) });
@@ -23,9 +23,9 @@ public class Test {
 				}
 			}
 		} else {
-			//GlobalConfig.PRINT_COMMENTS = true;
-			//GlobalConfig.SHOW_MEM = true;
-			GlobalConfig.MEM_SIZE = 200;
+			GlobalConfig.PRINT_COMMENTS = true;
+			GlobalConfig.SHOW_MEM = true;
+			GlobalConfig.MEM_SIZE = 100;
 			//GlobalConfig.SHOW_DEBUG = true;
 			Main.main(new String[] { testpath + "test" + args[0] + ".slp" });
 		}
