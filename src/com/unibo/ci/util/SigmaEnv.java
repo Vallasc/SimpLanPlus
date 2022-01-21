@@ -57,7 +57,7 @@ public class SigmaEnv extends Environment<EEntry> {
 			
 			if (entry != null && !entry.isNotFunction()) {
 				
-				return entry; // .getType();
+				return entry;
 			}
 		}
 		return null;

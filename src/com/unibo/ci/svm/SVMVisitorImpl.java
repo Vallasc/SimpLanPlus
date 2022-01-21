@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.unibo.ci.svm.Instruction;
 import com.unibo.ci.svm.lexer.SVMBaseVisitor;
 import com.unibo.ci.svm.lexer.SVMParser;
 

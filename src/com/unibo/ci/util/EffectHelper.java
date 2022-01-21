@@ -43,12 +43,8 @@ public class EffectHelper {
 	public static void maxModifyEnv(SigmaEnv e, SigmaEnv tempE) {
 		e.getAllIDs().entrySet().stream().filter(id -> id.getValue().isNotFunction())
 				.forEach(en -> { 
-
-					// System.out.println("L'effetto di " + en.getKey() + " è " + e.lookup(en.getKey()).getEtype());
-					// System.out.println("L'effetto di " + en.getKey() + " in tmpeE " + tempE.lookup(en.getKey()).getEtype());
 					e.lookup(en.getKey()).updateEffectType(	
 						EffectHelper.max(e.lookup(en.getKey()).getEtype(), tempE.lookup(en.getKey()).getEtype()));
-					// System.out.println("L'effetto di " + en.getKey() + " dopo l'update è " + e.lookup(en.getKey()).getEtype());
 				});
 				
 	}

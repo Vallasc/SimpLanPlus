@@ -8,7 +8,7 @@ import com.unibo.ci.util.GlobalConfig;
 
 public class SVM {
 	private final static Logger LOGGER = Logger.getLogger(SVM.class.getCanonicalName());
-	private final int memSize; // Max size of the memory (heap + stack)
+	private final int memSize; // heap + stack
 
 	private final List<Instruction> code;
 	private final MemoryCell[] memory;
@@ -17,11 +17,7 @@ public class SVM {
 	private HashMap<String, Integer> registers;
 
 	public SVM(int memSize, List<Instruction> code) {
-		this.memSize = memSize; // memSize = heap + stack
-								// heap starts from the top and grows downwards, while the stack starts from the
-								// bottom an grows upwards
-								// neither of them as fixed side, we just need to check the they do not grows
-								// towards each other
+		this.memSize = memSize;
 		this.code = code;
 
 		memory = new MemoryCell[memSize];
@@ -57,7 +53,7 @@ public class SVM {
 				}
 				throw new MemoryAccessException();
 			} else {
-				Instruction bytecode = code.get(ip); // fetch
+				Instruction bytecode = code.get(ip);
 				ip++;
 				String arg1 = bytecode.getArg1();
 				String arg2 = bytecode.getArg2();
@@ -67,15 +63,8 @@ public class SVM {
 					case "push":
 						registers.put("$sp", registers.get("$sp") - 1);
 						memory[registers.get("$sp")].setData(registers.get(arg1));
-
-						// System.out.print("Printing \n");
-						/*
-						 * for(int i =0 ; i< memSize; i++ )
-						 * System.out.println(i+ ": "+ memory[i].toString());
-						 */
 						break;
 					case "pop":
-						// memory[registers.get("$sp")].setData(null);
 						registers.put("$sp", registers.get("$sp") + 1);
 
 						break;
@@ -86,7 +75,6 @@ public class SVM {
 							address = memory[registers.get(arg2) + offset].getData();
 
 						} catch (IndexOutOfBoundsException | NotInitializedVariableException e) {
-							// System.out.println(registers.get(arg2) + offset);
 							if(GlobalConfig.SHOW_MEM){
 								System.err.println("Instruction: " + bytecode.toString());
 								printMemory();
@@ -178,8 +166,8 @@ public class SVM {
 						ip = registers.get(arg1);
 						break;
 					case "halt":
-						//printMemory();
-						if(GlobalConfig.SHOW_MEM){
+						if(GlobalConfig.SHOW_MEM && !(GlobalConfig.SHOW_DEBUG)){
+							System.err.println("\nInstruction: " + bytecode.toString());
 							printMemory();
 						}
 						return;
@@ -196,19 +184,24 @@ public class SVM {
 	}
 
 	void printMemory(){
-		System.out.println("\n| Registers \t |");
-		System.err.print("| IP: " + ip + " | ");
-		System.err.print("| SP: " + registers.get("$sp") + " | ");
-		System.err.print("| CL: " + registers.get("$cl") + " | ");
-		System.err.print("| FP: " + registers.get("$fp") + " | ");
-		System.err.print("| RA: " + registers.get("$ra") + " | ");
-		System.err.print("| AL: " + registers.get("$al") + " | ");
-		System.err.print("| A0: " + registers.get("$a0") + " | ");
-		System.err.print("| T1: " + registers.get("$t1") + " | ");
-		System.err.println("| HP: " + registers.get("$hp") + " | ");
-		System.out.println("\n| Memory \t |");
+		System.out.println("  -----------------------");
+		System.out.println("  | Registers\t| Value\t|");
+		System.out.println("  -----------------------");
+		System.err.println("  | IP \t\t| " + ip + "\t| ");
+		System.err.println("  | SP \t\t| " + registers.get("$sp") + "\t| ");
+		System.err.println("  | CL \t\t| " + registers.get("$cl") + "\t| ");
+		System.err.println("  | FP \t\t| " + registers.get("$fp") + "\t| ");
+		System.err.println("  | RA \t\t| " + registers.get("$ra") + "\t| ");
+		System.err.println("  | AL \t\t| " + registers.get("$al") + "\t| ");
+		System.err.println("  | A0 \t\t| " + registers.get("$a0") + "\t| ");
+		System.err.println("  | T1 \t\t| " + registers.get("$t1") + "\t| ");
+		System.err.println("  | HP \t\t| " + registers.get("$hp") + "\t| ");
+		System.out.println("  -----------------------");
+		System.err.println("  | Address\t| Value\t| ");
+		System.out.println("  -----------------------");
 		for(int i =0 ; i< memSize; i++ )
-			System.out.println(i+ ": "+ memory[i].toString());
+			System.out.println("  | " + i + "\t\t| "+ memory[i].toString() + "\t|");
+		System.out.println("  -----------------------");
 	}
 
 	public class MemoryAccessException extends Exception {
@@ -253,7 +246,10 @@ class MemoryCell {
 
 	@Override
 	public String toString() {
-		return "| " + (data != null && data >= 0 ? " " : "") + data + "\t|";
+		if(data != null)
+			return data.toString();
+		else 
+			return "null";
 	}
 
 }

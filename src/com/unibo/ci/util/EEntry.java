@@ -1,6 +1,5 @@
 package com.unibo.ci.util;
 
-import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.util.EffectHelper.ETypes;
 
 public class EEntry extends Entry<ETypes> {

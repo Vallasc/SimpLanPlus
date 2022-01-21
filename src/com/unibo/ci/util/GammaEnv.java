@@ -2,15 +2,10 @@ package com.unibo.ci.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Set;
-import java.util.Map.Entry;
 
-import com.unibo.ci.ast.stmt.ReturnStmt;
-import com.unibo.ci.ast.stmt.block.BlockBase;
 import com.unibo.ci.ast.types.Type;
 import com.unibo.ci.ast.types.TypeFunction;
 
@@ -82,7 +77,6 @@ public class GammaEnv extends Environment<STentry> {
 
 			while (iterator.hasPrevious()) {
 				STentry entry = iterator.previous();
-				// System.out.println("DEBUG Entry: " + entry.toPrint("*"));
 				if (entry.getType() instanceof TypeFunction)
 					return entry;
 			}

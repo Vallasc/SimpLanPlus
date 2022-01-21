@@ -1,7 +1,5 @@
 package com.unibo.ci.util;
 
-import com.unibo.ci.ast.types.TypeFunction;
-
 public abstract class Entry<T> {
 
     final int nestLevel;
@@ -29,7 +27,7 @@ public abstract class Entry<T> {
     }
 
     public String toPrint(String indent) {
-        return ""; // TODO
+        return "";
     };
 
     public abstract boolean isNotFunction();

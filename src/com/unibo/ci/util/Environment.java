@@ -30,20 +30,12 @@ public abstract class Environment<T> implements Cloneable {
 
 	// If there is no clash of names, adds id ⟼ t to st
 	// T può essere STEntry o un effetto
-	/*
-	 * public abstract void addDeclaration (String id, <? extends Entry> type)
-	 * throws DuplicateEntryException ; /* { // public void addDeclaration(String
-	 * id, Type type) throws DuplicateSTEntryException { T value =
-	 * table.getLast().get(id); // There is already an entry if (value != null)
-	 * throw new DuplicateEntryException(); symTable.getLast().put(id, new ); }
-	 */
-
 	// Looks for the entry of id in symbol/effect table, if there is any
 	public T lookup(String id) {
 		for (int i = table.size(); i-- > 0;) {
 			T entry = table.get(i).get(id);
 			if (entry != null) {
-				return entry; // .getType();
+				return entry;
 			}
 		}
 		return null;
@@ -54,20 +46,6 @@ public abstract class Environment<T> implements Cloneable {
 	};
 
 	public abstract String toPrint(String indent);
-
-	/*
-	 * public void setSymTable(LinkedList<HashMap<String, STentry>> symTable) {
-	 * this.symTable = symTable; }
-	 * 
-	 * public int getNestingLevel() { return nestingLevel; }
-	 * 
-	 * public void setNestingLevel(int nestingLevel) { this.nestingLevel =
-	 * nestingLevel; }
-	 * 
-	 * public int getOffset() { return offset; }
-	 * 
-	 * public void setOffset(int offset) { this.offset = offset; }
-	 */
 
 	public static class DuplicateEntryException extends Exception {
 
