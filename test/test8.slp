@@ -1,12 +1,14 @@
 {
-    int x = 1;
     void f(int y){ 
+
         if (y == 0) 
             print(x); 
         else  
             f(y-1); 
     }
-    f(54);
+    
+    int x = 1;
+    f(2);
 }
 
 
