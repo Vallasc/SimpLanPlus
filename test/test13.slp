@@ -1,28 +1,18 @@
 {
-	int f(int m, int n){
-        int z;
-        int w;
-        //int w = 66;
-        z = 55;
-        w = 66;
-        print m;
-        print z;
-        if(n == 2){
-            int x;
-            int y;
-            x = 33;
-            y = 44;
-            print(x);
-            print(y);
-            print(z);
-            print m;
-            print n;
-        }
-        print m;
-        print 999;
-        print w;
-        return 3;
-	}
-    f(1,2);
+	int x(int a){
+        {
+            int double(int a){
+                return a*0;
+            }
 
+            {
+                int double(int a){
+                    return a*2;
+                }
+                int b = double(a+1);
+                return b;
+            }
+        }
+	}
+	print x(4);
 }
