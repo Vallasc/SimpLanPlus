@@ -150,8 +150,6 @@ public class DecFun extends Dec {
         ArrayList<EffectError> errors = new ArrayList<EffectError>();
 
 
-        // ci salviamo env_1 per la chiamata ricorsiva
-        // all'inizio env_1 e env_0 sono uguali, la valutazione degli s modifica env_1
         SigmaEnv e = env_0.clone();
     
         errors.addAll(block.AnalyzeEffectNoScope(e));
@@ -162,14 +160,14 @@ public class DecFun extends Dec {
         }
         
         env_0.addDeclaration(id, env_0.clone(), e.clone());
-        return AnalyzeEffect(env_0, e.clone(), env); // in realtà env_0 è env_1 prima dell'analisi degli effetti
+        return AnalyzeEffect(env_0, e.clone(), env); 
 
     }
 
     private boolean equal_envs(SigmaEnv env_0, SigmaEnv env_1) {
         boolean is_equal = true;
         for (String id : env_0.getAllIDs().keySet()) {
-            if (env_0.lookup(id) != null && !env_0.lookup(id).isNotFunction()){ //id è una funzione
+            if (env_0.lookup(id) != null && !env_0.lookup(id).isNotFunction()){ 
                 continue;
             }
             if (env_1.lookup(id) != null && !is_equal)
