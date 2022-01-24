@@ -59,7 +59,7 @@ public class Main {
 					System.out.println("\t--debug, -p\t\tPrint memory ad registers for each instruction");
 					System.out.println("\t--comments, -c\t\tPrint comments on assembly code");
 					System.out.println("\t--out, -o\t\tSpecify out filename (default out)");
-					break;
+					return;
 				case "--ast":
 				case "-a":
 					GlobalConfig.PRINT_AST = true;
