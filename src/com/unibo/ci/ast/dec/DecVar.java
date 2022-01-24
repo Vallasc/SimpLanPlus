@@ -47,7 +47,6 @@ public class DecVar extends Dec {
                 env.lookup(id).setInitFlag(true);
             }
         } catch (DuplicateEntryException e) {
-            // Aggiungere anche la riga e la colonna nel messaggio di errore
             errors.add(new SemanticError(row, column, "Already declared [" + id + "]"));
         }
         return errors;
@@ -92,8 +91,9 @@ public class DecVar extends Dec {
 
     /*
      * 
-     * ids(e)={x_1 ,..., x_n } ------------------------------------------ [Exp-e] ∑
-     * ⊢ e : ∑ ⊳ [x_1 ⟼ rw,..., x_n ⟼ rw]
+     *          ids(e)={x_1 ,..., x_n } 
+     * ------------------------------------------ [Exp-e] ∑
+     *     ⊢ e : ∑ ⊳ [x_1 ⟼ rw,..., x_n ⟼ rw]
      * 
      */
 
@@ -102,21 +102,8 @@ public class DecVar extends Dec {
 
         ArrayList<EffectError> errors = new ArrayList<EffectError>();
 
-        /*
-         * ^^int xy; xy = ^int x; delete x; xy = x;
-         * 
-         * ^int x; [ x -> BOTTOM]
-         * 
-         * 
-         * 
-         * ^int x = 5; ^int x;
-         */
         env.addDeclaration(id, EffectHelper.ETypes.BOT);
 
-        /*
-         * else { env.lookup(id).updateEffectType(EffectHelper.ETypes.T); errors.add(new
-         * EffectError(row, column, "Variable " + id + " already declared")); }
-         */
 
         if (exp != null) {
             errors.addAll(exp.AnalyzeEffect(env));
@@ -125,13 +112,13 @@ public class DecVar extends Dec {
 
         /*
          * 
-         * -------------------------[Var-e] ∑ ⊢ T x; : ∑[x⟼ ⊥]
+         * -------------------------[Var-e] 
+         *     ∑ ⊢ T x; : ∑[x⟼ ⊥]
          * 
          * 
-         * 
-         * 
-         * Γ ⊢ e : T' x ∉ dom(top(Γ)) T=T' --------------------------------------[VarD]
-         * Γ ⊢ T x = e ; : Γ[x ⟼ T]
+         *     Γ ⊢ e : T' x ∉ dom(top(Γ)) T=T' 
+         * --------------------------------------[VarD]
+         *        Γ ⊢ T x = e ; : Γ[x ⟼ T]
          */
 
         return errors;

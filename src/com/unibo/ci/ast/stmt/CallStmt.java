@@ -149,14 +149,8 @@ public class CallStmt extends Exp {
     public ArrayList<EffectError> AnalyzeEffect(SigmaEnv env) {
         ArrayList<EffectError> errors = new ArrayList<EffectError>();
 
-        // SigmaEnv sigma_0 = env.lookup(id).getSigma0();
         SigmaEnv sigma_1 = env.lookupFunction(id).getSigma1();
 
-        // sigma secondo associa ad un nome di variabile (parametro attuale della
-        // funzione) un effetto, servirà per fare il par
-        // logica: se ho una funzione pippo(var a, var b, var c) e la chiamo come
-        // pippo(x,x,y) dovrò fare il par sugli effetti associati ad x (ne avrò due,
-        // perché x viene legata ai parametri formali 'a' e 'b'
         HashMap<String, ArrayList<ETypes>> sigma_secondo = new HashMap<String, ArrayList<ETypes>>();
         int position = 0; // conta la posizione della variabile - serve per corrispondenza parametri
                           // attuali e formali
@@ -181,7 +175,6 @@ public class CallStmt extends Exp {
 
         sigma_secondo.forEach((id, effect_list) -> {
 
-            // calcoliamo effettivamente par
             ETypes tmp = effect_list.size() == 1 ? effect_list.get(0)
                     : effect_list
                             .stream()
@@ -189,11 +182,9 @@ public class CallStmt extends Exp {
                                 return EffectHelper.par(a, b);
                             }).get();
 
-            // controlliamo gli errori
-            if (tmp != null && tmp == ETypes.T /* && effect_list.size() > 1 */ ) {
+            if (tmp != null && tmp == ETypes.T ) {
                 errors.add(new EffectError(row, column,
                         "Possible aliasing error or using a deleted variable " + "[" + id + "]"));
-                // "Aliasing error: pointer " + "[" + id + "]" + " could be deleted twice."));
             }
 
             // update
