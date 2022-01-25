@@ -34,9 +34,8 @@ Vincoli:
 ## Come eseguire il compilatore
 Prerequesiti:
 * Java version >= 1.8
-* Linux distribution or MacOS(no Windows)
 
-
+### Commands for Linux and MacOS
 ```sh
 $> ./run.sh programma.slp
 ```
