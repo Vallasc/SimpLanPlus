@@ -35,7 +35,7 @@ public class NegExp extends Exp {
     @Override
     public TypeInt typeCheck() {
         Type childType = child.typeCheck();
-        if (!(childType instanceof TypeBool)) {
+        if (!(childType instanceof TypeInt)) {
             TypeErrorsStorage.add(new TypeError(super.row, super.column, "expecting type  ["
                     + (new TypeBool()).getTypeName() + "], found [" + childType.getTypeName() + "]"));
             return null;
@@ -45,7 +45,7 @@ public class NegExp extends Exp {
 
     @Override
     public String codeGeneration() {
-        return child.codeGeneration() +  "multi $a0 $a0 -1\n";
+        return child.codeGeneration() + "muli $a0 $a0 -1\n";
     }
 
     @Override
