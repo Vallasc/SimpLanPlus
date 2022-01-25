@@ -34,6 +34,7 @@ Vincoli:
 ## Come eseguire il compilatore
 Prerequesiti:
 * Java version >= 1.8
+* Linux distribution or MacOS(no Windows)
 
 
 ```sh
