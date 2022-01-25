@@ -29,7 +29,7 @@ Vincoli:
 2. Non è possibile fare operazioni aritmetiche tra i puntatori
 3. Non è possibile confrontare i puntatori con operatori di > o <
 4. Le funzioni possono ritonare solo valori di tipo intero e booleano
-5. Ogni volta che vengono utilizzate { } viene aperto un nuvo scope
+5. Ogni volta che vengono utilizzate { } viene aperto un nuovo scope
                                                                                                       
 ## Come eseguire il compilatore
 Prerequesiti:
