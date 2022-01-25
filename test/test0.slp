@@ -4,10 +4,10 @@
     x = new ^int;
     x^ = new int;
     if(y)
-        x^^ = 1;
+        x^^ = -6;
     else
         x^^ = 0;
     print(x^^);
 }
 
-// OK print 1
+// OK print -6
