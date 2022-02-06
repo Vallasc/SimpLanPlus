@@ -25,7 +25,7 @@ public class Test {
 		} else {
 			GlobalConfig.PRINT_COMMENTS = true;
 			GlobalConfig.SHOW_MEM = true;
-			GlobalConfig.MEM_SIZE = 100;
+			GlobalConfig.MEM_SIZE = 1000;
 			//GlobalConfig.SHOW_DEBUG = true;
 			Main.main(new String[] { testpath + "test" + args[0] + ".slp" });
 		}
