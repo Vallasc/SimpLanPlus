@@ -174,6 +174,7 @@ public class BlockBase extends Statement {
 		} else {
 			out += codeGenEnd(varDecs.size());
 		}
+
 		if (isMain){
 			out += "halt\n";
 		}

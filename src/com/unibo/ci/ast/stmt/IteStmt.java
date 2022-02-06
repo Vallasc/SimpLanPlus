@@ -31,11 +31,12 @@ public class IteStmt extends Statement implements Cloneable {
             tmp.add(thenStmt);
             this.thenStmt = new BlockBase(new ArrayList<Dec>(), tmp, thenStmt.getRow(), thenStmt.getColumn());
         }
+
         if ((elseStmt != null && elseStmt instanceof BlockBase)) {
             this.elseStmt = elseStmt;
         } else if (elseStmt != null) {
             ArrayList<Statement> tmp = new ArrayList<Statement>();
-            tmp.add(thenStmt);
+            tmp.add(elseStmt);
             this.elseStmt = new BlockBase(new ArrayList<Dec>(), tmp, elseStmt.getRow(), elseStmt.getColumn());
         } else {
             this.elseStmt = null;
